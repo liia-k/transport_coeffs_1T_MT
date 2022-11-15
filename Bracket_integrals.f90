@@ -76,8 +76,8 @@ CONTAINS
 				(6.*cc(i,k)-5.)
 
 				lambda11(i,j)=lambda11(i,j)+x(i)*x(k)/lambda(i,k)/ &
-				2./aa(i,k)*(15./2.*(mass(i))**2+25./4. &
-				*(mass(k))**2-3.*(mass(k))**2*bb(i,k)+ &
+				2./aa(i,k)*(15./2.*(mass(i)*1e27)**2+25./4. &
+				*(mass(k)*1e27)**2-3.*(mass(k)*1e27)**2*bb(i,k)+ &
 				4.*(mass(i)*1e27)*(mass(k)*1e27)*aa(i,k))/(mass(i)*1e27 + mass(k)*1e27)**2
 				
 				h00(i,j)=h00(i,j)+2.*x(i)*x(k)/eta(i,k)* &
