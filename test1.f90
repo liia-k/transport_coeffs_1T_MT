@@ -257,7 +257,48 @@ PROGRAM test1
     
 ! End of vector b3 definition
     
+
+WRITE (6, *) 'Matrices of LS:'   
+
+    WRITE (6, *) 'LTH:'
+    do i=1,10
+        !WRITE (6, '(0x, 5e15.6)') (DIFF(i,j), j=1,5)
+        WRITE (6, '(1x, 10E15.6)') (LTH(i,j), j=1,10)
+    end do
+    WRITE (6, *) 'BVICS:'
+    do i=1,8
+        !WRITE (6, '(0x, 5e15.6)') (DIFF(i,j), j=1,5)
+        WRITE (6, '(1x, 8E15.6)') (BVISC(i,j), j=1,8)
+    end do
+    WRITE (6, *) 'LDIFF:'
+    do i=1,5
+        !WRITE (6, '(0x, 5e15.6)') (DIFF(i,j), j=1,5)
+        WRITE (6, '(1x, 5E15.6)') (LDIFF(i,j), j=1,5)
+    end do
+    WRITE (6, *) 'HVISC:'
+    do i=1,5
+        !WRITE (6, '(0x, 5e15.6)') (DIFF(i,j), j=1,5)
+        WRITE (6, '(1x, 5E15.6)') (HVISC(i,j), j=1,5)
+    end do
+
+    WRITE (6, *) 'Vectors of right hand terms:' 
+
+    WRITE (6, *) 'b1:'
+    do i=1,5
+        !WRITE (6, '(0x, 5e15.6)') (DIFF(i,j), j=1,5)
+        WRITE (6, '(1x, 5E15.6)') (b1(i,j), j=1,5)
+    end do
+
+    WRITE (6, *) 'b:'
+    WRITE (6, '(1x, 10E15.6)') (b(j,1), j=1,10)
+
+    WRITE (6, *) 'b2:'
+    WRITE (6, '(1x, 5E15.6)') (b2(j,1), j=1,5)
+
+    WRITE (6, *) 'b3:'
+    WRITE (6, '(1x, 8E15.6)') (b3(j,1), j=1,8)
     
+
 ! Linear system solution using the Gauss method
 ! The solutions a, d, h, f are written to b, b1, b2, b3, respectively 
     
@@ -265,26 +306,27 @@ PROGRAM test1
     CALL gaussj(Ldiff,5,5,b1,5,5)
     CALL gaussj(HVISC,5,5,b2,1,1)
     CALL gaussj(BVISC,8,8,b3,1,1)
-    
-    
+
+
 ! Thermal diffusion coefficients THDIF(i)
-    
+
     DO i=1,5
         thdif(i)=-1./2./ntot*b(i,1)
     END DO
-    
-    
+
+
 ! Thermal conductivity coefficient associated to translational
 ! energy, LTR 
-    
+
     LTR=0
     DO i=6,10
         LTR=LTR+5./4.*kb*x(i-5)*b(i,1)
     END DO
-    
-    
-! Thermal conductivity coefficients associated to internal energies 
-    
+
+
+! Thermal conductivity coefficients associated to internal
+! energies 
+
     lrot_co2=3.*kb*t*x(1)/16./lambda_int(1)*kb
     lrot_o2=3.*kb*t*x(2)/16./lambda_int(2)*kb
     lrot_co=3.*kb*t*x(3)/16./lambda_int(3)*kb
@@ -292,35 +334,35 @@ PROGRAM test1
     lvibr_co=3.*kb*t*x(3)/16./lambda_int(3)*kb*(c_v_co)
     lvibr_12=3.*kb*t*x(1)/16./lambda_int(1)*kb*(c_v_t12) 
     lvibr_3=3.*kb*t*x(1)/16./lambda_int(1)*kb*(c_v_t3) 
-    
-! Total thermal conductivity coefficient at the translational temperature gradient
-    
+
+! Total thermal conductivity coefficient at the translational
+! temperature gradient
+
     ltot=ltr+lrot_co2+lrot_o2+lrot_co
-    
-    
+
+
 !Diffusion coefficients	DIFF(i,j)
-    
+
     DO i=1,5
         DO j=1,5
             diff(i,j)=1./2./ntot*b1(i,j)
         END DO
     END DO
-    
-    
+
+
 !Shear viscosity coefficient VISC
-    
+
     visc=0
     DO i=1,5
         visc=visc+kb*t/2.*b2(i,1)*x(i)
     END DO
-    
+
 !Bulk viscosity coefficient BULK_VISC
-    
+
     bulk_visc=0
     DO i=1,5
         bulk_visc=bulk_visc-kb*t*b3(i,1)*x(i)
     END DO
-
 
 ! Output
 
@@ -383,8 +425,34 @@ PROGRAM test1
     WRITE (6, *)
 
     do i=1,5
-        !WRITE (6, '(0x, 5e15.6)') (DIFF(i,j), j=1,5)
         WRITE (6, '(1x, 5E15.6)') (beta11(i,j), j=1,5)
+    end do
+
+    WRITE (6, *)
+
+    WRITE (6, *) 'TRANSPORT COEFFICIENTS:'
+    WRITE (6, *)
+
+    WRITE (6, '(1x, A45, E13.5)') 'Shear viscosity coefficient, Pa.S             ', visc
+    WRITE (6, '(1x, A45, E13.5)') 'Bulk viscosity coefficient, Pa.s              ', bulk_visc
+    WRITE (6, '(1x, A45, E13.5)') 'Thermal cond. coef. lambda, W/m/K             ', ltot
+    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_O2, W/m/K     ', lvibr_O2
+    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_CO, W/m/K     ', lvibr_CO
+    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_12, W/m/K     ', lvibr_12
+    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_3, W/m/K      ', lvibr_3
+    WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of CO2, m^2/s         ', THDIF(1)
+    WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of O2, m^2/s          ', THDIF(2)
+    WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of CO, m^2/s          ', THDIF(3)
+    WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of O, m^2/s           ', THDIF(4)
+    WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of C, m^2/s           ', THDIF(5)
+
+    WRITE (6, *)
+    WRITE (6, *) 'DIFFUSION COEFFICIENTS D_ij, m^2/s'
+    WRITE (6, *)
+
+
+    do i=1,5
+        WRITE (6, '(1x, 5E15.6)') (DIFF(i,j), j=1,5)
     end do
 
 END
