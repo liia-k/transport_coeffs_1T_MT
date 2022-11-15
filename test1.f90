@@ -37,10 +37,6 @@ PROGRAM test1
 
     CALL ENERGY
 
-    ee1=EN3(1,0,0)
-    ee2=EN3(0,1,0)
-    ee3=EN3(0,0,1)
-
 ! Input parameters: species molar fractions, temperatures,
 ! pressure
 
@@ -52,10 +48,6 @@ PROGRAM test1
     x(5)=0.2
 
     T=1000
-    T12=5000
-    T3=5000
-    TVO2=5000
-    TVCO=5000
 
     press=101300
 
@@ -71,13 +63,13 @@ PROGRAM test1
 ! partition functions and specific heats
 
 
-    CALL PART_FUNC3(T12,T3)
-    CALL PART_FUNC_O2(TVO2)
-    CALL PART_FUNC_CO(TVCO)
+    CALL PART_FUNC_N2(T)
+    CALL PART_FUNC_O2(T)
+    CALL PART_FUNC_NO(T)
 
-    CALL S_HEAT3
+    CALL s_heat_N2
     CALL S_HEAT_O2
-    CALL S_HEAT_CO
+    CALL S_HEAT_NO
 
 
 ! Calculation of bracket integrals
@@ -327,18 +319,17 @@ WRITE (6, *) 'Matrices of LS:'
 ! Thermal conductivity coefficients associated to internal
 ! energies 
 
-    lrot_co2=3.*kb*t*x(1)/16./lambda_int(1)*kb
+    lrot_n2=3.*kb*t*x(1)/16./lambda_int(1)*kb
     lrot_o2=3.*kb*t*x(2)/16./lambda_int(2)*kb
-    lrot_co=3.*kb*t*x(3)/16./lambda_int(3)*kb
+    lrot_no=3.*kb*t*x(3)/16./lambda_int(3)*kb
+    lvibr_n2=3.*kb*t*x(1)/16./lambda_int(2)*kb*(c_v_n2)
     lvibr_o2=3.*kb*t*x(2)/16./lambda_int(2)*kb*(c_v_o2)
-    lvibr_co=3.*kb*t*x(3)/16./lambda_int(3)*kb*(c_v_co)
-    lvibr_12=3.*kb*t*x(1)/16./lambda_int(1)*kb*(c_v_t12) 
-    lvibr_3=3.*kb*t*x(1)/16./lambda_int(1)*kb*(c_v_t3) 
+    lvibr_no=3.*kb*t*x(3)/16./lambda_int(3)*kb*(c_v_no)
 
 ! Total thermal conductivity coefficient at the translational
 ! temperature gradient
 
-    ltot=ltr+lrot_co2+lrot_o2+lrot_co
+    ltot=ltr + lrot_n2 + lrot_o2 + lrot_no + lvibr_n2 + lvibr_o2 + lvibr_no
 
 
 !Diffusion coefficients	DIFF(i,j)
@@ -374,10 +365,6 @@ WRITE (6, *) 'Matrices of LS:'
 
 
     WRITE (6, *) 'Temperature, K        ',t
-    WRITE (6, *) 'Temperature T12, K    ',t12
-    WRITE (6, *) 'Temperature T3, K     ',t3
-    WRITE (6, *) 'Temperature TVO2, K   ',tVO2
-    WRITE (6, *) 'Temperature TVCO, K   ',tVCO
     WRITE (6, *) 'Pressure, Pa          ',press
     WRITE (6, *) 'CO2 molar fraction     ',x(1)
     WRITE (6, *) 'O2 molar fraction      ',x(2)
@@ -436,10 +423,9 @@ WRITE (6, *) 'Matrices of LS:'
     WRITE (6, '(1x, A45, E13.5)') 'Shear viscosity coefficient, Pa.S             ', visc
     WRITE (6, '(1x, A45, E13.5)') 'Bulk viscosity coefficient, Pa.s              ', bulk_visc
     WRITE (6, '(1x, A45, E13.5)') 'Thermal cond. coef. lambda, W/m/K             ', ltot
-    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_O2, W/m/K     ', lvibr_O2
-    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_CO, W/m/K     ', lvibr_CO
-    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_12, W/m/K     ', lvibr_12
-    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_3, W/m/K      ', lvibr_3
+    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_N2, W/m/K     ', lvibr_n2
+    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_O2, W/m/K     ', lvibr_o2
+    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_NO, W/m/K     ', lvibr_no
     WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of CO2, m^2/s         ', THDIF(1)
     WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of O2, m^2/s          ', THDIF(2)
     WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of CO, m^2/s          ', THDIF(3)
