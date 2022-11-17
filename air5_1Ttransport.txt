@@ -1,0 +1,62 @@
+ INPUT DATA:
+
+ Temperature, K           6000.00000    
+ Pressure, Pa             101300.000    
+ N2 molar fraction       0.769999981    
+ O2 molar fraction        0.159999996    
+ NO molar fraction         5.00000007E-02
+ N molar fraction          9.99999978E-03
+ O molar fraction          9.99999978E-03
+
+ Calculation parameters required:
+
+           Internal energy CO2, J               0.63520E-19
+           Internal energy O2, J                0.72284E-19
+           Internal energy CO, J                0.68502E-19
+           Omega13_11, J                        0.61421E-14
+
+ Omega Integrals Omega11_ij
+
+    0.160272E-14   0.149332E-14   0.153313E-14   0.174852E-14   0.142110E-14
+    0.149332E-14   0.138748E-14   0.142602E-14   0.164531E-14   0.133155E-14
+    0.153313E-14   0.142602E-14   0.146483E-14   0.168061E-14   0.136161E-14
+    0.174852E-14   0.164531E-14   0.168061E-14   0.179369E-14   0.146752E-14
+    0.142110E-14   0.133155E-14   0.136161E-14   0.146752E-14   0.118730E-14
+
+ Backet integrals b01_ij
+
+   -0.573221E-16  -0.636664E-17  -0.484394E-17   0.000000E+00  -0.140732E-16
+   -0.452480E-17  -0.833357E-17  -0.875425E-18   0.430258E-15  -0.251469E-15
+   -0.150042E-17  -0.381545E-18  -0.611623E-17  -0.251469E-15   0.286262E-15
+   -0.474311E-18  -0.119099E-18  -0.911088E-19  -0.795520E-16  -0.153422E-16
+   -0.368004E-18  -0.923599E-19  -0.705996E-19  -0.166312E-16  -0.309164E-17
+
+ Backet integrals b11_ij
+
+    0.430258E-15  -0.251469E-15  -0.795520E-16  -0.166312E-16  -0.140732E-16
+   -0.251469E-15   0.286262E-15  -0.153422E-16  -0.309164E-17  -0.262553E-17
+   -0.795520E-16  -0.153422E-16   0.104728E-15  -0.993848E-18  -0.841780E-18
+   -0.166312E-16  -0.309164E-17  -0.993848E-18   0.216062E-16  -0.205025E-18
+   -0.140732E-16  -0.262553E-17  -0.841780E-18  -0.205025E-18   0.182765E-16
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.41891E-04
+ Bulk viscosity coefficient, Pa.s               0.14972E-03
+ Thermal cond. coef. lambda, W/m/K              0.79123E-01
+ Vibr. therm. cond. coef. lambda_N2, W/m/K      0.13131E-01
+ Vibr. therm. cond. coef. lambda_O2, W/m/K      0.29451E-02
+ Vibr. therm. cond. coef. lambda_NO, W/m/K      0.89434E-03
+ Thermal diffusion coef. of CO2, m^2/s         -0.41906E-05
+ Thermal diffusion coef. of O2, m^2/s           0.28155E-04
+ Thermal diffusion coef. of CO, m^2/s           0.11644E-04
+ Thermal diffusion coef. of O, m^2/s           -0.23866E-03
+ Thermal diffusion coef. of C, m^2/s           -0.23621E-03
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.336999E-03  -0.107936E-02  -0.101488E-02  -0.632961E-03  -0.824398E-03
+   -0.107936E-02   0.493934E-02  -0.115854E-02  -0.789060E-03  -0.980833E-03
+   -0.101488E-02  -0.115854E-02   0.187090E-01  -0.719273E-03  -0.911808E-03
+   -0.632961E-03  -0.789059E-03  -0.719273E-03   0.134572E+00  -0.481295E-03
+   -0.824397E-03  -0.980833E-03  -0.911808E-03  -0.481295E-03   0.151502E+00
