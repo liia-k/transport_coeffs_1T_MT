@@ -1,9 +1,9 @@
 !In this module, vibrational energy, non-equilibrium vibrational
 !partition functions, vibrational specific heat capacities,
-! and mean vibrational energy en_int of molecular species are calculated.
+! and internal heat capacities c_int of molecular species are calculated.
 !It uses the module constant.f90 containing main constants and 
 !variables definition 
-!Input variables: T
+!Input variables: T - temperature, y - molar fractions, ntot - total number density, rho - density
 
 MODULE Specific_heat
 
@@ -11,9 +11,10 @@ USE CONSTANT
 
 IMPLICIT NONE
 
-Double precision zv_n2, zv_o2, zv_no, c_v_n2, c_v_o2, c_v_no
+Double precision zvibr_n2, zvibr_o2, zvibr_no, c_vibr_n2, c_vibr_o2, c_vibr_no &
+                  , cv_int, cv_tot
 
-real, dimension(5) :: en_int 
+real, dimension(5) :: c_int 
 
 INTEGER I1,I2,I3,IL,G
 
@@ -22,7 +23,7 @@ CONTAINS
   SUBROUTINE ENERGY
 
     do i1=1,5
-      en_int(i1)=0
+      c_int(i1)=0
     end do
 
   ! Calculation of vibrational energy levels for N2, O2, NO
@@ -49,11 +50,11 @@ CONTAINS
       INTEGER I1
       REAL EE,T
     
-      zv_N2=0 
+      zvibr_N2=0 
   
       DO i1=0,L_N2
         ee=en_N2(i1)
-        zv_N2=zv_N2+exp(-ee/kb/T)
+        zvibr_N2=zvibr_N2+exp(-ee/kb/T)
       end do
   
   END SUBROUTINE PART_FUNC_N2
@@ -65,11 +66,11 @@ CONTAINS
     INTEGER I1
 	  REAL EE,T
 	
-	  zv_O2=0 
+	  zvibr_O2=0 
 
     DO i1=0,L_O2
       ee=en_O2(i1)
-      zv_O2=zv_O2+exp(-ee/kb/T)
+      zvibr_O2=zvibr_O2+exp(-ee/kb/T)
     end do
 
   END SUBROUTINE PART_FUNC_O2
@@ -81,11 +82,11 @@ CONTAINS
     INTEGER I1
     REAL EE, T
 
-    zv_NO=0 
+    zvibr_NO=0 
       
     DO i1=0,L_NO
       ee=en_NO(i1)
-      zv_NO=zv_NO+exp(-ee/kb/T)
+      zvibr_NO=zvibr_NO+exp(-ee/kb/T)
     end do
 
   END SUBROUTINE PART_FUNC_NO
@@ -93,29 +94,29 @@ CONTAINS
   SUBROUTINE s_heat_N2
 
     ! Calculation of non-equilibrium O2 vibrational specific heat
-    ! CV_N2
+    ! Cvibr_N2
   
     integer I1
     real ee
     double precision ppp,s,s0
   
-    s=0;s0=0;
+    s=0; s0=0;
   
       DO i1=0,L_N2
          ee=en_N2(i1)
-         ppp=exp(-ee/kb/T)/zv_N2
+         ppp=exp(-ee/kb/T)/zvibr_N2
          s=s+ee/kb/T*ppp;
-         s0=s0+ee*ee/kb/T/kb/T*ppp;
-       en_int(1)=en_int(1)+ee*ppp
+         s0=s0+ee*ee/kb/T/kb/T*ppp
       END DO
-      c_v_n2=(s0-s*s)
+      c_vibr_n2=(s0-s*s)
+      c_int(1)=c_vibr_n2 + kb/mass(1)
     
   END SUBROUTINE s_heat_N2
 
   SUBROUTINE s_heat_O2
 
 	! Calculation of non-equilibrium O2 vibrational specific heat
-	! CV_O2
+	! Cvibr_O2
 
 	integer I1
 	real ee
@@ -125,18 +126,18 @@ CONTAINS
 
     DO i1=0,L_O2
        ee=en_O2(i1)
-       ppp=exp(-ee/kb/T)/zv_O2
+       ppp=exp(-ee/kb/T)/zvibr_O2
        s=s+ee/kb/T*ppp;
        s0=s0+ee*ee/kb/T/kb/T*ppp;
-	   en_int(2)=en_int(2)+ee*ppp
     END DO
-    c_v_o2=(s0-s*s)
+    c_vibr_o2=(s0-s*s)
+    c_int(2)=c_vibr_o2 + kb/mass(2)
 	
   END SUBROUTINE s_heat_O2
 
   SUBROUTINE s_heat_NO
 	! Calculation of non-equilibrium CO vibrational specific heat
-	! CV_NO
+	! Cvibr_NO
 	
 	integer I1
 	real ee
@@ -146,14 +147,23 @@ CONTAINS
 
     DO i1=0,L_NO
        ee=en_NO(i1)
-       ppp=exp(-ee/kb/T)/zv_NO
+       ppp=exp(-ee/kb/T)/zvibr_NO
        s=s+ee/kb/T*ppp
        s0=s0+ee*ee/kb/T/kb/T*ppp
-       en_int(3)=en_int(3)+ee*ppp
     END DO
-    c_v_no=(s0-s*s)
+    c_vibr_no=(s0-s*s)
+    c_int(3)=c_vibr_no + kb/mass(3)
 	
   END SUBROUTINE s_heat_NO
+
+  SUBROUTINE s_heat
+    ! Calculation of internal and total specific heats
+    ! CV_int, CV_tot
+    
+    cv_int = y(1)*c_int(1) + y(2)*c_int(2) + y(3)*c_int(3)
+    cv_tot = 3/2*ntot*kb/rho + cv_int
+    
+  END SUBROUTINE s_heat
 
 
 END	MODULE Specific_heat

@@ -8,7 +8,8 @@ IMPLICIT NONE
 	
 REAL :: kb, amu, pi, hp, navog, ww
 
-PARAMETER (kb=1.380650400000000124e-23, amu=1.6605402e-27, pi=33.1415926535897932385, hp=6.62606957E-34, navog=6.02214179e23, ww=1.60219e-19/8065.47)
+PARAMETER (kb=1.3806504e-23, amu=1.6605402e-27, pi=3.14159265358979, hp=6.62606957e-34, &
+		   navog=6.02214179e23, ww=1.60219e-19/8065.47)
 
 ! N2 spectroscopic data (we_O2, wexe_O2, J)
 
@@ -65,16 +66,14 @@ REAL, DIMENSION(5) :: EPS=(/97.5, 107.4, 119.0, 71.4, 80.0/)
 
 ! Species formation enthalpy definition, h_form, J
 
-!!!!! CHANGE !!!!!
-
-REAL, DIMENSION(5) :: HFORM=(/-3.95e5/navog, 0., -1.15e5/navog,&
-						2.54e5/navog, 7.17e5/navog/) 
+REAL, DIMENSION(5) :: HFORM=(/0., 0., 9.029e4/navog,&
+							 4.726e5/navog, 2.54e5/navog/) 
 	
-	! hform(1)=-3.95e5/navog  = h_form CO2, J
-	! hform(2)=0              = h_form O2, J
-	! hform(3)=-1.15e5/navog  = h_form CO, J
-	! hform(4)=2.54e5/navog   = h_form O, J
-	! hform(5)=7.17e5/navog   = h_form C, J
+	! hform(1)= 0             = h_form N2, J
+	! hform(2)= 0             = h_form O2, J
+	! hform(3)=9.029e4/navog  = h_form NO, J
+	! hform(4)=2.54e5/navog   = h_form N, J
+	! hform(5)=2.54e5/navog   = h_form O, J
 		  
 
 ! Number of vibrational levels in CO2 modes (1-3), O2, CO
@@ -111,10 +110,10 @@ REAL, DIMENSION(3) :: BETA0011
 REAL, DIMENSION(5,5) :: DIFF						
 
 
-!Vectors of species number densities (X); thermal diffusion coefficients (THDIFF);
+!Vectors of species molar fractions (X), mass fractions (Y); thermal diffusion coefficients (THDIFF);
 !internal heat conductivity coefficients (LAMBDA_INT)
 
-REAL, DIMENSION(5) :: X, THDIF, LAMBDA_INT=(/0., 0., 0., 0., 0./) 
+REAL, DIMENSION(5) :: X, Y, THDIF, LAMBDA_INT=(/0., 0., 0., 0., 0./) 
 
 
 !Common variables: gas temperature (T); pressure (press); total number density (ntot);
@@ -128,8 +127,7 @@ REAL T, press, ntot, rho
 !N2, O2, NO rotational heat conductivity; ... vibrational heat conductivity;
 !shear viscosity; bulk viscosity
 
-REAL ltot, ltr, lrot_n2, lrot_o2, lrot_no,  &
-		  lvibr_n2, lvibr_o2, lvibr_no, visc, bulk_visc
+REAL ltot, ltr, lint, visc, bulk_visc!, lrot_n2, lrot_o2, lrot_no, lvibr_n2, lvibr_o2, lvibr_no, 
 
 
 END MODULE constant

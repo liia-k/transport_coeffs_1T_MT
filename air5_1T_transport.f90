@@ -43,9 +43,9 @@ PROGRAM test1
 
     x(1)=0.77
     x(2)=0.16
-    x(3)=0.5
-    x(4)=0.05
-    x(5)=0.05
+    x(3)=0.05
+    x(4)=0.01
+    x(5)=0.01
 
     T=6000
 
@@ -55,7 +55,10 @@ PROGRAM test1
 
     rho=0
     do i=1,5
-        rho=rho+x(i)*mass(i)*ntot
+        rho = rho+x(i)*mass(i)*ntot
+    end do
+    do i=1,5
+        y(i) = x(i)*mass(i)*ntot/rho
     end do
 
 
@@ -67,9 +70,10 @@ PROGRAM test1
     CALL PART_FUNC_O2(T)
     CALL PART_FUNC_NO(T)
 
-    CALL s_heat_N2
+    CALL S_HEAT_N2
     CALL S_HEAT_O2
     CALL S_HEAT_NO
+    CALL S_HEAT
 
 
 ! Calculation of bracket integrals
@@ -147,19 +151,19 @@ PROGRAM test1
 ! BVISC times f = b3, f is the vector of unknowns
     DO i=1,5
         DO j=1,5
-            BVISC(i,j)=beta11(i,j)
+            BVISC(i,j)=x(j)*beta11(i,j)
         END DO
     END DO
     
     DO i=1,5
         DO j=6,8
-            BVISC(i,j)=beta01(i,j-5)
+            BVISC(i,j)=y(j-5)*beta01(i,j-5)
         END DO
     END DO
     
     DO i=6,8
         DO j=1,5
-            BVISC(i,j)=BVISC(j,i)
+            BVISC(i,j)=x(j)*beta11(j,i)
         END DO
     END DO
     
@@ -169,9 +173,9 @@ PROGRAM test1
         END DO
     END DO
     
-    BVISC(6,6)=beta0011(1)
-    BVISC(7,7)=beta0011(2)
-    BVISC(8,8)=beta0011(3)
+    BVISC(6,6)=y(1)*beta0011(1)
+    BVISC(7,7)=y(2)*beta0011(2)
+    BVISC(8,8)=y(3)*beta0011(3)
     
     
     DO j=1,5
@@ -179,15 +183,15 @@ PROGRAM test1
     END DO
     
     DO j=6,6
-        BVISC(1,j)=x(1)*kb/mass(1)
+        BVISC(1,j)=y(1)*kb/mass(1)
     END DO
     
     DO j=7,7
-        BVISC(1,j)=x(2)*kb/mass(2)!*(1+c_v_o2)
+        BVISC(1,j)=y(2)*kb/mass(2)
     END DO
     
     DO j=8,8
-        BVISC(1,j)=x(3)*kb/mass(3)!*(1+c_v_co)
+        BVISC(1,j)=y(3)*kb/mass(3)
     END DO
     
 ! End of matrix BVISC definition
@@ -198,7 +202,7 @@ PROGRAM test1
         b(i,1)=0.
     END DO
     DO i=6,10
-        b(i,1)=4./5./kb*x(i-5)
+        b(i,1)=15./2.*T/kb*x(i-5)
     END DO
 ! End of vector b definition
     
@@ -211,7 +215,7 @@ PROGRAM test1
         else
             delta=0
         end if
-        B1(i,j)=8./25./kb*(delta-mass(i)*x(i)*ntot/rho);
+        B1(i,j)=3*kb*T*(delta - y(i))!8./25./kb*(delta-mass(i)*x(i)*ntot/rho);
         END DO
     END DO
     
@@ -222,7 +226,7 @@ PROGRAM test1
     
 ! Definition of vector b2 (right hand side of system (3))
     DO i=1,5
-        b2(i,1)=2./kb/t*x(i)
+        b2(i,1)=2./kb/T*x(i)
     END DO
 ! End of vector b2 definition
     
@@ -232,18 +236,22 @@ PROGRAM test1
     !cu=kb*ntot/rho*(3./2.+x(1)+x(2)*(1+c_v_o2)+x(3)*(1+c_v_co))
     !cut=kb*ntot/rho*(x(1)+x(2)*(1+c_v_o2)+x(3)*(1+c_v_co))
     
-    cu=kb*ntot/rho*(3./2.+x(1)+x(2)+x(3))
-    cut=kb*ntot/rho*(x(1)+x(2)+x(3))
+    !cu=kb*ntot/rho*(3./2.+x(1)+x(2)+x(3))
+    !cut=kb*ntot/rho*(x(1)+x(2)+x(3))
     
     DO i=1,5
-        b3(i,1)=-x(i)*cut/cu
+        b3(i,1)=-x(i)*c_int(i)/cv_tot
+    END DO
+
+    DO i=6,8
+        b3(i,1)=y(i)*c_int(i-5)/cv_tot
     END DO
     
-    b3(6,1)=x(1)*ntot/rho*kb/cu
+    !b3(6,1)=x(1)*ntot/rho*kb/cu
     
-    b3(7,1)=x(2)*ntot/rho*kb/cu !*(1+c_v_O2)
+    !b3(7,1)=x(2)*ntot/rho*kb/cu !*(1+c_v_O2)
     
-    b3(8,1)=x(3)*ntot/rho*kb/cu !*(1+c_v_co)
+    !b3(8,1)=x(3)*ntot/rho*kb/cu !*(1+c_v_co)
     
     b3(1,1)=0
     
@@ -318,18 +326,20 @@ WRITE (6, *) 'Matrices of LS:'
 
 ! Thermal conductivity coefficients associated to internal
 ! energies 
-
-    lrot_n2=3.*kb*t*x(1)/16./lambda_int(1)*kb
-    lrot_o2=3.*kb*t*x(2)/16./lambda_int(2)*kb
-    lrot_no=3.*kb*t*x(3)/16./lambda_int(3)*kb
-    lvibr_n2=3.*kb*t*x(1)/16./lambda_int(2)*kb*(c_v_n2)
-    lvibr_o2=3.*kb*t*x(2)/16./lambda_int(2)*kb*(c_v_o2)
-    lvibr_no=3.*kb*t*x(3)/16./lambda_int(3)*kb*(c_v_no)
+    DO i = 1,3
+        lint = 3/16*kb*T/lambda_int(i)*c_int(i)
+    END DO
+    !lrot_n2=3.*kb*t*x(1)/16./lambda_int(1)*kb
+    !lrot_o2=3.*kb*t*x(2)/16./lambda_int(2)*kb
+    !lrot_no=3.*kb*t*x(3)/16./lambda_int(3)*kb
+    !lvibr_n2=3.*kb*t*x(1)/16./lambda_int(2)*kb*(c_vibr_n2)
+    !lvibr_o2=3.*kb*t*x(2)/16./lambda_int(2)*kb*(c_vibr_o2)
+    !lvibr_no=3.*kb*t*x(3)/16./lambda_int(3)*kb*(c_vibr_no)
 
 ! Total thermal conductivity coefficient at the translational
 ! temperature gradient
 
-    ltot=ltr + lrot_n2 + lrot_o2 + lrot_no + lvibr_n2 + lvibr_o2 + lvibr_no
+    ltot = ltr + lint
 
 
 !Diffusion coefficients	DIFF(i,j)
@@ -357,7 +367,7 @@ WRITE (6, *) 'Matrices of LS:'
 
 ! Output
 
-    open(6,file='test1.txt',status='unknown')
+    open(6,file='air5_1Ttransport.txt',status='unknown')
 
     WRITE (6, *) 'INPUT DATA:'
 
@@ -366,20 +376,20 @@ WRITE (6, *) 'Matrices of LS:'
 
     WRITE (6, *) 'Temperature, K        ',t
     WRITE (6, *) 'Pressure, Pa          ',press
-    WRITE (6, *) 'CO2 molar fraction     ',x(1)
+    WRITE (6, *) 'N2 molar fraction     ',x(1)
     WRITE (6, *) 'O2 molar fraction      ',x(2)
-    WRITE (6, *) 'CO molar fraction      ',x(3)
-    WRITE (6, *) 'O molar fraction       ',x(4)
-    WRITE (6, *) 'C molar fraction       ',x(5)
+    WRITE (6, *) 'NO molar fraction      ',x(3)
+    WRITE (6, *) 'N molar fraction       ',x(4)
+    WRITE (6, *) 'O molar fraction       ',x(5)
 
     WRITE (6, *)
 
     WRITE (6, *) 'Calculation parameters required:'
     WRITE (6, *)
 
-    WRITE (6, '(1x, A45, E13.5)') 'Internal energy CO2, J             ', en_int(1)
-    WRITE (6, '(1x, A45, E13.5)') 'Internal energy O2, J              ', en_int(2)
-    WRITE (6, '(1x, A45, E13.5)') 'Internal energy CO, J              ', en_int(3)
+    !WRITE (6, '(1x, A45, E13.5)') 'Internal energy N2, J              ', EN_N2
+    !WRITE (6, '(1x, A45, E13.5)') 'Internal energy O2, J              ', EN_O2
+    !WRITE (6, '(1x, A45, E13.5)') 'Internal energy NO, J              ', EN_NO
     WRITE (6, '(1x, A45, E13.5)') 'Omega13_11, J                      ', Omega13(1,1)
 
 
@@ -423,9 +433,9 @@ WRITE (6, *) 'Matrices of LS:'
     WRITE (6, '(1x, A45, E13.5)') 'Shear viscosity coefficient, Pa.S             ', visc
     WRITE (6, '(1x, A45, E13.5)') 'Bulk viscosity coefficient, Pa.s              ', bulk_visc
     WRITE (6, '(1x, A45, E13.5)') 'Thermal cond. coef. lambda, W/m/K             ', ltot
-    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_N2, W/m/K     ', lvibr_n2
-    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_O2, W/m/K     ', lvibr_o2
-    WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_NO, W/m/K     ', lvibr_no
+    !WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_N2, W/m/K     ', lvibr_n2
+    !WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_O2, W/m/K     ', lvibr_o2
+    !WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_NO, W/m/K     ', lvibr_no
     WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of CO2, m^2/s         ', THDIF(1)
     WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of O2, m^2/s          ', THDIF(2)
     WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of CO, m^2/s          ', THDIF(3)
