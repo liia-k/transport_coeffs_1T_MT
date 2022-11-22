@@ -17,11 +17,11 @@ Double precision zvibr_n2, zvibr_o2, zvibr_no, c_vibr_n2, c_vibr_o2, c_vibr_no &
 
 real, dimension(5) :: c_int 
 
-INTEGER I1,I2,I3,IL,G
-
 CONTAINS
 
   SUBROUTINE ENERGY
+
+    INTEGER I1
 
     do i1=1,5
       c_int(i1)=0
