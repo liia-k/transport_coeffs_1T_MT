@@ -1,4 +1,5 @@
-MODULE constant
+MODULE CONSTANT
+
 
 IMPLICIT NONE
 
@@ -29,7 +30,6 @@ REAL :: we_NO,wexe_NO
 
 PARAMETER (we_NO=ww*1904.20, wexe_NO=ww*14.075)
 
-
 ! Species mass definition, mass, kg
 
 REAL, DIMENSION(5) :: MASS=(/amu*28.0134, amu*31.998, amu*30.0061, amu*14.0067, amu*15.9994/) 
@@ -42,6 +42,22 @@ REAL, DIMENSION(5) :: MASS=(/amu*28.0134, amu*31.998, amu*30.0061, amu*14.0067, 
 	! mass(5)= amu*15.9994  = mass O, kg
 
 
+! For SPECIFIC_HEAT module:
+
+! Number of vibrational levels in CO2 modes (1-3), O2, CO
+
+INTEGER :: L_N2, L_O2, L_NO
+DATA L_N2, L_O2, L_NO / 67, 46, 52 /
+	
+! Arrays containing values of vibrational energy of CO2, O2, CO
+
+REAL, DIMENSION(0:67) :: EN_N2
+REAL, DIMENSION(0:46) :: EN_O2
+REAL, DIMENSION(0:52) :: EN_NO
+
+
+! For OMEGA_INTEGRALS and BRACKET_INTEGRALS modules:
+
 ! Species gaskinetic diameter definition, sigma, m (parameter for LJ potential)
 
 REAL, DIMENSION(5) :: SIGMA=(/3.621e-10, 3.458e-10, 3.47e-10,&
@@ -52,7 +68,6 @@ REAL, DIMENSION(5) :: SIGMA=(/3.621e-10, 3.458e-10, 3.47e-10,&
 	! sigma(3)=3.47e-10  = diameter NO, m
 	! sigma(4)=3.298e-10  = diameter N, m
 	! sigma(5)=2.75e-10  = diameter O, m
-
 
 ! Species well depth definition, epsilon_k, K (parameter for LJ potential)
 
@@ -75,20 +90,6 @@ REAL, DIMENSION(5) :: HFORM=(/0., 0., 9.029e4/navog,&
 	! hform(4)=2.54e5/navog   = h_form N, J
 	! hform(5)=2.54e5/navog   = h_form O, J
 		  
-
-! Number of vibrational levels in CO2 modes (1-3), O2, CO
-
-INTEGER :: L_N2, L_O2, L_NO
-DATA L_N2, L_O2, L_NO / 67, 46, 52 /
-	
-
-! Arrays containing values of vibrational energy of CO2, O2, CO
-
-REAL, DIMENSION(0:67) :: EN_N2
-REAL, DIMENSION(0:46) :: EN_O2
-REAL, DIMENSION(0:52) :: EN_NO
-
-
 !Omega-integrals and their ratios
 
 REAL, DIMENSION(5,5) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
@@ -104,31 +105,63 @@ REAL, DIMENSION(5,3) :: BETA01
 
 REAL, DIMENSION(3) :: BETA0011
 
-
-!Diffusion coeffcients matrix
-
-REAL, DIMENSION(5,5) :: DIFF						
-
-
-!Vectors of species molar fractions (X), mass fractions (Y); thermal diffusion coefficients (THDIFF);
 !internal heat conductivity coefficients (LAMBDA_INT)
 
-REAL, DIMENSION(5) :: X, Y, THDIF, LAMBDA_INT=(/0., 0., 0., 0., 0./) 
+REAL, DIMENSION(5) :: LAMBDA_INT=(/0., 0., 0., 0., 0./) 
 
 
-!Common variables: gas temperature (T); pressure (press); total number density (ntot);
-!mixture density (rho)
+! For TRANSPORT_AIR5_1T module:
+
+!Matrices for the linear transport systems defining
+!heat conductivity and thermal diffusion (LTH);
+!bulk viscosity (BVISC);
+!diffusion (LDIFF);
+!shear viscisity (HVISC).
+
+REAL, DIMENSION(10,10) :: LTH 
+
+REAL, DIMENSION(8,8) :: BVISC 
+
+REAL, DIMENSION(5,5) ::  LDIFF, HVISC, b1
+
+!Vectors of right hand terms
+
+REAL, DIMENSION(10,1) :: b
+
+REAL, DIMENSION(5,1) :: b2
+
+REAL, DIMENSION(8,1) :: b3
+
+						
+!Macroparameters required for transport coeffs. calculation:
+
+!Vectors of species molar fractions (X), mass fractions (Y)
+
+REAL, DIMENSION(5) :: X, Y
+
+!Common variables: gas temperature (T); pressure (press); total number density (ntot); mixture density (rho)
 
 REAL T, press, ntot, rho 
 
 !REAL :: EPSILON=1e-10 
 
-!Transport coefficients: total heat conductivity; translational heat conductivity;
+
+!Transport coefficients: 
+
+!total heat conductivity; translational heat conductivity;
 !N2, O2, NO rotational heat conductivity; ... vibrational heat conductivity;
 !shear viscosity; bulk viscosity
 
 REAL ltot, ltr, lint, visc, bulk_visc!, lrot_n2, lrot_o2, lrot_no, lvibr_n2, lvibr_o2, lvibr_no, 
 
+!thermal diffusion coefficients (THDIFF);
 
-END MODULE constant
+REAL, DIMENSION(5) :: THDIFF 
+
+!Diffusion coeffcients matrix
+
+REAL, DIMENSION(5,5) :: DIFF
+
+
+END MODULE 	CONSTANT
 

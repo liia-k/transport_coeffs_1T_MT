@@ -3,6 +3,7 @@
 ! and internal heat capacities c_int of molecular species are calculated.
 !It uses the module constant.f90 containing main constants and 
 !variables definition 
+
 !Input variables: T - temperature, y - molar fractions, ntot - total number density, rho - density
 
 MODULE Specific_heat

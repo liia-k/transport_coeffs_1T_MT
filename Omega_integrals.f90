@@ -1,9 +1,9 @@
 !In this module, Omega-integrals and their ratios AA, BB, CC
 !are calculated using the Lennard-Jones potential for 
-!moderate temperatures and the repulsive (Born-Meyer) potential
-!for high temperatures.
+!moderate temperatures 
 !It uses the module constant.f90 containing main constants and 
 !variables definition 
+
 !Input variable: T
 
 
@@ -51,25 +51,25 @@ CONTAINS
 			omega11(i,j)=1/(-0.16845-2.25768e-2/x11/x11+ &
 			0.19779/x11+0.64373*x11-9.26718e-2*x11*x11+ &
 			7.1131e-3*x11**3)*sij
-			WRITE (*,*) 'Omega11_ij = ', omega11(i,j)
+			!WRITE (*,*) 'Omega11_ij = ', omega11(i,j)
 
 			x11=log((tx))+1.5
 			omega22(i,j)=1/(-0.40811-5.08552e-2/x11/x11+ &
 			0.3401/x11+0.70375*x11-0.10699*x11*x11+ &
 			7.62686e-3*x11**3)*sij*2.0
-			WRITE (*,*) 'Omega22_ij = ', omega22(i,j)
+			!WRITE (*,*) 'Omega22_ij = ', omega22(i,j)
 
 			x11=log((tx))+1.1
 			omega12(i,j)=1/(0.40785+9.25303e-4/x11/x11+ &
 			2.79680e-4/x11+0.44739*x11-6.27242e-2*x11*x11+ &
 			5.98567e-3*x11**3)*sij*3.0
-			WRITE (*,*) 'Omega12_ij = ', omega12(i,j)
+			!WRITE (*,*) 'Omega12_ij = ', omega12(i,j)
 
 			x11=log((tx))+4.0
 			omega13(i,j)=1/(25.04929+63.12444/x11/x11- &
 			65.87398/x11-4.13758*x11+0.34999*x11*x11- &
 			1.0096e-2*x11**3)*sij*12.0
-			WRITE (*,*) 'Omega13_ij = ', omega13(i,j)
+			!WRITE (*,*) 'Omega13_ij = ', omega13(i,j)
 		
 			bb(i,j)=(5./3.*omega12(i,j)-4./12.*omega13(i,j)) &
 			/omega11(i,j)

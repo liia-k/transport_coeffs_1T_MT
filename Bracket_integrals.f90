@@ -26,11 +26,11 @@ CONTAINS
 		mij=mass(j)*(mass(i)*1E27)/(mass(i)*1E27 + mass(j)*1E27)
 		lambda(i,j)=75./64.*t*kb/mij/OMEGA22(i,j)*kb
 		eta(i,j)=5./8.*kb*t/OMEGA22(i,j)
-		WRITE (*,*) 'i = ', i 
-		WRITE (*,*) 'j = ', j
-		WRITE (*,*) 'm_ij = ', mij
-		WRITE (*,*) 'lambda_ij = ', lambda(i,j)
-		WRITE (*,*) 'eta_ij = ', eta(i,j)
+		!WRITE (*,*) 'i = ', i 
+		!WRITE (*,*) 'j = ', j
+		!WRITE (*,*) 'm_ij = ', mij
+		!WRITE (*,*) 'lambda_ij = ', lambda(i,j)
+		!WRITE (*,*) 'eta_ij = ', eta(i,j)
 		END DO
 	END DO
 	
@@ -90,13 +90,13 @@ CONTAINS
 				
 				end if
 			end do
-			WRITE (*,*) 'i = ', i 
-			WRITE (*,*) 'j = ', j
-			WRITE (*,*) 'lambda00(i,j) = ', lambda00(i,j)
-			WRITE (*,*) 'lambda01(i,j) = ', lambda01(i,j)
-			WRITE (*,*) 'lambda11(i,j) = ', lambda11(i,j)
-			WRITE (*,*) 'h00(i,j) =      ', h00(i,j)
-			WRITE (*,*) 'beta11(i,j) =   ', beta11(i,j)
+			!WRITE (*,*) 'i = ', i 
+			!WRITE (*,*) 'j = ', j
+			!WRITE (*,*) 'lambda00(i,j) = ', lambda00(i,j)
+			!WRITE (*,*) 'lambda01(i,j) = ', lambda01(i,j)
+			!WRITE (*,*) 'lambda11(i,j) = ', lambda11(i,j)
+			!WRITE (*,*) 'h00(i,j) =      ', h00(i,j)
+			!WRITE (*,*) 'beta11(i,j) =   ', beta11(i,j)
 		else
 			lambda00(i,j)=-x(i)*x(j)/lambda(i,j)/2./aa(i,j)
 
@@ -113,20 +113,20 @@ CONTAINS
 			(mass(i)*1e27)*(mass(j)*1e27)/(mass(i)*1e27 + mass(j)*1e27)**2*(-5.*kb*t/aa(i,j)+ &
 			4.*t/pi*(phi(i)+phi(j)))
 
-			WRITE (*,*) 'i = ', i 
-			WRITE (*,*) 'j = ', j
-			WRITE (*,*) 'lambda00(i,j) = ', lambda00(i,j)
-			WRITE (*,*) 'lambda01(i,j) = ', lambda01(i,j)
-			WRITE (*,*) 'lambda11(i,j) = ', lambda11(i,j)
-			WRITE (*,*) 'h00(i,j) =      ', h00(i,j)
-			WRITE (*,*) 'beta11(i,j) =   ', beta11(i,j)
+			!WRITE (*,*) 'i = ', i 
+			!WRITE (*,*) 'j = ', j
+			!WRITE (*,*) 'lambda00(i,j) = ', lambda00(i,j)
+			!WRITE (*,*) 'lambda01(i,j) = ', lambda01(i,j)
+			!WRITE (*,*) 'lambda11(i,j) = ', lambda11(i,j)
+			!WRITE (*,*) 'h00(i,j) =      ', h00(i,j)
+			!WRITE (*,*) 'beta11(i,j) =   ', beta11(i,j)
 
 		end if
 
 		lambda_int(i)=lambda_int(i)+x(j)*mij*omega11(i,j)
 
-		WRITE (*,*) 'i = ', i 
-		WRITE (*,*) 'lambda_int(i) = ', lambda_int(i)
+		!WRITE (*,*) 'i = ', i 
+		!WRITE (*,*) 'lambda_int(i) = ', lambda_int(i)
 
 		END DO
 	END DO
@@ -141,20 +141,18 @@ CONTAINS
 				mass(k)/(mass(i)+mass(k))*phi(i)
 				end if
 			end do
-			WRITE (*,*) 'i = ', i 
-			WRITE (*,*) 'j = ', j
-			WRITE (*,*) 'beta01(i,j) =   ', beta01(i,j)
+			!WRITE (*,*) 'i = ', i 
+			!WRITE (*,*) 'j = ', j
+			!WRITE (*,*) 'beta01(i,j) =   ', beta01(i,j)
 		else
 			beta01(i,j)=-4.*t/pi*x(i)*x(j)/eta(i,j)* &
 			mass(j)/(mass(i)+mass(j))*phi(j)
-			WRITE (*,*) 'i = ', i 
-			WRITE (*,*) 'j = ', j
-			WRITE (*,*) 'beta01(i,j) =   ', beta01(i,j)
+			!WRITE (*,*) 'i = ', i 
+			!WRITE (*,*) 'j = ', j
+			!WRITE (*,*) 'beta01(i,j) =   ', beta01(i,j)
 		end if
 
 		beta0011(j)=beta0011(j)+4.*t/pi*x(i)*phi(j)*x(j)/eta(i,j)
-		WRITE (*,*) 'i = ', j 
-		WRITE (*,*) 'beta0011(i) =   ', beta0011(j)
 
 		END DO
 	END DO
