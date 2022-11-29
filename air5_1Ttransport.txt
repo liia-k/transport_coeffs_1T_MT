@@ -1,180 +1,180 @@
  INPUT DATA:
 
- Temperature, K           1000.00000    
- Pressure, Pa             100000.000    
- N2 molar fraction       0.769999981    
- O2 molar fraction        0.159999996    
- NO molar fraction         5.00000007E-02
- N molar fraction          9.99999978E-03
- O molar fraction          9.99999978E-03
+ Temperature, K            1000.00000    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
 
  TRANSPORT COEFFICIENTS:
 
- Shear viscosity coefficient, Pa.S              0.43245E-04
- Bulk viscosity coefficient, Pa.s               0.16494E-03
- Thermal cond. coef. lambda, W/m/K              0.63769E-01
- Thermal cond. coef. lambda, tr , W/m/K         0.47376E-01
- Thermal cond. coef. lambda, int , W/m/K        0.16393E-01
- Thermal diffusion coef. of CO2, m^2/s         -0.67468E-06
- Thermal diffusion coef. of O2, m^2/s           0.45315E-05
- Thermal diffusion coef. of CO, m^2/s           0.19012E-05
- Thermal diffusion coef. of O, m^2/s           -0.38517E-04
- Thermal diffusion coef. of C, m^2/s           -0.38152E-04
+ Shear viscosity coefficient, Pa.S              0.43307E-04
+ Bulk viscosity coefficient, Pa.s               0.14813E-03
+ Thermal cond. coef. lambda, W/m/K              0.63394E-01
+ Thermal cond. coef. lambda, tr , W/m/K         0.46806E-01
+ Thermal cond. coef. lambda, int , W/m/K        0.16588E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.11643E-05
+ Thermal diffusion coef. of O2, m^2/s           0.40129E-05
+ Thermal diffusion coef. of NO, m^2/s           0.14014E-05
+ Thermal diffusion coef. of N, m^2/s           -0.38706E-04
+ Thermal diffusion coef. of O, m^2/s           -0.38415E-04
 
  DIFFUSION COEFFICIENTS D_ij, m^2/s
 
-    0.572994E-04  -0.183553E-03  -0.172324E-03  -0.108192E-03  -0.140878E-03
-   -0.183553E-03   0.839838E-03  -0.196484E-03  -0.134569E-03  -0.167266E-03
-   -0.172324E-03  -0.196484E-03   0.317604E-02  -0.122509E-03  -0.155331E-03
-   -0.108192E-03  -0.134569E-03  -0.122509E-03   0.229869E-01  -0.825807E-04
-   -0.140878E-03  -0.167266E-03  -0.155331E-03  -0.825807E-04   0.258744E-01
+    0.571324E-04  -0.178808E-03  -0.167818E-03  -0.105001E-03  -0.137030E-03
+   -0.178808E-03   0.629133E-03  -0.191464E-03  -0.130830E-03  -0.162870E-03
+   -0.167818E-03  -0.191464E-03   0.816229E-02  -0.119022E-03  -0.151185E-03
+   -0.105001E-03  -0.130830E-03  -0.119022E-03   0.262944E+00  -0.798711E-04
+   -0.137030E-03  -0.162870E-03  -0.151185E-03  -0.798711E-04   0.260618E+00
  INPUT DATA:
 
- Temperature, K           2000.00000    
- Pressure, Pa             100000.000    
- N2 molar fraction       0.769999981    
- O2 molar fraction        0.159999996    
- NO molar fraction         5.00000007E-02
- N molar fraction          9.99999978E-03
- O molar fraction          9.99999978E-03
+ Temperature, K            2000.00000    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
 
  TRANSPORT COEFFICIENTS:
 
- Shear viscosity coefficient, Pa.S              0.67802E-04
- Bulk viscosity coefficient, Pa.s               0.34006E-03
- Thermal cond. coef. lambda, W/m/K              0.10025E+00
- Thermal cond. coef. lambda, tr , W/m/K         0.74290E-01
- Thermal cond. coef. lambda, int , W/m/K        0.25960E-01
- Thermal diffusion coef. of CO2, m^2/s         -0.22519E-05
- Thermal diffusion coef. of O2, m^2/s           0.15085E-04
- Thermal diffusion coef. of CO, m^2/s           0.62381E-05
- Thermal diffusion coef. of O, m^2/s           -0.12733E-03
- Thermal diffusion coef. of C, m^2/s           -0.12613E-03
+ Shear viscosity coefficient, Pa.S              0.67901E-04
+ Bulk viscosity coefficient, Pa.s               0.30746E-03
+ Thermal cond. coef. lambda, W/m/K              0.99674E-01
+ Thermal cond. coef. lambda, tr , W/m/K         0.73388E-01
+ Thermal cond. coef. lambda, int , W/m/K        0.26286E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.38745E-05
+ Thermal diffusion coef. of O2, m^2/s           0.13359E-04
+ Thermal diffusion coef. of NO, m^2/s           0.45661E-05
+ Thermal diffusion coef. of N, m^2/s           -0.12796E-03
+ Thermal diffusion coef. of O, m^2/s           -0.12701E-03
 
  DIFFUSION COEFFICIENTS D_ij, m^2/s
 
-    0.181413E-03  -0.581071E-03  -0.546174E-03  -0.340982E-03  -0.444103E-03
-   -0.581071E-03   0.265897E-02  -0.623308E-03  -0.424985E-03  -0.528269E-03
-   -0.546174E-03  -0.623308E-03   0.100680E-01  -0.387345E-03  -0.491027E-03
-   -0.340982E-03  -0.424985E-03  -0.387345E-03   0.724903E-01  -0.259220E-03
-   -0.444104E-03  -0.528269E-03  -0.491027E-03  -0.259220E-03   0.816094E-01
+    0.180881E-03  -0.566058E-03  -0.531905E-03  -0.330917E-03  -0.431967E-03
+   -0.566058E-03   0.199178E-02  -0.607399E-03  -0.413176E-03  -0.514386E-03
+   -0.531905E-03  -0.607399E-03   0.258765E-01  -0.376321E-03  -0.477923E-03
+   -0.330918E-03  -0.413176E-03  -0.376321E-03   0.829197E+00  -0.250697E-03
+   -0.431967E-03  -0.514386E-03  -0.477923E-03  -0.250697E-03   0.821999E+00
  INPUT DATA:
 
- Temperature, K           3000.00000    
- Pressure, Pa             100000.000    
- N2 molar fraction       0.769999981    
- O2 molar fraction        0.159999996    
- NO molar fraction         5.00000007E-02
- N molar fraction          9.99999978E-03
- O molar fraction          9.99999978E-03
+ Temperature, K            3000.00000    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
 
  TRANSPORT COEFFICIENTS:
 
- Shear viscosity coefficient, Pa.S              0.87729E-04
- Bulk viscosity coefficient, Pa.s               0.49656E-03
- Thermal cond. coef. lambda, W/m/K              0.12994E+00
- Thermal cond. coef. lambda, tr , W/m/K         0.96141E-01
- Thermal cond. coef. lambda, int , W/m/K        0.33801E-01
- Thermal diffusion coef. of CO2, m^2/s         -0.44324E-05
- Thermal diffusion coef. of O2, m^2/s           0.29720E-04
- Thermal diffusion coef. of CO, m^2/s           0.12258E-04
- Thermal diffusion coef. of O, m^2/s           -0.25106E-03
- Thermal diffusion coef. of C, m^2/s           -0.24861E-03
+ Shear viscosity coefficient, Pa.S              0.87858E-04
+ Bulk viscosity coefficient, Pa.s               0.45062E-03
+ Thermal cond. coef. lambda, W/m/K              0.12919E+00
+ Thermal cond. coef. lambda, tr , W/m/K         0.94961E-01
+ Thermal cond. coef. lambda, int , W/m/K        0.34229E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.76306E-05
+ Thermal diffusion coef. of O2, m^2/s           0.26316E-04
+ Thermal diffusion coef. of NO, m^2/s           0.89514E-05
+ Thermal diffusion coef. of N, m^2/s           -0.25233E-03
+ Thermal diffusion coef. of O, m^2/s           -0.25036E-03
 
  DIFFUSION COEFFICIENTS D_ij, m^2/s
 
-    0.354157E-03  -0.113434E-02  -0.106654E-02  -0.664990E-03  -0.866141E-03
-   -0.113434E-02   0.519087E-02  -0.121745E-02  -0.829170E-03  -0.103070E-02
-   -0.106654E-02  -0.121745E-02   0.196611E-01  -0.755920E-03  -0.958229E-03
-   -0.664990E-03  -0.829171E-03  -0.755920E-03   0.141390E+00  -0.505191E-03
-   -0.866141E-03  -0.103070E-02  -0.958229E-03  -0.505191E-03   0.159182E+00
+    0.353116E-03  -0.110503E-02  -0.103868E-02  -0.645359E-03  -0.842468E-03
+   -0.110503E-02   0.388833E-02  -0.118638E-02  -0.806131E-03  -0.100361E-02
+   -0.103868E-02  -0.118638E-02   0.505333E-01  -0.734408E-03  -0.932657E-03
+   -0.645359E-03  -0.806131E-03  -0.734408E-03   0.161732E+01  -0.488575E-03
+   -0.842468E-03  -0.100361E-02  -0.932657E-03  -0.488575E-03   0.160333E+01
  INPUT DATA:
 
- Temperature, K           4000.00000    
- Pressure, Pa             100000.000    
- N2 molar fraction       0.769999981    
- O2 molar fraction        0.159999996    
- NO molar fraction         5.00000007E-02
- N molar fraction          9.99999978E-03
- O molar fraction          9.99999978E-03
+ Temperature, K            4000.00000    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
 
  TRANSPORT COEFFICIENTS:
 
- Shear viscosity coefficient, Pa.S              0.10524E-03
- Bulk viscosity coefficient, Pa.s               0.63933E-03
- Thermal cond. coef. lambda, W/m/K              0.15605E+00
- Thermal cond. coef. lambda, tr , W/m/K         0.11535E+00
- Thermal cond. coef. lambda, int , W/m/K        0.40700E-01
- Thermal diffusion coef. of CO2, m^2/s         -0.71155E-05
- Thermal diffusion coef. of O2, m^2/s           0.47758E-04
- Thermal diffusion coef. of CO, m^2/s           0.19701E-04
- Thermal diffusion coef. of O, m^2/s           -0.40402E-03
- Thermal diffusion coef. of C, m^2/s           -0.39996E-03
+ Shear viscosity coefficient, Pa.S              0.10540E-03
+ Bulk viscosity coefficient, Pa.s               0.58214E-03
+ Thermal cond. coef. lambda, W/m/K              0.15512E+00
+ Thermal cond. coef. lambda, tr , W/m/K         0.11392E+00
+ Thermal cond. coef. lambda, int , W/m/K        0.41204E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.12259E-04
+ Thermal diffusion coef. of O2, m^2/s           0.42280E-04
+ Thermal diffusion coef. of NO, m^2/s           0.14375E-04
+ Thermal diffusion coef. of N, m^2/s           -0.40608E-03
+ Thermal diffusion coef. of O, m^2/s           -0.40278E-03
 
  DIFFUSION COEFFICIENTS D_ij, m^2/s
 
-    0.568756E-03  -0.182165E-02  -0.171290E-02  -0.106777E-02  -0.139077E-02
-   -0.182165E-02   0.833620E-02  -0.195541E-02  -0.133145E-02  -0.165505E-02
-   -0.171291E-02  -0.195541E-02   0.315770E-01  -0.121386E-02  -0.153873E-02
-   -0.106777E-02  -0.133145E-02  -0.121386E-02   0.227033E+00  -0.811267E-03
-   -0.139077E-02  -0.165505E-02  -0.153873E-02  -0.811267E-03   0.255602E+00
+    0.567080E-03  -0.177460E-02  -0.166817E-02  -0.103625E-02  -0.135275E-02
+   -0.177460E-02   0.624438E-02  -0.190552E-02  -0.129445E-02  -0.161155E-02
+   -0.166817E-02  -0.190552E-02   0.811603E-01  -0.117931E-02  -0.149766E-02
+   -0.103625E-02  -0.129445E-02  -0.117931E-02   0.259695E+01  -0.784585E-03
+   -0.135275E-02  -0.161155E-02  -0.149766E-02  -0.784586E-03   0.257450E+01
  INPUT DATA:
 
- Temperature, K           5000.00000    
- Pressure, Pa             100000.000    
- N2 molar fraction       0.769999981    
- O2 molar fraction        0.159999996    
- NO molar fraction         5.00000007E-02
- N molar fraction          9.99999978E-03
- O molar fraction          9.99999978E-03
+ Temperature, K            5000.00000    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
 
  TRANSPORT COEFFICIENTS:
 
- Shear viscosity coefficient, Pa.S              0.12120E-03
- Bulk viscosity coefficient, Pa.s               0.77193E-03
- Thermal cond. coef. lambda, W/m/K              0.17989E+00
- Thermal cond. coef. lambda, tr , W/m/K         0.13286E+00
- Thermal cond. coef. lambda, int , W/m/K        0.47030E-01
- Thermal diffusion coef. of CO2, m^2/s         -0.10246E-04
- Thermal diffusion coef. of O2, m^2/s           0.68815E-04
- Thermal diffusion coef. of CO, m^2/s           0.28419E-04
- Thermal diffusion coef. of O, m^2/s           -0.58284E-03
- Thermal diffusion coef. of C, m^2/s           -0.57688E-03
+ Shear viscosity coefficient, Pa.S              0.12138E-03
+ Bulk viscosity coefficient, Pa.s               0.70507E-03
+ Thermal cond. coef. lambda, W/m/K              0.17881E+00
+ Thermal cond. coef. lambda, tr , W/m/K         0.13120E+00
+ Thermal cond. coef. lambda, int , W/m/K        0.47610E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.17661E-04
+ Thermal diffusion coef. of O2, m^2/s           0.60915E-04
+ Thermal diffusion coef. of NO, m^2/s           0.20733E-04
+ Thermal diffusion coef. of N, m^2/s           -0.58583E-03
+ Thermal diffusion coef. of O, m^2/s           -0.58098E-03
 
  DIFFUSION COEFFICIENTS D_ij, m^2/s
 
-    0.821214E-03  -0.263024E-02  -0.247320E-02  -0.154198E-02  -0.200839E-02
-   -0.263024E-02   0.120364E-01  -0.282336E-02  -0.192256E-02  -0.238983E-02
-   -0.247320E-02  -0.282336E-02   0.455930E-01  -0.175267E-02  -0.222178E-02
-   -0.154198E-02  -0.192256E-02  -0.175267E-02   0.327850E+00  -0.117198E-02
-   -0.200839E-02  -0.238983E-02  -0.222178E-02  -0.117198E-02   0.369103E+00
+    0.818791E-03  -0.256229E-02  -0.240860E-02  -0.149646E-02  -0.195350E-02
+   -0.256229E-02   0.901609E-02  -0.275132E-02  -0.186914E-02  -0.232702E-02
+   -0.240860E-02  -0.275132E-02   0.117184E+00  -0.170279E-02  -0.216249E-02
+   -0.149646E-02  -0.186914E-02  -0.170279E-02   0.375017E+01  -0.113344E-02
+   -0.195350E-02  -0.232702E-02  -0.216249E-02  -0.113344E-02   0.371772E+01
  INPUT DATA:
 
- Temperature, K           6000.00000    
- Pressure, Pa             100000.000    
- N2 molar fraction       0.769999981    
- O2 molar fraction        0.159999996    
- NO molar fraction         5.00000007E-02
- N molar fraction          9.99999978E-03
- O molar fraction          9.99999978E-03
+ Temperature, K            6000.00000    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
 
  TRANSPORT COEFFICIENTS:
 
- Shear viscosity coefficient, Pa.S              0.13606E-03
- Bulk viscosity coefficient, Pa.s               0.89671E-03
- Thermal cond. coef. lambda, W/m/K              0.20206E+00
- Thermal cond. coef. lambda, tr , W/m/K         0.14915E+00
- Thermal cond. coef. lambda, int , W/m/K        0.52914E-01
- Thermal diffusion coef. of CO2, m^2/s         -0.13788E-04
- Thermal diffusion coef. of O2, m^2/s           0.92635E-04
- Thermal diffusion coef. of CO, m^2/s           0.38312E-04
- Thermal diffusion coef. of O, m^2/s           -0.78524E-03
- Thermal diffusion coef. of C, m^2/s           -0.77716E-03
+ Shear viscosity coefficient, Pa.S              0.13626E-03
+ Bulk viscosity coefficient, Pa.s               0.82139E-03
+ Thermal cond. coef. lambda, W/m/K              0.20084E+00
+ Thermal cond. coef. lambda, tr , W/m/K         0.14728E+00
+ Thermal cond. coef. lambda, int , W/m/K        0.53559E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.23774E-04
+ Thermal diffusion coef. of O2, m^2/s           0.81994E-04
+ Thermal diffusion coef. of NO, m^2/s           0.27956E-04
+ Thermal diffusion coef. of N, m^2/s           -0.78929E-03
+ Thermal diffusion coef. of O, m^2/s           -0.78269E-03
 
  DIFFUSION COEFFICIENTS D_ij, m^2/s
 
-    0.110879E-02  -0.355131E-02  -0.333914E-02  -0.208256E-02  -0.271243E-02
-   -0.355131E-02   0.162514E-01  -0.381181E-02  -0.259616E-02  -0.322713E-02
-   -0.333914E-02  -0.381181E-02   0.615561E-01  -0.236655E-02  -0.300002E-02
-   -0.208256E-02  -0.259616E-02  -0.236655E-02   0.442766E+00  -0.158355E-02
-   -0.271243E-02  -0.322713E-02  -0.300002E-02  -0.158355E-02   0.498472E+00
+    0.110552E-02  -0.345957E-02  -0.325192E-02  -0.202109E-02  -0.263829E-02
+   -0.345957E-02   0.121734E-01  -0.371455E-02  -0.252402E-02  -0.314232E-02
+   -0.325192E-02  -0.371455E-02   0.158213E+00  -0.229919E-02  -0.291996E-02
+   -0.202109E-02  -0.252402E-02  -0.229919E-02   0.506467E+01  -0.153149E-02
+   -0.263829E-02  -0.314232E-02  -0.291996E-02  -0.153149E-02   0.502076E+01

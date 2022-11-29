@@ -12,6 +12,20 @@ USE OMEGA_INTEGRALS
 
 IMPLICIT NONE
 
+!Bracket integrals 
+
+REAL, DIMENSION(5,5) :: LAMBDA, LAMBDA00, LAMBDA01, LAMBDA11						
+
+REAL, DIMENSION(5,5) :: ETA, H00, BETA11
+
+REAL, DIMENSION(5,3) :: BETA01
+
+REAL, DIMENSION(3) :: BETA0011
+
+!internal heat conductivity coefficients (LAMBDA_INT)
+
+REAL, DIMENSION(5) :: LAMBDA_INT=(/0., 0., 0., 0., 0./) 
+
 CONTAINS
 
   SUBROUTINE BRACKET
@@ -35,15 +49,15 @@ CONTAINS
 	END DO
 	
 	
-	PHI(1)=KB/23.73*(1.+PI**(3/2)/2.*SQRT(EPS(1)/T)+(PI*PI/4.+2.)*EPS(1)/T+ &
-			(PI*EPS(1)/T)**(3/2))
-	PHI(2)=KB/20.72*(1.+PI**(3/2)/2.*SQRT(EPS(2)/T)+(PI*PI/4.+2.)*EPS(2)/T+ &
-			(PI*EPS(2)/T)**(3/2))
+	PHI(1)=KB/23.73*(1.+PI**(3./2.)/2.*SQRT(EPS(1)/T)+(PI*PI/4.+2.)*EPS(1)/T+ &
+			(PI*EPS(1)/T)**(3./2.))
+	PHI(2)=KB/20.72*(1.+PI**(3./2.)/2.*SQRT(EPS(2)/T)+(PI*PI/4.+2.)*EPS(2)/T+ &
+			(PI*EPS(2)/T)**(3./2.))
 			!+KB*C_V_O2*PI*ETA(2,2)/4./(EXP(0.00116* &
 			!SQRT(MASS(2)/AMU/2)*(en_O2(1)/KB)**1.333*(T**(-1./3.)- &
 			!0.015*(MASS(2)/AMU/2)**(0.25))-18.42)*1.013E5)
-	PHI(3)=KB/9.16*(1.+PI**(3/2)/2.*SQRT(EPS(3)/T)+(PI*PI/4.+2.)*EPS(3)/T+&
-			(PI*EPS(3)/T)**(3/2))
+	PHI(3)=KB/9.16*(1.+PI**(3./2.)/2.*SQRT(EPS(3)/T)+(PI*PI/4.+2.)*EPS(3)/T+&
+			(PI*EPS(3)/T)**(3./2.))
 			!+KB*C_V_CO*PI*ETA(3,3)/4./(EXP(0.00116* &
 			!SQRT(MASS(3)/AMU/2)*(en_CO(1)/KB)**1.333*(T**(-1./3.)- &
 			!0.015*(MASS(3)/AMU/2)**(0.25))-18.42)*1.013E5)

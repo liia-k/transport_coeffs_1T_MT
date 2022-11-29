@@ -19,13 +19,13 @@ PROGRAM test1
 ! pressure
  
 
-    x(1)=0.77
-    x(2)=0.16
-    x(3)=0.05
-    x(4)=0.01
-    x(5)=0.01
+    x(1)=0.77999
+    x(2)=0.19999
+    x(3)=0.01999
+    x(4)=0.00086999
+    x(5)=0.00099
 
-    press=100000
+    press=100000!101325
 
     DO k = 1, 6
 
@@ -114,9 +114,9 @@ PROGRAM test1
         WRITE (6, *)
 
 
-        WRITE (6, *) 'Temperature, K        ',t
-        WRITE (6, *) 'Pressure, Pa          ',press
-        WRITE (6, *) 'N2 molar fraction     ',x(1)
+        WRITE (6, *) 'Temperature, K         ',t
+        WRITE (6, *) 'Pressure, Pa           ',press
+        WRITE (6, *) 'N2 molar fraction      ',x(1)
         WRITE (6, *) 'O2 molar fraction      ',x(2)
         WRITE (6, *) 'NO molar fraction      ',x(3)
         WRITE (6, *) 'N molar fraction       ',x(4)
@@ -190,11 +190,11 @@ PROGRAM test1
         !WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_N2, W/m/K     ', lvibr_n2
         !WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_O2, W/m/K     ', lvibr_o2
         !WRITE (6, '(1x, A45, E13.5)') 'Vibr. therm. cond. coef. lambda_NO, W/m/K     ', lvibr_no
-        WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of CO2, m^2/s         ', THDIFF(1)
+        WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of N2, m^2/s          ', THDIFF(1)
         WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of O2, m^2/s          ', THDIFF(2)
-        WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of CO, m^2/s          ', THDIFF(3)
-        WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of O, m^2/s           ', THDIFF(4)
-        WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of C, m^2/s           ', THDIFF(5)
+        WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of NO, m^2/s          ', THDIFF(3)
+        WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of N, m^2/s           ', THDIFF(4)
+        WRITE (6, '(1x, A45, E13.5)') 'Thermal diffusion coef. of O, m^2/s           ', THDIFF(5)
 
         WRITE (6, *)
         WRITE (6, *) 'DIFFUSION COEFFICIENTS D_ij, m^2/s'

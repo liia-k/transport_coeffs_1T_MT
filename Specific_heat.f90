@@ -12,6 +12,19 @@ USE CONSTANT
 
 IMPLICIT NONE
 
+! For SPECIFIC_HEAT module:
+
+! Number of vibrational levels in CO2 modes (1-3), O2, CO
+
+INTEGER :: L_N2, L_O2, L_NO
+DATA L_N2, L_O2, L_NO / 67, 46, 52 /
+	
+! Arrays containing values of vibrational energy of CO2, O2, CO
+
+REAL, DIMENSION(0:67) :: EN_N2
+REAL, DIMENSION(0:46) :: EN_O2
+REAL, DIMENSION(0:52) :: EN_NO
+
 Double precision zvibr_n2, zvibr_o2, zvibr_no, c_vibr_n2, c_vibr_o2, c_vibr_no &
                   , cv_int, cv_tot
 

@@ -9,6 +9,7 @@ MODULE TRANSPORT_AIR5_1T
     
     IMPLICIT NONE
 
+    
     CONTAINS
 
     SUBROUTINE TRANSPORT_1T
@@ -16,6 +17,26 @@ MODULE TRANSPORT_AIR5_1T
         INTEGER I, J, K, DELTA
 
         REAL CU, CUT
+
+        !Matrices for the linear transport systems defining
+        !heat conductivity and thermal diffusion (LTH);
+        !bulk viscosity (BVISC);
+        !diffusion (LDIFF);
+        !shear viscisity (HVISC).
+
+        REAL, DIMENSION(10,10) :: LTH 
+
+        REAL, DIMENSION(8,8) :: BVISC 
+
+        REAL, DIMENSION(5,5) ::  LDIFF, HVISC, b1
+
+        !Vectors of right hand terms
+
+        REAL, DIMENSION(10,1) :: b
+
+        REAL, DIMENSION(5,1) :: b2
+
+        REAL, DIMENSION(8,1) :: b3
 
     ! Definition of matrix LTH for calculation of 
     ! thermal conductivity and thermal diffuaion coefficients

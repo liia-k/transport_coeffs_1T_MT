@@ -9,8 +9,8 @@ IMPLICIT NONE
 	
 REAL :: kb, amu, pi, hp, navog, ww
 
-PARAMETER (kb=1.3806504e-23, amu=1.6605402e-27, pi=3.14159265358979, hp=6.62606957e-34, &
-		   navog=6.02214179e23, ww=1.60219e-19/8065.47)
+PARAMETER (kb=1.3806504e-23, amu=1.660538921e-27, pi=3.14159265358979, hp=6.62606957e-34, &
+		   navog=6.02214179e23, ww=1.9864806390700107e-23)! 1.60219e-19/8065.47)
 
 ! N2 spectroscopic data (we_O2, wexe_O2, J)
 
@@ -40,20 +40,6 @@ REAL, DIMENSION(5) :: MASS=(/amu*28.0134, amu*31.998, amu*30.0061, amu*14.0067, 
 	! mass(3)= amu*30.0061   = mass NO, kg
 	! mass(4)= amu*14.0067 = mass N, kg
 	! mass(5)= amu*15.9994  = mass O, kg
-
-
-! For SPECIFIC_HEAT module:
-
-! Number of vibrational levels in CO2 modes (1-3), O2, CO
-
-INTEGER :: L_N2, L_O2, L_NO
-DATA L_N2, L_O2, L_NO / 67, 46, 52 /
-	
-! Arrays containing values of vibrational energy of CO2, O2, CO
-
-REAL, DIMENSION(0:67) :: EN_N2
-REAL, DIMENSION(0:46) :: EN_O2
-REAL, DIMENSION(0:52) :: EN_NO
 
 
 ! For OMEGA_INTEGRALS and BRACKET_INTEGRALS modules:
@@ -89,48 +75,6 @@ REAL, DIMENSION(5) :: HFORM=(/0., 0., 9.029e4/navog,&
 	! hform(3)=9.029e4/navog  = h_form NO, J
 	! hform(4)=2.54e5/navog   = h_form N, J
 	! hform(5)=2.54e5/navog   = h_form O, J
-		  
-!Omega-integrals and their ratios
-
-REAL, DIMENSION(5,5) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
-						AA, BB, CC
-
-!Bracket integrals
-
-REAL, DIMENSION(5,5) :: LAMBDA, LAMBDA00, LAMBDA01, LAMBDA11						
-
-REAL, DIMENSION(5,5) :: ETA, H00, BETA11
-
-REAL, DIMENSION(5,3) :: BETA01
-
-REAL, DIMENSION(3) :: BETA0011
-
-!internal heat conductivity coefficients (LAMBDA_INT)
-
-REAL, DIMENSION(5) :: LAMBDA_INT=(/0., 0., 0., 0., 0./) 
-
-
-! For TRANSPORT_AIR5_1T module:
-
-!Matrices for the linear transport systems defining
-!heat conductivity and thermal diffusion (LTH);
-!bulk viscosity (BVISC);
-!diffusion (LDIFF);
-!shear viscisity (HVISC).
-
-REAL, DIMENSION(10,10) :: LTH 
-
-REAL, DIMENSION(8,8) :: BVISC 
-
-REAL, DIMENSION(5,5) ::  LDIFF, HVISC, b1
-
-!Vectors of right hand terms
-
-REAL, DIMENSION(10,1) :: b
-
-REAL, DIMENSION(5,1) :: b2
-
-REAL, DIMENSION(8,1) :: b3
 
 						
 !Macroparameters required for transport coeffs. calculation:
