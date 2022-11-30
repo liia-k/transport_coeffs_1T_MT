@@ -15,21 +15,29 @@ IMPLICIT NONE
 
 !Omega-integrals and their ratios
 
-REAL, DIMENSION(5,5) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
+type omega_int
+	REAL, DIMENSION(5,5) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
 						AA, BB, CC
+end type
+
 
 
 CONTAINS
 
-  SUBROUTINE OMEGA
+  SUBROUTINE OMEGA(T, omega_out)
 
-  ! Calculation of OMEGA-integrals for given T,
-  ! repulsive potential
+  real,intent(in)   :: T
+  type(omega_int),intent(out) :: omega_out
+
+  ! Calculation of OMEGA-integrals for given T
 
   INTEGER i, j
   REAL x11, eij, mij, sig_ij, sij, tx
 
+  !Omega-integrals and their ratios
 
+  REAL, DIMENSION(5,5) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
+  AA, BB, CC
 
  !Parameters sigma(i) and eps(i) of the Lenard-Jones potential are
  !defined in module constant.f90. Data given by:
@@ -88,7 +96,14 @@ CONTAINS
 	END DO
   END DO
 
-  END SUBROUTINE OMEGA
+  omega_out%OMEGA11 = omega11
+  omega_out%OMEGA22 = omega22
+  omega_out%OMEGA12 = omega12
+  omega_out%OMEGA13 = omega13
+  omega_out%AA = AA
+  omega_out%BB = BB
+  omega_out%CC = CC
 
+  END SUBROUTINE OMEGA
 
 END MODULE OMEGA_INTEGRALS

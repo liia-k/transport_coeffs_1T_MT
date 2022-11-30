@@ -14,6 +14,7 @@ IMPLICIT NONE
 
 !Bracket integrals 
 
+type bracket_int
 REAL, DIMENSION(5,5) :: LAMBDA, LAMBDA00, LAMBDA01, LAMBDA11						
 
 REAL, DIMENSION(5,5) :: ETA, H00, BETA11
@@ -25,15 +26,43 @@ REAL, DIMENSION(3) :: BETA0011
 !internal heat conductivity coefficients (LAMBDA_INT)
 
 REAL, DIMENSION(5) :: LAMBDA_INT=(/0., 0., 0., 0., 0./) 
+end type
 
 CONTAINS
 
-  SUBROUTINE BRACKET
+  SUBROUTINE BRACKET(temp, molar_fr, omega_in, bracket_out)
+
+	REAL,intent(in) :: temp
+	REAL, DIMENSION(5),intent(in) :: molar_fr
+	type(omega_int),intent(in)      :: omega_in
+	type(bracket_int),intent(out)   :: bracket_out
 
 	INTEGER i, j, k
-    REAL mij
-	REAL, DIMENSION(5) :: PHI=(/0., 0., 0., 0., 0./) 
+    REAL mij, T
+	REAL, DIMENSION(5) :: PHI=(/0., 0., 0., 0., 0./), x
 
+	REAL, DIMENSION(5,5) :: LAMBDA, LAMBDA00, LAMBDA01, LAMBDA11						
+	REAL, DIMENSION(5,5) :: ETA, H00, BETA11
+	REAL, DIMENSION(5,3) :: BETA01
+	REAL, DIMENSION(3) :: BETA0011
+
+	!internal heat conductivity coefficients (LAMBDA_INT)
+
+	REAL, DIMENSION(5) :: LAMBDA_INT=(/0., 0., 0., 0., 0./) 
+
+	REAL, DIMENSION(5,5) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
+						AA, BB, CC
+
+
+	OMEGA11 = omega_in%omega11
+	OMEGA22 = omega_in%omega22
+	OMEGA12 = omega_in%omega12
+	OMEGA13 = omega_in%omega13
+	AA = omega_in%aa
+	BB = omega_in%bb
+	CC = omega_in%cc
+	T = temp
+	x = molar_fr
 	
 	DO i=1,5
 		DO j=1,5
@@ -171,6 +200,17 @@ CONTAINS
 		END DO
 	END DO
 
+
+	bracket_out%LAMBDA = LAMBDA
+	bracket_out%LAMBDA00 = LAMBDA00
+	bracket_out%LAMBDA01 = LAMBDA01
+	bracket_out%LAMBDA11 = LAMBDA11
+	bracket_out%ETA = ETA
+	bracket_out%H00 = H00
+	bracket_out%BETA11 = BETA11
+	bracket_out%BETA01 = BETA01
+	bracket_out%BETA0011 = BETA0011
+	bracket_out%LAMBDA_INT = LAMBDA_INT
 
   END SUBROUTINE BRACKET
 

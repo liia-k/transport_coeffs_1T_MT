@@ -7,10 +7,10 @@ IMPLICIT NONE
 ! atomic mass unit amu; pi; Planck constant hp; Avogadro number
 ! navog; dimension factor ww for energy calculation cm^{-1} --> J
 	
-REAL :: kb, amu, pi, hp, navog, ww
+REAL :: kb, amu, pi, hp, navog, ww, R
 
 PARAMETER (kb=1.3806504e-23, amu=1.660538921e-27, pi=3.14159265358979, hp=6.62606957e-34, &
-		   navog=6.02214179e23, ww=1.9864806390700107e-23)! 1.60219e-19/8065.47)
+		   navog=6.02214179e23, ww=1.9864806390700107e-23, R = kb*navog)! 1.60219e-19/8065.47)
 
 ! N2 spectroscopic data (we_O2, wexe_O2, J)
 
@@ -41,6 +41,9 @@ REAL, DIMENSION(5) :: MASS=(/amu*28.0134, amu*31.998, amu*30.0061, amu*14.0067, 
 	! mass(4)= amu*14.0067 = mass N, kg
 	! mass(5)= amu*15.9994  = mass O, kg
 
+! Species molar mass definition, mass, kg
+
+REAL, DIMENSION(5) :: MOLAR=(/28.0134, 31.998, 30.0061, 14.0067, 15.9994/) 
 
 ! For OMEGA_INTEGRALS and BRACKET_INTEGRALS modules:
 
@@ -79,33 +82,20 @@ REAL, DIMENSION(5) :: HFORM=(/0., 0., 9.029e4/navog,&
 						
 !Macroparameters required for transport coeffs. calculation:
 
-!Vectors of species molar fractions (X), mass fractions (Y)
-
-REAL, DIMENSION(5) :: X, Y
-
-!Common variables: gas temperature (T); pressure (press); total number density (ntot); mixture density (rho)
-
-REAL T, press, ntot, rho 
-
-!REAL :: EPSILON=1e-10 
-
+type transport_in
+real rho  
+!real vel(1:3), not required
+real temp
+real mass_fractions(1:5)
+end type
 
 !Transport coefficients: 
 
-!total heat conductivity; translational heat conductivity;
-!N2, O2, NO rotational heat conductivity; ... vibrational heat conductivity;
-!shear viscosity; bulk viscosity
-
-REAL ltot, ltr, lint, visc, bulk_visc!, lrot_n2, lrot_o2, lrot_no, lvibr_n2, lvibr_o2, lvibr_no, 
-
-!thermal diffusion coefficients (THDIFF);
-
-REAL, DIMENSION(5) :: THDIFF 
-
-!Diffusion coeffcients matrix
-
-REAL, DIMENSION(5,5) :: DIFF
-
+type transport_out
+real visc, bulk_visc, ltot ! shear viscosity,  bulk viscosity, thermal conductivity
+real :: thdiff(1:5) ! thermal diffusion coeffs
+real :: diff(1:5,1:5) ! diffusion coeffs
+end type							 
 
 END MODULE 	CONSTANT
 

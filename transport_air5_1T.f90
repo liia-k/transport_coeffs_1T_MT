@@ -12,11 +12,27 @@ MODULE TRANSPORT_AIR5_1T
     
     CONTAINS
 
-    SUBROUTINE TRANSPORT_1T
-    
-        INTEGER I, J, K, DELTA
+    SUBROUTINE TRANSPORT_1T(data_in, data_out)
 
+        type(transport_in),intent(in)   :: data_in
+        type(transport_out),intent(out) :: data_out 
+        
+        INTEGER I, J, K, DELTA
         REAL CU, CUT
+
+        !total heat conductivity; translational heat conductivity;
+        !N2, O2, NO rotational heat conductivity; ... vibrational heat conductivity;
+        !shear viscosity; bulk viscosity
+
+        REAL ltot, ltr, lint, visc, bulk_visc!, lrot_n2, lrot_o2, lrot_no, lvibr_n2, lvibr_o2, lvibr_no, 
+
+        !thermal diffusion coefficients (THDIFF);
+
+        REAL, DIMENSION(5) :: THDIFF 
+
+        !Diffusion coeffcients matrix
+
+        REAL, DIMENSION(5,5) :: DIFF
 
         !Matrices for the linear transport systems defining
         !heat conductivity and thermal diffusion (LTH);
@@ -38,19 +54,44 @@ MODULE TRANSPORT_AIR5_1T
 
         REAL, DIMENSION(8,1) :: b3
 
+
+        REAL, DIMENSION(5) :: X, Y
+
+        REAL T, ntot, rho
+
+        type(cv_out) :: cv
+        type(omega_int) :: omega_out
+        type(bracket_int) :: bracket_out
+
+        T = data_in%temp
+        rho = data_in%rho
+        y = data_in%mass_fractions
+        ntot = 0
+        do i = 1,5
+            ntot = ntot + y(i)*rho/mass(i)
+        end do
+        do i = 1,5
+            x(i) = y(i)*rho/(mass(i)*ntot)
+        end do
+        
+
+        CALL S_HEAT(data_in, cv)
+        CALL Omega(T, omega_out)
+        CALL Bracket(T, x, omega_out, bracket_out)
+
     ! Definition of matrix LTH for calculation of 
     ! thermal conductivity and thermal diffuaion coefficients
     ! The system has a form	(1)
     ! LTH times a = b, a is the vector of unknowns
         DO i=1,5
             DO j=1,5
-                LTH(i,j)=Lambda00(i,j)
+                LTH(i,j)=bracket_out%Lambda00(i,j)
             END DO
         END DO
         
         DO i=1,5
             DO j=6,10
-                LTH(i,j)=Lambda01(i,j-5)
+                LTH(i,j)=bracket_out%Lambda01(i,j-5)
             END DO
         END DO
         
@@ -62,7 +103,7 @@ MODULE TRANSPORT_AIR5_1T
         
         DO i=6,10
             DO j=6,10
-                LTH(i,j)=Lambda11(i-5,j-5)
+                LTH(i,j)=bracket_out%Lambda11(i-5,j-5)
             END DO
         END DO
         
@@ -96,7 +137,7 @@ MODULE TRANSPORT_AIR5_1T
         
         DO i=1,5
             DO j=1,5
-            HVISC(i,j)=H00(i,j)
+            HVISC(i,j)=bracket_out%H00(i,j)
             END DO
         END DO
     ! End of matrix HVISC definition
@@ -108,13 +149,13 @@ MODULE TRANSPORT_AIR5_1T
     ! BVISC times f = b3, f is the vector of unknowns
         DO i=1,5
             DO j=1,5
-                BVISC(i,j)=x(j)*beta11(i,j)
+                BVISC(i,j)=x(j)*bracket_out%beta11(i,j)
             END DO
         END DO
         
         DO i=1,5
             DO j=6,8
-                BVISC(i,j)=y(j-5)*beta01(i,j-5)
+                BVISC(i,j)=y(j-5)*bracket_out%beta01(i,j-5)
             END DO
         END DO
         
@@ -130,9 +171,9 @@ MODULE TRANSPORT_AIR5_1T
             END DO
         END DO
         
-        BVISC(6,6)=y(1)*beta0011(1)
-        BVISC(7,7)=y(2)*beta0011(2)
-        BVISC(8,8)=y(3)*beta0011(3)
+        BVISC(6,6)=y(1)*bracket_out%beta0011(1)
+        BVISC(7,7)=y(2)*bracket_out%beta0011(2)
+        BVISC(8,8)=y(3)*bracket_out%beta0011(3)
         
         
         DO j=1,5
@@ -197,12 +238,12 @@ MODULE TRANSPORT_AIR5_1T
         cut=kb*ntot/rho*(x(1)+x(2)+x(3))
         
         DO i=1,5
-            b3(i,1)=-x(i)*c_int(i)/cv_tot
+            b3(i,1)=-x(i)*cv%c_int(i)/cv%cv_tot
             !b3(i,1)=-x(i)*cut/cu
         END DO
 
         DO i=6,8
-            b3(i,1)=y(i-5)*c_int(i-5)/cv_tot
+            b3(i,1)=y(i-5)*cv%c_int(i-5)/cv%cv_tot
         END DO
         
         !b3(6,1)=x(1)*ntot/rho*kb/cu
@@ -245,7 +286,7 @@ MODULE TRANSPORT_AIR5_1T
 ! energies 
     Lint = 0
     DO i = 1,3
-        lint = lint + 3./16.*kb*T*x(i)/lambda_int(i)*c_int(i)*mass(i)
+        lint = lint + 3./16.*kb*T*x(i)/bracket_out%lambda_int(i)*cv%c_int(i)*mass(i)
     END DO
     !lrot_n2=3.*kb*t*x(1)/16./lambda_int(1)*kb
     !lrot_o2=3.*kb*t*x(2)/16./lambda_int(2)*kb
@@ -283,6 +324,12 @@ MODULE TRANSPORT_AIR5_1T
         bulk_visc=bulk_visc-kb*t*b3(i,1)*x(i)
     END DO
 
+    data_out%visc = visc
+    data_out%bulk_visc = bulk_visc
+    data_out%ltot = ltot
+    data_out%thdiff = thdiff
+    data_out%diff = diff
+    
     END SUBROUTINE TRANSPORT_1T
     
 
