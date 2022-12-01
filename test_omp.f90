@@ -48,9 +48,11 @@ PROGRAM test_int
 
     !$OMP PARALLEL
 
+    ! !$OMP DO
+
     DO k = 500, N
 
-        T = 10000 * k * 1./N
+        T = k * 1.
         ntot = press/kb/T
         rho = 0
         do i1 = 1,5
@@ -77,7 +79,11 @@ PROGRAM test_int
 
     END DO
 
+    ! !$OMP END DO
+
     !$OMP END PARALLEL
+
+    
 
         ! WRITE (6, *) 'INPUT DATA:'
 
@@ -126,12 +132,14 @@ PROGRAM test_int
 
         !WRITE (6, '(1x, 5E15.6)') (y(j), j=1,5)
 
+    !!$OMP CRITICAL
+
     open(6,file='air5_1Ttest.txt',status='unknown')
 
     DO k = 500, N
 
         T = 10000 * k * 1./N
-        
+
         WRITE (6, *) 'INPUT DATA:'
 
         WRITE (6, *)
@@ -178,5 +186,7 @@ PROGRAM test_int
     END DO
 
     close(6)
+
+    !!$OMP END CRITICAL
 
 END PROGRAM
