@@ -1,0 +1,460 @@
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88453978E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999975E-06
+ N mass fraction           9.99999975E-06
+ O mass fraction           9.99999975E-06
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88466476E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999997E-07
+ N mass fraction           9.99999997E-07
+ O mass fraction           9.99999997E-07
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467724E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          1.00000001E-07
+ N mass fraction           1.00000001E-07
+ O mass fraction           1.00000001E-07
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999994E-09
+ N mass fraction           9.99999994E-09
+ O mass fraction           9.99999994E-09
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999972E-10
+ N mass fraction           9.99999972E-10
+ O mass fraction           9.99999972E-10
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999944E-11
+ N mass fraction           9.99999944E-11
+ O mass fraction           9.99999944E-11
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999909E-12
+ N mass fraction           9.99999909E-12
+ O mass fraction           9.99999909E-12
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999888E-13
+ N mass fraction           9.99999888E-13
+ O mass fraction           9.99999888E-13
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999915E-14
+ N mass fraction           9.99999915E-14
+ O mass fraction           9.99999915E-14
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999898E-15
+ N mass fraction           9.99999898E-15
+ O mass fraction           9.99999898E-15
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999898E-16
+ N mass fraction           9.99999898E-16
+ O mass fraction           9.99999898E-16
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999885E-17
+ N mass fraction           9.99999885E-17
+ O mass fraction           9.99999885E-17
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999901E-18
+ N mass fraction           9.99999901E-18
+ O mass fraction           9.99999901E-18
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999942E-19
+ N mass fraction           9.99999942E-19
+ O mass fraction           9.99999942E-19
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999968E-20
+ N mass fraction           9.99999968E-20
+ O mass fraction           9.99999968E-20
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999968E-21
+ N mass fraction           9.99999968E-21
+ O mass fraction           9.99999968E-21
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999968E-22
+ N mass fraction           9.99999968E-22
+ O mass fraction           9.99999968E-22
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          9.99999968E-23
+ N mass fraction           9.99999968E-23
+ O mass fraction           9.99999968E-23
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          1.00000000E-23
+ N mass fraction           1.00000000E-23
+ O mass fraction           1.00000000E-23
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+
+ INPUT DATA:
+
+ Temperature, K            247.000000    
+ Molar mass, kg            2.88467873E-02
+ Density, kg/m^3           3.09674023E-03
+ N2 mass fraction         0.768000007    
+ O2 massr fraction        0.231999993    
+ NO mass fraction          1.00000002E-24
+ N mass fraction           1.00000002E-24
+ O mass fraction           1.00000002E-24
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15871E-04
+ Thermal cond. coef. lambda, W/m/K              0.23163E-01
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+   -0.280054E-03   0.926907E-03   0.954215E-03   0.106094E-02   0.108094E-02
+   -0.223190E-02   0.738818E-02  -0.105059E-02  -0.995135E-03  -0.970234E-03
+   -0.214793E-02  -0.966625E-03   0.187382E+03  -0.864319E-03  -0.841893E-03
+   -0.178557E-02  -0.548814E-03  -0.501960E-03   0.149860E+03  -0.111818E-03
+   -0.217303E-02  -0.911373E-03  -0.866993E-03  -0.499277E-03   0.188028E+03
+

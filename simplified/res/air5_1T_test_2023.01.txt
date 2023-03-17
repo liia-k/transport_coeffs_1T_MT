@@ -1,0 +1,490 @@
+ INPUT DATA:
+
+ Temperature, K            500.000000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654918    
+ O2 mass fraction         0.221607745    
+ NO mass fraction          2.07713805E-02
+ N mass fraction           4.21981153E-04
+ O mass fraction           5.48506563E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.26952E-04
+ Bulk viscosity coefficient, Pa.s               0.12534E-03
+ Thermal cond. coef. lambda, W/m/K              0.39366E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.31551E-09
+ Thermal diffusion coef. of O2, m^2/s           0.10873E-08
+ Thermal diffusion coef. of NO, m^2/s           0.39546E-09
+ Thermal diffusion coef. of N, m^2/s           -0.10803E-07
+ Thermal diffusion coef. of O, m^2/s           -0.10702E-07
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.176709E-07  -0.553125E-07  -0.517880E-07  -0.327866E-07  -0.427650E-07
+   -0.553128E-07   0.194589E-06  -0.589802E-07  -0.406735E-07  -0.506296E-07
+   -0.517883E-07  -0.589801E-07   0.251776E-05  -0.369125E-07  -0.469068E-07
+   -0.327869E-07  -0.406733E-07  -0.369124E-07   0.819995E-04  -0.251664E-07
+   -0.427652E-07  -0.506296E-07  -0.469067E-07  -0.251664E-07   0.812446E-04
+
+ INPUT DATA:
+
+ Temperature, K            1000.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654918    
+ O2 mass fraction         0.221607745    
+ NO mass fraction          2.07713805E-02
+ N mass fraction           4.21981153E-04
+ O mass fraction           5.48506563E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.43307E-04
+ Bulk viscosity coefficient, Pa.s               0.29625E-03
+ Thermal cond. coef. lambda, W/m/K              0.63396E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.11643E-08
+ Thermal diffusion coef. of O2, m^2/s           0.40129E-08
+ Thermal diffusion coef. of NO, m^2/s           0.14013E-08
+ Thermal diffusion coef. of N, m^2/s           -0.38706E-07
+ Thermal diffusion coef. of O, m^2/s           -0.38415E-07
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.572382E-07  -0.179134E-06  -0.168123E-06  -0.105192E-06  -0.137279E-06
+   -0.179135E-06   0.630264E-06  -0.191814E-06  -0.131069E-06  -0.163168E-06
+   -0.168125E-06  -0.191814E-06   0.817723E-05  -0.119239E-06  -0.151461E-06
+   -0.105193E-06  -0.131069E-06  -0.119239E-06   0.263426E-03  -0.800171E-07
+   -0.137280E-06  -0.163168E-06  -0.151461E-06  -0.800173E-07   0.261095E-03
+
+ INPUT DATA:
+
+ Temperature, K            1500.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.56449E-04
+ Bulk viscosity coefficient, Pa.s               0.46002E-03
+ Thermal cond. coef. lambda, W/m/K              0.82775E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.23721E-08
+ Thermal diffusion coef. of O2, m^2/s           0.81775E-08
+ Thermal diffusion coef. of NO, m^2/s           0.28139E-08
+ Thermal diffusion coef. of N, m^2/s           -0.78415E-07
+ Thermal diffusion coef. of O, m^2/s           -0.77839E-07
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.112527E-06  -0.352148E-06  -0.330775E-06  -0.206150E-06  -0.269080E-06
+   -0.352150E-06   0.123905E-05  -0.377616E-06  -0.257233E-06  -0.320240E-06
+   -0.330777E-06  -0.377616E-06   0.160907E-04  -0.234205E-06  -0.297455E-06
+   -0.206151E-06  -0.257233E-06  -0.234205E-06   0.516468E-03  -0.156363E-06
+   -0.269082E-06  -0.320240E-06  -0.297454E-06  -0.156363E-06   0.511959E-03
+
+ INPUT DATA:
+
+ Temperature, K            2000.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654918    
+ O2 mass fraction         0.221607745    
+ NO mass fraction          2.07713805E-02
+ N mass fraction           4.21981153E-04
+ O mass fraction           5.48506563E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.67901E-04
+ Bulk viscosity coefficient, Pa.s               0.61454E-03
+ Thermal cond. coef. lambda, W/m/K              0.99669E-01
+ Thermal diffusion coef. of N2, m^2/s          -0.38745E-08
+ Thermal diffusion coef. of O2, m^2/s           0.13359E-07
+ Thermal diffusion coef. of NO, m^2/s           0.45660E-08
+ Thermal diffusion coef. of N, m^2/s           -0.12796E-06
+ Thermal diffusion coef. of O, m^2/s           -0.12701E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.181216E-06  -0.567090E-06  -0.532874E-06  -0.331520E-06  -0.432754E-06
+   -0.567093E-06   0.199536E-05  -0.608510E-06  -0.413932E-06  -0.515327E-06
+   -0.532878E-06  -0.608509E-06   0.259239E-04  -0.377010E-06  -0.478797E-06
+   -0.331522E-06  -0.413931E-06  -0.377009E-06   0.830714E-03  -0.251155E-06
+   -0.432756E-06  -0.515326E-06  -0.478797E-06  -0.251156E-06   0.823503E-03
+
+ INPUT DATA:
+
+ Temperature, K            2500.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.78267E-04
+ Bulk viscosity coefficient, Pa.s               0.76095E-03
+ Thermal cond. coef. lambda, W/m/K              0.11500E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.56354E-08
+ Thermal diffusion coef. of O2, m^2/s           0.19433E-07
+ Thermal diffusion coef. of NO, m^2/s           0.66202E-08
+ Thermal diffusion coef. of N, m^2/s           -0.18620E-06
+ Thermal diffusion coef. of O, m^2/s           -0.18477E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.261941E-06  -0.819694E-06  -0.770391E-06  -0.478869E-06  -0.625119E-06
+   -0.819699E-06   0.288421E-05  -0.879873E-06  -0.598090E-06  -0.744600E-06
+   -0.770395E-06  -0.879873E-06   0.374802E-04  -0.544834E-06  -0.691914E-06
+   -0.478873E-06  -0.598088E-06  -0.544832E-06   0.120004E-02  -0.362600E-06
+   -0.625123E-06  -0.744599E-06  -0.691914E-06  -0.362601E-06   0.118966E-02
+
+ INPUT DATA:
+
+ Temperature, K            3000.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.87858E-04
+ Bulk viscosity coefficient, Pa.s               0.90054E-03
+ Thermal cond. coef. lambda, W/m/K              0.12919E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.76307E-08
+ Thermal diffusion coef. of O2, m^2/s           0.26315E-07
+ Thermal diffusion coef. of NO, m^2/s           0.89513E-08
+ Thermal diffusion coef. of N, m^2/s           -0.25233E-06
+ Thermal diffusion coef. of O, m^2/s           -0.25035E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.353770E-06  -0.110705E-05  -0.104057E-05  -0.646534E-06  -0.844003E-06
+   -0.110705E-05   0.389532E-05  -0.118855E-05  -0.807606E-06  -0.100544E-05
+   -0.104058E-05  -0.118855E-05   0.506258E-04  -0.735752E-06  -0.934363E-06
+   -0.646539E-06  -0.807604E-06  -0.735750E-06   0.162028E-02  -0.489469E-06
+   -0.844008E-06  -0.100544E-05  -0.934362E-06  -0.489470E-06   0.160627E-02
+
+ INPUT DATA:
+
+ Temperature, K            3500.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.96860E-04
+ Bulk viscosity coefficient, Pa.s               0.10344E-02
+ Thermal cond. coef. lambda, W/m/K              0.14248E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.98430E-08
+ Thermal diffusion coef. of O2, m^2/s           0.33946E-07
+ Thermal diffusion coef. of NO, m^2/s           0.11541E-07
+ Thermal diffusion coef. of N, m^2/s           -0.32578E-06
+ Thermal diffusion coef. of O, m^2/s           -0.32317E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.456013E-06  -0.142699E-05  -0.134137E-05  -0.833280E-06  -0.108779E-05
+   -0.142700E-05   0.502110E-05  -0.153220E-05  -0.104092E-05  -0.129592E-05
+   -0.134138E-05  -0.153220E-05   0.652613E-04  -0.948337E-06  -0.120433E-05
+   -0.833286E-06  -0.104092E-05  -0.948334E-06   0.208831E-02  -0.630847E-06
+   -0.108780E-05  -0.129592E-05  -0.120433E-05  -0.630849E-06   0.207026E-02
+
+ INPUT DATA:
+
+ Temperature, K            4000.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654918    
+ O2 mass fraction         0.221607745    
+ NO mass fraction          2.07713805E-02
+ N mass fraction           4.21981153E-04
+ O mass fraction           5.48506563E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.10540E-03
+ Bulk viscosity coefficient, Pa.s               0.11633E-02
+ Thermal cond. coef. lambda, W/m/K              0.15513E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.12259E-07
+ Thermal diffusion coef. of O2, m^2/s           0.42280E-07
+ Thermal diffusion coef. of NO, m^2/s           0.14375E-07
+ Thermal diffusion coef. of N, m^2/s           -0.40608E-06
+ Thermal diffusion coef. of O, m^2/s           -0.40278E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.568130E-06  -0.177783E-05  -0.167121E-05  -0.103814E-05  -0.135522E-05
+   -0.177784E-05   0.625561E-05  -0.190900E-05  -0.129682E-05  -0.161450E-05
+   -0.167122E-05  -0.190900E-05   0.813089E-04  -0.118147E-05  -0.150040E-05
+   -0.103815E-05  -0.129682E-05  -0.118147E-05   0.260171E-02  -0.786020E-06
+   -0.135523E-05  -0.161450E-05  -0.150040E-05  -0.786022E-06   0.257921E-02
+
+ INPUT DATA:
+
+ Temperature, K            4500.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.11355E-03
+ Bulk viscosity coefficient, Pa.s               0.12879E-02
+ Thermal cond. coef. lambda, W/m/K              0.16720E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.14868E-07
+ Thermal diffusion coef. of O2, m^2/s           0.51279E-07
+ Thermal diffusion coef. of NO, m^2/s           0.17442E-07
+ Thermal diffusion coef. of N, m^2/s           -0.49287E-06
+ Thermal diffusion coef. of O, m^2/s           -0.48881E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.689683E-06  -0.215820E-05  -0.202877E-05  -0.126033E-05  -0.164526E-05
+   -0.215822E-05   0.759401E-05  -0.231746E-05  -0.157431E-05  -0.195996E-05
+   -0.202878E-05  -0.231746E-05   0.987056E-04  -0.143425E-05  -0.182143E-05
+   -0.126034E-05  -0.157430E-05  -0.143424E-05   0.315850E-02  -0.954404E-06
+   -0.164527E-05  -0.195996E-05  -0.182143E-05  -0.954406E-06   0.313118E-02
+
+ INPUT DATA:
+
+ Temperature, K            5000.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.12138E-03
+ Bulk viscosity coefficient, Pa.s               0.14088E-02
+ Thermal cond. coef. lambda, W/m/K              0.17881E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.17662E-07
+ Thermal diffusion coef. of O2, m^2/s           0.60914E-07
+ Thermal diffusion coef. of NO, m^2/s           0.20733E-07
+ Thermal diffusion coef. of N, m^2/s           -0.58583E-06
+ Thermal diffusion coef. of O, m^2/s           -0.58097E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.820307E-06  -0.256696E-05  -0.241299E-05  -0.149919E-05  -0.195706E-05
+   -0.256698E-05   0.903229E-05  -0.275635E-05  -0.187256E-05  -0.233128E-05
+   -0.241300E-05  -0.275635E-05   0.117399E-03  -0.170591E-05  -0.216644E-05
+   -0.149920E-05  -0.187255E-05  -0.170590E-05   0.375704E-02  -0.113551E-05
+   -0.195707E-05  -0.233127E-05  -0.216644E-05  -0.113552E-05   0.372452E-02
+
+ INPUT DATA:
+
+ Temperature, K            5500.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.12894E-03
+ Bulk viscosity coefficient, Pa.s               0.15265E-02
+ Thermal cond. coef. lambda, W/m/K              0.19001E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.20632E-07
+ Thermal diffusion coef. of O2, m^2/s           0.71159E-07
+ Thermal diffusion coef. of NO, m^2/s           0.24239E-07
+ Thermal diffusion coef. of N, m^2/s           -0.68471E-06
+ Thermal diffusion coef. of O, m^2/s           -0.67900E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.959691E-06  -0.300313E-05  -0.282295E-05  -0.175416E-05  -0.228988E-05
+   -0.300315E-05   0.105670E-04  -0.322461E-05  -0.219087E-05  -0.272756E-05
+   -0.282296E-05  -0.322461E-05   0.137344E-03  -0.199581E-05  -0.253464E-05
+   -0.175418E-05  -0.219087E-05  -0.199581E-05   0.439592E-02  -0.132893E-05
+   -0.228990E-05  -0.272756E-05  -0.253463E-05  -0.132893E-05   0.435785E-02
+
+ INPUT DATA:
+
+ Temperature, K            6000.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.13626E-03
+ Bulk viscosity coefficient, Pa.s               0.16412E-02
+ Thermal cond. coef. lambda, W/m/K              0.20084E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.23774E-07
+ Thermal diffusion coef. of O2, m^2/s           0.81994E-07
+ Thermal diffusion coef. of NO, m^2/s           0.27955E-07
+ Thermal diffusion coef. of N, m^2/s           -0.78929E-06
+ Thermal diffusion coef. of O, m^2/s           -0.78269E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.110756E-05  -0.346587E-05  -0.325784E-05  -0.202477E-05  -0.264310E-05
+   -0.346590E-05   0.121953E-04  -0.372134E-05  -0.252864E-05  -0.314806E-05
+   -0.325786E-05  -0.372134E-05   0.158503E-03  -0.230340E-05  -0.292530E-05
+   -0.202479E-05  -0.252863E-05  -0.230340E-05   0.507393E-02  -0.153429E-05
+   -0.264312E-05  -0.314806E-05  -0.292529E-05  -0.153430E-05   0.502995E-02
+
+ INPUT DATA:
+
+ Temperature, K            6500.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.14337E-03
+ Bulk viscosity coefficient, Pa.s               0.17533E-02
+ Thermal cond. coef. lambda, W/m/K              0.21139E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.27081E-07
+ Thermal diffusion coef. of O2, m^2/s           0.93398E-07
+ Thermal diffusion coef. of NO, m^2/s           0.31874E-07
+ Thermal diffusion coef. of N, m^2/s           -0.89936E-06
+ Thermal diffusion coef. of O, m^2/s           -0.89183E-06
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.126369E-05  -0.395445E-05  -0.371698E-05  -0.231058E-05  -0.301616E-05
+   -0.395447E-05   0.139144E-04  -0.424572E-05  -0.288532E-05  -0.359211E-05
+   -0.371700E-05  -0.424572E-05   0.180840E-03  -0.262819E-05  -0.333780E-05
+   -0.231060E-05  -0.288531E-05  -0.262818E-05   0.579000E-02  -0.175129E-05
+   -0.301618E-05  -0.359210E-05  -0.333780E-05  -0.175129E-05   0.573977E-02
+
+ INPUT DATA:
+
+ Temperature, K            7000.00000    
+ Molar mass, kg            28.8772984    
+ Pressure, Pa              100000.000    
+ N2 molar fraction        0.779990017    
+ O2 molar fraction        0.199990004    
+ NO molar fraction         1.99900009E-02
+ N molar fraction          8.69989977E-04
+ O molar fraction          9.89999971E-04
+ N2 mass fraction         0.756654859    
+ O2 mass fraction         0.221607730    
+ NO mass fraction          2.07713768E-02
+ N mass fraction           4.21981124E-04
+ O mass fraction           5.48506505E-04
+
+ TRANSPORT COEFFICIENTS:
+
+ Shear viscosity coefficient, Pa.S              0.15029E-03
+ Bulk viscosity coefficient, Pa.s               0.18630E-02
+ Thermal cond. coef. lambda, W/m/K              0.22167E+00
+ Thermal diffusion coef. of N2, m^2/s          -0.30549E-07
+ Thermal diffusion coef. of O2, m^2/s           0.10536E-06
+ Thermal diffusion coef. of NO, m^2/s           0.35990E-07
+ Thermal diffusion coef. of N, m^2/s           -0.10147E-05
+ Thermal diffusion coef. of O, m^2/s           -0.10063E-05
+
+ DIFFUSION COEFFICIENTS D_ij, m^2/s
+
+    0.142786E-05  -0.446819E-05  -0.419974E-05  -0.261122E-05  -0.340856E-05
+   -0.446822E-05   0.157220E-04  -0.479707E-05  -0.326044E-05  -0.405911E-05
+   -0.419977E-05  -0.479706E-05   0.204327E-03  -0.296973E-05  -0.377161E-05
+   -0.261124E-05  -0.326043E-05  -0.296972E-05   0.654318E-02  -0.197964E-05
+   -0.340858E-05  -0.405911E-05  -0.377160E-05  -0.197964E-05   0.648636E-02
+
