@@ -1,16 +1,42 @@
 ! Module for simplified (no thermal diffusion and bulk viscocity) calculation of transport coefficients. 
-! Uses the module constant_...(name of mixture).f90 containing main constants and 
-! variables definition, modules for calculation of specific heats, omega and bracket integrals.
 
 module transport_1t_simpl
 
     use defs_models
+
+    use, intrinsic :: ieee_arithmetic 
     
     implicit none
 
     contains
 
+    logical function exception(var)
+
+    ! has a true value if var in not NaN and Infinity
+
+        real, intent(in) :: var
+
+        exception = .not.(ieee_is_nan(var)) .and. (ieee_is_finite(var))
+
+    end function
+
+    subroutine macro_output(data_in)
+    
+    ! macroparameters given values output
+
+        type(transport_in),intent(in)   :: data_in
+
+        print *, "temperature = ", data_in%temp
+        print *, "density = ", data_in%rho
+        print *, "mass fractions: ", data_in%mass_fractions
+
+    end subroutine
+
+
+
     subroutine Transport1TSimpl(data_in, data_out)
+
+    ! Simplified calcultaion of transport coeffs
 
         use constant_air5
         use specific_heat_sp
@@ -18,22 +44,25 @@ module transport_1t_simpl
         use bracket_integrals
         use qr_decomposition
 
-        type(transport_in),intent(in)   :: data_in
-        type(transport_out),intent(out) :: data_out 
+
+        type(transport_in),intent(in)   :: data_in ! macroparametrs
+        type(transport_out),intent(out) :: data_out ! set of transport coeffs
         
         integer i, j, delta
 
-        ! total heat conductivity; translational heat conductivity;
-        ! internal heat conductivity;
+        ! total heat conductivity; translational heat conductivity; internal heat conductivity;
+        
+        real ltot, ltr, lint
+    
         ! shear viscosity
 
-        real ltot, ltr, lint, visc
+        real visc
 
-        ! Diffusion coeffcients matrix
+        ! diffusion coeffcients matrix
 
         real, dimension(NUM_SP,NUM_SP) :: DIFF
 
-        ! Matrices for the linear transport systems defining
+        ! matrices for the linear transport systems defining:
         ! heat conductivity and thermal diffusion (LTH);
         ! bulk viscosity (BVISC);
         ! diffusion (LDIFF);
@@ -45,13 +74,17 @@ module transport_1t_simpl
                                            HVISC, Q_HVISC, R_HVISC, Inverse_HVISC, &
                                            b1
 
-        ! Vectors of right hand terms
+        ! vectors of the RHS of systems 
 
         real, dimension(NUM_SP,1) :: b
 
         real, dimension(NUM_SP,1) :: b2
 
-        real, dimension(NUM_SP) :: X, Y
+        ! molar and mass fractions
+
+        real, dimension(NUM_SP) :: x, Y
+
+        ! macroparameters
 
         real T, ntot, rho, M
 
@@ -59,11 +92,12 @@ module transport_1t_simpl
         type(omega_int) :: omega_out
         type(bracket_int) :: bracket_out
 
+
         T = data_in%temp
         rho = data_in%rho
         y = data_in%mass_fractions
 
-        ! Since the transport coefficient are barely affected if one of the mass fractions is of order 1e-6 and smaller,
+        ! Since the transport coefficient are barely affected if one of the mass fractions is of order 1e-5 and smaller,
         ! the values of such mass fractions are set to be equal to the mentioned order:
         do i=1,NUM_SP
             if (abs(y(i)) < 1e-5) then
@@ -127,7 +161,7 @@ module transport_1t_simpl
             else
                 delta = 0
             end if
-            B1(i,j) = 8./25./Kb*(delta - y(i))!3*kb*T*(delta-y(i));
+            B1(i,j) = 8./25./Kb*(delta - y(i))! 3*kb*T*(delta-y(i));
             end do
         end do
         
@@ -143,8 +177,7 @@ module transport_1t_simpl
         ! End of vector b2 definition
             
             
-        ! Linear system solution using the Gauss method
-        ! The solutions a, d, h, f are written to b, b1, b2, b3, respectively 
+        ! Linear system solution using QR decomposition
         
         call QRDecomposition(LTH,Q_LTH,R_LTH,NUM_SP)
         call QRDecomposition(LDIFF,Q_LDIFF,R_LDIFF,NUM_SP)
@@ -154,40 +187,59 @@ module transport_1t_simpl
         call InvertQR(Q_LDIFF,R_LDIFF,Inverse_LDIFF,NUM_SP)
         call InvertQR(Q_HVISC,R_HVISC,Inverse_HVISC,NUM_SP)
 
+        ! Solutions:
+        
         b = matmul(Inverse_LTH,b)
         B1 = matmul(Inverse_LDIFF,B1)
         b2 = matmul(Inverse_HVISC,b2)
         
        
-        ! Thermal conductivity coefficient associated to translational
-        ! energy, ltr
+        ! Thermal conductivity coefficient associated to translational energy, ltr
 
         ltr = (5./4.)*kb*sum(x*b(: NUM_SP,1))
 
-        ! Thermal conductivity coefficients associated to internal
-        ! energies, lint 
+        ! Thermal conductivity coefficients associated to internal energies, lint 
         
         lint = (3./16.)*T*sum(x(:NUM_MOL)*cv%cv_int_sp(:NUM_MOL)*((Kb)*(MASS_SPCS(:NUM_MOL)*1e30) &
                 /(bracket_out%lambda_int(:NUM_MOL)*1e30)))
 
-        ! Total thermal conductivity coefficient at the translational
-        ! temperature gradient
+        ! Total thermal conductivity coefficient at the translational temperature gradient
 
         ltot = ltr + lint
 
+        if (exception(ltot)) then
+            data_out%ltot = ltot
+        else
+            print *, "thermal conductivity is not calculated for the set:"
+            call macro_output(data_in)
+        end if
 
-        ! Diffusion coefficients	DIFF(i,j)
+        ! Diffusion coefficients DIFF(i,j)
 
-        diff = (1./2./ntot)*b1
+        DIFF = (1./2./ntot)*b1
+
+        do i=1,NUM_SP
+            do j=1,NUM_SP
+                if (exception(DIFF(i,j))) then
+                    data_out%DIFF(i,j) = DIFF(i,j)
+                else
+                    print *, "diffusion coeffs are not calculated for the set:"
+                    call macro_output(data_in)
+                end if
+            end do
+        end do
 
         ! Shear viscosity coefficient VISC
 
         visc = (Kb*T/2.)*sum(x*b2(:NUM_SP,1))
 
+        if (exception(visc)) then
+            data_out%visc = visc
+        else
+            print *, "shear viscosity is not calculated for the set:"
+            call macro_output(data_in)
+        end if
 
-        data_out%visc = visc
-        data_out%ltot = ltot
-        data_out%diff = diff
     
     end subroutine Transport1TSimpl
     

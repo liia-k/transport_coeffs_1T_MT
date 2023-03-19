@@ -1,11 +1,5 @@
-!In this module, Omega-integrals and their ratios AA, BB, CC
-!are calculated using the Lennard-Jones potential for 
-!moderate temperatures 
-!It uses the module constant.f90 containing main constants and 
-!variables definition 
-
-!Input variable: T
-
+! In this module, Omega-integrals and their ratios AA, BB, CC are calculated 
+! using the Lennard-Jones potential for moderate temperatures 
 
 module omega_integrals
 
@@ -21,11 +15,11 @@ type omega_int
 end type
 
 
-
 contains
 
 subroutine OmegaInt(T, omega_out)
-	! Calculation of OMEGA-integrals for given T
+
+	! Calculation of OMEGA-integrals at given temperature
 
 	real,intent(in)   :: T ! temperature
 	type(omega_int),intent(out) :: omega_out
@@ -38,12 +32,6 @@ subroutine OmegaInt(T, omega_out)
 	real, dimension(NUM_SP,NUM_SP) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
 									  AA, BB, CC
   
-   !Parameters sigma(i) and eps(i) of the Lenard-Jones potential are
-   !defined in module constant.f90. Data given by:
-   !R.J.Kee, J.A.Miller, T.N. Jefferson, CHEMKIN: A General-Purpose, 
-   !Problem-Independent, Transportable, Fortran Chemical Kinetics Code Package,
-   !Sandia National Laboratories, SAND80-8003, 1980 
-  
 	do i=1,NUM_SP
 	  do j=1,NUM_SP
 		sig_ij = (SIGMA_LJ(i)+SIGMA_LJ(j))/2
@@ -51,12 +39,6 @@ subroutine OmegaInt(T, omega_out)
 		eij = sqrt(EPS_LJ(i)*EPS_LJ(j)*(SIGMA_LJ(i)*1e10)**6 &
 			  *(SIGMA_LJ(j)*1e10)**6)/(sig_ij*1e10)**6
 		sij = PI*(sig_ij)**2*sqrt((Kb/mij)*t/2./pi) ! of 1e-7 and higher order
-		  !WRITE (*,*) 'i = ', i 
-		  !WRITE (*,*) 'j = ', j
-		  !WRITE (*,*) 'e_ij = ', eij
-		  !WRITE (6,'(1x, A15, E50.40)') 'm_ij = ', mij
-		  !WRITE (*,*) 'Omega_rs_ij = ', sij
-		  
 		tx = T/eij
 			  ! Omega11, Omega12, Omega12, Omega13, B, C for 
 			  ! moderate temperatures; Lennard-Jones potential

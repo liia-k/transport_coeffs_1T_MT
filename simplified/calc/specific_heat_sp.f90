@@ -1,31 +1,30 @@
-!In this module, vibrational energy, non-equilibrium vibrational
-!partition functions, vibrational specific heat capacities,
-! and internal heat capacities cv_int_sp of molecular species are calculated.
-!It uses the module constant.f90 containing main constants and 
-!variables definition 
-
-!Input variables -- primitive variables: T - temperature, y - mass fractions
+! In this module, vibrational energy and specific heats are calculated
 
 module specific_heat_sp
 
-  use constant_air5
+use constant_air5
     
-  implicit none
+implicit none
 
 ! For SPECIFIC_HEAT module:
 
 type cv_out
-  double precision cv_int_tot, cv_tot
-  real, dimension(NUM_SP) :: cv_int_sp, cv_vibr_sp
+
+! Structure containig required specific heats
+
+  double precision cv_int_tot, cv_tot ! total internal sp. heat and total sp. heat (at constant volume)
+  real, dimension(NUM_SP) :: cv_int_sp, cv_vibr_sp ! vectors of internal (vibrational+rotational) and vibrational sp. heat for each species
 end type
 
 type dim
-  real, allocatable :: vibr_en_sp(:)
+  real, allocatable :: vibr_en_sp(:) ! vector of vibational energy for molecular species
 end type
 
 contains
 
 subroutine VibrEn(temp, en_out)
+
+  ! Calculates vibr. energy for molecular species
   
   real, intent(in)   :: temp
   type(dim), dimension(NUM_MOL), intent(out) :: en_out
@@ -52,17 +51,17 @@ end subroutine VibrEn
 
 subroutine SpHeat(temp, mass_fr, c_out)
 
-  real,intent(in)   :: temp
-  real, dimension(num_sp), intent(in) :: mass_fr
-  type(cv_out),intent(out) :: c_out
+  ! Calculation of specific heats
+
+  real,intent(in)   :: temp ! temperature
+  real, dimension(num_sp), intent(in) :: mass_fr ! mass fractions
+  type(cv_out),intent(out) :: c_out ! above structure for sp. heats
 
   integer i
   
-  ! Arrays containing values of vibrational energy of molecules
-
   type(dim), dimension(NUM_MOL) :: en_vibr
 
-  double precision, dimension(NUM_MOL) :: zvibr
+  double precision, dimension(NUM_MOL) :: zvibr ! vibrational partition functions for species
   
   double precision cv_int_tot, cv_tot, s,s0
   
@@ -78,11 +77,10 @@ subroutine SpHeat(temp, mass_fr, c_out)
   cv_vibr_sp = 0
   cv_int_sp = 0 ! initial zero internal specific heats
   
-  ! Calculation of vibrational energy levels for N2, O2, NO
+  ! Calculation of vibrational energy
   
   call VibrEn(T, en_vibr)
 
-  
   ! Calculation of non-equilibrium partition functions Z_c(T)
 
   do i=1,NUM_MOL
@@ -98,13 +96,15 @@ subroutine SpHeat(temp, mass_fr, c_out)
   end do
   
   ! Calculation of internal and total specific heats
-  ! cv_int_tot, CV_tot
+  ! cv_int_tot, cv_tot
   
   cv_int_sp(1:NUM_MOL) = cv_vibr_sp(1:NUM_MOL) + Kb/MASS_SPCS(1:NUM_MOL)
 
   cv_int_tot = dot_product(y, cv_int_sp)
   cv_tot = (3./2.)*R/M + cv_int_tot!3/2*ntot*kb/rho + cv_int_tot
 
+  ! Result
+  
   c_out%cv_int_tot = cv_int_tot
   c_out%cv_tot = cv_tot
   c_out%cv_int_sp = cv_int_sp

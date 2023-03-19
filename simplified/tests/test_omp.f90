@@ -1,5 +1,7 @@
 program test_omp
 
+! 6 flows, 1e6 iterations at about 18 min...
+
     use constant_air5
     use defs_models
     ! use specific_heat_sp
@@ -12,6 +14,8 @@ program test_omp
     implicit none
 
     real :: M, ntot, press, T, rho
+
+    real :: t1, t2 ! time
 
     real, dimension(5) :: y, x
 
@@ -30,7 +34,7 @@ program test_omp
     x(4)=0.00086999
     x(5)=0.00099
 
-    n = 10000
+    n = 10000 ! iterations
 
     allocate(transport(n))
     allocate(transport_coeff(n))
@@ -43,7 +47,8 @@ program test_omp
 
     press = 100000
 
-    
+    call cpu_time(t1)
+
     !$OMP parallel
 
     ! !$OMP do
@@ -77,6 +82,10 @@ program test_omp
     !$OMP end parallel
 
     ! !$OMP critical
+
+    call cpu_time(t2)
+
+    print *, t2 - t1
 
     open(6, file='../res/air5_1T_test_omp.txt', status='unknown')
 
