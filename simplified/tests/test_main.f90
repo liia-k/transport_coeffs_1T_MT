@@ -8,6 +8,11 @@ program test_main
 
     real :: M, ntot, press, T, rho
 
+    ! set the following parameters:
+    ! temperature, T, 200 < T < 4500(K - Kelvin)
+    ! pressure, press, 100 < press < 1e7 (Pa - Pascal)
+    ! mass fractions, y (dimensionless)
+
     real, dimension(NUM_SP) :: y
 
     integer :: i, j, k, n
@@ -36,6 +41,7 @@ program test_main
         M = 1/dot_product(y,1/MOLAR)
         rho = M*press/T/R
 
+        ! macroparameters required for transport coeffs calculation:
         transport%temp = T
         transport%mass_fractions = y
         transport%rho = rho
