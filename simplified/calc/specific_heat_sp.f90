@@ -42,8 +42,8 @@ subroutine VibrEn(temp, en_out)
   ! Calculation of vibrational energy levels for N2, O2, NO
   
   do i=1,NUM_MOL
-      do j=0,L_vibr(i)
-          en_out(i)%vibr_en_sp(j) = we(i)*j - wexe(i)*j**2
+      do j=1,L_vibr(i)+1
+          en_out(i)%vibr_en_sp(j) = we(i)*(j-1) - wexe(i)*(j-1)**2
       end do
   end do
 
@@ -84,7 +84,7 @@ subroutine SpHeat(temp, mass_fr, c_out)
   ! Calculation of non-equilibrium partition functions Z_c(T)
 
   do i=1,NUM_MOL
-    zvibr = SUM(exp(-en_vibr(i)%vibr_en_sp/(Kb*T)))
+    zvibr(i) = SUM(exp(-en_vibr(i)%vibr_en_sp/(Kb*T)))
   end do
     
   ! Calculation of non-equilibrium vibrational specific heats
@@ -109,7 +109,10 @@ subroutine SpHeat(temp, mass_fr, c_out)
   c_out%cv_tot = cv_tot
   c_out%cv_int_sp = cv_int_sp
   c_out%cv_vibr_sp = cv_vibr_sp
-    
+
+  do i=1,NUM_MOL
+    if (allocated(en_vibr(i)%vibr_en_sp)) deallocate(en_vibr(i)%vibr_en_sp)
+  end do
 end subroutine SpHeat
     
 end module specific_heat_sp
