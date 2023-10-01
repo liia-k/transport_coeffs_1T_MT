@@ -21,6 +21,7 @@ type transport_out
 
     real visc, bulk_visc, ltot ! shear viscosity,  bulk viscosity, thermal conductivity
     real :: thdiff(1:NUM_SP) ! vector of thermal diffusion coeffs
+    real :: effDiff(1:NUM_SP) ! vector of effective diffusion coeffs
     real :: DIFF(1:NUM_SP,1:NUM_SP) ! matrix of diffusion coeffs
 end type
 

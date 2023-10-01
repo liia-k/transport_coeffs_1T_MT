@@ -58,9 +58,11 @@ module transport_1t_simpl
 
         real visc
 
+        real, dimension(NUM_SP) :: effDiff
+
         ! diffusion coeffcients matrix
 
-        real, dimension(NUM_SP,NUM_SP) :: DIFF
+        real, dimension(NUM_SP,NUM_SP) :: DIFF, binDiff
 
         ! matrices for the linear transport systems defining:
         ! heat conductivity and thermal diffusion (LTH);
@@ -86,7 +88,7 @@ module transport_1t_simpl
 
         ! macroparameters
 
-        real T, ntot, rho, M
+        real T, ntot, rho, M, mij
 
         type(cv_out) :: cv
         type(omega_int) :: omega_out
@@ -112,6 +114,16 @@ module transport_1t_simpl
         call SpHeat(T, y, cv)
         call OmegaInt(T, omega_out)
         call BracketInt(T, x, omega_out, bracket_out)
+
+        ! Calculation of binary diffusion coefficients, for which only
+        ! omega integrals and molar fractions are required:
+
+        do i=1,NUM_SP
+            do j=1,NUM_SP
+              mij = MASS_SPCS(j)*(MASS_SPCS(i)*1E27)/(MASS_SPCS(i)*1E27 + MASS_SPCS(j)*1E27)
+              binDiff(i,j) = 3.*kb*T / 16./ ntot / mij / omega_out%OMEGA11(i,j)
+            end do
+        end do
 
         ! Definition of matrix LTH for calculation of 
         ! thermal conductivity and thermal diffuaion coefficients
@@ -239,6 +251,21 @@ module transport_1t_simpl
             print *, "shear viscosity is not calculated for the set:"
             call macro_output(data_in)
         end if
+
+        ! Calculation of effective diffusion coefficients
+
+        do i=1,NUM_SP
+            effDiff(i) = (1 - x(i)) / sum(x(:NUM_MOL)/binDiff(i,:NUM_MOL))
+        end do
+
+        do i=1,NUM_SP
+            if (exception(effDiff(i))) then
+                data_out%effDiff(i) = effDiff(i)
+            else
+                print *, "effective diffusion coeffs are not calculated for the set:"
+                call macro_output(data_in)
+            end if
+        end do
 
     
     end subroutine Transport1TSimpl

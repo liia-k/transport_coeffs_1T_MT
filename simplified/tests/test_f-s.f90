@@ -83,6 +83,13 @@ program test_free_stream
         end do
 
         write (6, *)
+        write (6, *) 'EFFECTIVE DIFFUSION COEFFICIENTS D_i, m^2/s'
+        write (6, *)
+
+
+        write (6, '(1x, 5E15.6)') (transport_coeff%effDiff(i), i=1,NUM_SP)
+
+        write (6, *)
 
         y(3) = y(3)/10
         y(4) = y(3)
