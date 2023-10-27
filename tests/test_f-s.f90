@@ -17,7 +17,7 @@ program test_free_stream
     integer :: i, j, k, n
 
     type(transport_in) :: transport
-    ! type(cv_out) :: cv
+    ! type(SpHeatVOut) :: cv
     ! type(omega_int) :: omega_test
     ! type(bracket_int) :: bracket_test
     type(transport_out) :: transport_coeff

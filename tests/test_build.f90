@@ -16,7 +16,7 @@ program test_build
     integer :: i, j, k, n
 
     type(transport_in) :: transport
-    ! type(cv_out) :: cv
+    ! type(SpHeatVOut) :: cv
     ! type(omega_int) :: omega_test
     ! type(bracket_int) :: bracket_test
     type(transport_out) :: transport_coeff
@@ -77,47 +77,47 @@ program test_build
     close(6)
 
 
-    open(6, file='../res/air5-1Ttest-effDiff.txt', status='unknown')
+    ! open(6, file='../res/air5-1Ttest-effDiff.txt', status='unknown')
 
-    write (6, *) 'INPUT DATA:'
-    write (6, *)
+    ! write (6, *) 'INPUT DATA:'
+    ! write (6, *)
 
-    write (6, '(A25,E13.6)') 'Pressure, Pa:       ',press
-    write (6, '(A25,E13.6)') 'N2 molar fraction:  ',x(1)
-    write (6, '(A25,E13.6)') 'O2 molar fraction:  ',x(2)
-    write (6, '(A25,E13.6)') 'NO molar fraction:  ',x(3)
-    write (6, '(A25,E13.6)') 'N molar fraction:   ',x(4)
-    write (6, '(A25,E13.6)') 'O molar fraction:   ',x(5)
+    ! write (6, '(A25,E13.6)') 'Pressure, Pa:       ',press
+    ! write (6, '(A25,E13.6)') 'N2 molar fraction:  ',x(1)
+    ! write (6, '(A25,E13.6)') 'O2 molar fraction:  ',x(2)
+    ! write (6, '(A25,E13.6)') 'NO molar fraction:  ',x(3)
+    ! write (6, '(A25,E13.6)') 'N molar fraction:   ',x(4)
+    ! write (6, '(A25,E13.6)') 'O molar fraction:   ',x(5)
 
     
-    do k = 500, n, 100
+    ! do k = 500, n, 100
 
-        T = k
-        ntot = press/T/Kb
-        rho = sum(MASS_SPCS*ntot*x)
-        ! M = dot_product(X,MOLAR)
-        ! rho = M*press/R/T
+    !     T = k
+    !     ntot = press/T/Kb
+    !     rho = sum(MASS_SPCS*ntot*x)
+    !     ! M = dot_product(X,MOLAR)
+    !     ! rho = M*press/R/T
         
-        y = (ntot/rho)*x*MASS_SPCS
+    !     y = (ntot/rho)*x*MASS_SPCS
 
-        transport%temp = T
-        transport%mass_fractions = y
-        transport%rho = rho
+    !     transport%temp = T
+    !     transport%mass_fractions = y
+    !     transport%rho = rho
 
-        call Transport1TSimpl(transport, transport_coeff)
+    !     call Transport1TSimpl(transport, transport_coeff)
 
-        write (6, *)
-        write (6, '(A25,E13.6)') 'Temperature:       ',T
-        write (6, *)
+    !     write (6, *)
+    !     write (6, '(A25,E13.6)') 'Temperature:       ',T
+    !     write (6, *)
 
-        write (6, *) 'EFFECTIVE DIFFUSION COEFFICIENTS D_i, m^2/s'
-        write (6, *)
+    !     write (6, *) 'EFFECTIVE DIFFUSION COEFFICIENTS D_i, m^2/s'
+    !     write (6, *)
 
-        write (6, '(1x, 5E15.6)') (transport_coeff%effDiff(i), i=1,NUM_SP)
+    !     write (6, '(1x, 5E15.6)') (transport_coeff%effDiff(i), i=1,NUM_SP)
 
-        write (6, *)
-    end do
+    !     write (6, *)
+    ! end do
 
-    close(6)
+    ! close(6)
 
 end program

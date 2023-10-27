@@ -55,7 +55,7 @@ module transport_1t_simpl
 
         real T, ntot, rho, M
 
-        type(cv_out) :: cv
+        type(SpHeatVOut) :: cv
         type(omega_int) :: omega_out
         type(bracket_int) :: bracket_out
 

@@ -90,9 +90,11 @@ module transport_1t_simpl
 
         real T, ntot, rho, M, mij
 
-        type(cv_out) :: cv
+        type(SpHeatVOut) :: cv
         type(omega_int) :: omega_out
         type(bracket_int) :: bracket_out
+
+        integer :: max_index
 
 
         T = data_in%temp
@@ -101,8 +103,10 @@ module transport_1t_simpl
 
         ! Since the transport coefficient are barely affected if one of the mass fractions is of order 1e-5 and smaller,
         ! the values of such mass fractions are set to be equal to the mentioned order:
+        max_index = max(maxloc(y,dim=1),0)
         do i=1,NUM_SP
             if (abs(y(i)) < 1e-5) then
+                y(max_index) = y(max_index) + y(i) - 1e-5 ! to ensure that sum(y) = 1 +- 1e10
                 y(i) = 1e-5
             end if
         end do
