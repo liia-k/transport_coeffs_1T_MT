@@ -122,12 +122,15 @@ module transport_1t_simpl
         ! Calculation of binary diffusion coefficients, for which only
         ! omega integrals and molar fractions are required:
 
+
         do i=1,NUM_SP
             do j=1,NUM_SP
               mij = MASS_SPCS(j)*(MASS_SPCS(i)*1E27)/(MASS_SPCS(i)*1E27 + MASS_SPCS(j)*1E27)
-              binDiff(i,j) = 3.*kb*T / 16./ ntot / mij / omega_out%OMEGA11(i,j)
+              binDiff(i,j) = 3.*kb*T / 16./ (ntot * mij) / omega_out%OMEGA11(i,j)
             end do
         end do
+
+
 
         ! Definition of matrix LTH for calculation of 
         ! thermal conductivity and thermal diffuaion coefficients
@@ -144,7 +147,7 @@ module transport_1t_simpl
         ! The system has a form:
         ! LDIFF times D = B1, D a is the matrix of unknowns
         
-        LDIFF = LTH(1:NUM_SP, 1:NUM_SP)
+        ! LDIFF = LTH(1:NUM_SP, 1:NUM_SP)
         
         ! End of matrix LDIFF definition
 
@@ -170,18 +173,18 @@ module transport_1t_simpl
         ! Definition of matrix B1 (right hand side of system for calculation of
         ! diffuaion coefficients)
 
-        do i=1,NUM_SP
-            do j=1,NUM_SP
-            if (i==j) then 
-                delta = 1
-            else
-                delta = 0
-            end if
-            B1(i,j) = 8./25./Kb*(delta - y(i))! 3*kb*T*(delta-y(i));
-            end do
-        end do
+        ! do i=1,NUM_SP
+        !     do j=1,NUM_SP
+        !     if (i==j) then 
+        !         delta = 1
+        !     else
+        !         delta = 0
+        !     end if
+        !     B1(i,j) = 8./25./Kb*(delta - y(i))! 3*kb*T*(delta-y(i));
+        !     end do
+        ! end do
         
-        B1(1, 1:NUM_SP) = 0
+        ! B1(1, 1:NUM_SP) = 0
        
         ! End of matrix b1 definition
             
@@ -200,13 +203,13 @@ module transport_1t_simpl
         call QRDecomposition(HVISC,Q_HVISC,R_HVISC,NUM_SP)
 
         call InvertQR(Q_LTH,R_LTH,Inverse_LTH,NUM_SP)
-        call InvertQR(Q_LDIFF,R_LDIFF,Inverse_LDIFF,NUM_SP)
+        ! call InvertQR(Q_LDIFF,R_LDIFF,Inverse_LDIFF,NUM_SP)
         call InvertQR(Q_HVISC,R_HVISC,Inverse_HVISC,NUM_SP)
 
         ! Solutions:
         
         b = matmul(Inverse_LTH,b)
-        B1 = matmul(Inverse_LDIFF,B1)
+        ! B1 = matmul(Inverse_LDIFF,B1)
         b2 = matmul(Inverse_HVISC,b2)
         
        
@@ -232,18 +235,18 @@ module transport_1t_simpl
 
         ! Diffusion coefficients DIFF(i,j)
 
-        DIFF = (1./2./ntot)*b1
+        ! DIFF = (1./2./ntot)*b1
 
-        do i=1,NUM_SP
-            do j=1,NUM_SP
-                if (exception(DIFF(i,j))) then
-                    data_out%DIFF(i,j) = DIFF(i,j)
-                else
-                    print *, "diffusion coeffs are not calculated for the set:"
-                    call macro_output(data_in)
-                end if
-            end do
-        end do
+        ! do i=1,NUM_SP
+        !     do j=1,NUM_SP
+        !         if (exception(DIFF(i,j))) then
+        !             data_out%DIFF(i,j) = DIFF(i,j)
+        !         else
+        !             print *, "diffusion coeffs are not calculated for the set:"
+        !             call macro_output(data_in)
+        !         end if
+        !     end do
+        ! end do
 
         ! Shear viscosity coefficient VISC
 
@@ -259,8 +262,11 @@ module transport_1t_simpl
         ! Calculation of effective diffusion coefficients
 
         do i=1,NUM_SP
-            effDiff(i) = (1 - x(i)) / sum(x(:NUM_MOL)/binDiff(i,:NUM_MOL))
+            effDiff(i) = (1 - x(i)) / sum(x(1:NUM_MOL)/binDiff(i,1:NUM_MOL))
         end do
+
+        ! write (6, *) 'effective DIFFUSION COEFFICIENTS D_i, m^2/s'
+        ! write (6, '(1x, E13.6)') (effDiff(i), i=1,NUM_SP)
 
         do i=1,NUM_SP
             if (exception(effDiff(i))) then
