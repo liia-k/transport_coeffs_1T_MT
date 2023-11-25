@@ -30,6 +30,7 @@ contains
 	real, dimension(NUM_SP), intent(in) :: x ! molar fractions
 	type(omega_int), intent(in)      :: omega_in
 	type(bracket_int), intent(out)   :: bracket_out
+	
 
 	integer i, j, k
 	real mij

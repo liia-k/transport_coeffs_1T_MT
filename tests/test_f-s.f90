@@ -22,6 +22,9 @@ program test_free_stream
     ! type(bracket_int) :: bracket_test
     type(transport_out) :: transport_coeff
 
+    character(len=*), parameter :: interaction = 'ESA-Bruno' ! 'VSS' 'Lennard-Jones', 'Born-Mayer', 'ESA-Bruno'
+
+
     ! critical values for test, free-stream conditions
     y(1) = 0.768
     y(2) = 0.232
@@ -48,7 +51,7 @@ program test_free_stream
         !CALL S_Heat(transport[k], cv)
         !CALL Omega(transport%temp, omega_test)
         !CALL Bracket(transport%temp, x, omega_test, bracket_test)
-        call Transport1TSimpl(transport, transport_coeff)
+        call Transport1TSimpl(transport, transport_coeff, interaction)
 
         open(6, file='../res/air5_1T_test_free-stream.txt', status='unknown')
 

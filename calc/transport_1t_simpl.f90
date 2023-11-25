@@ -34,7 +34,7 @@ module transport_1t_simpl
 
 
 
-    subroutine Transport1TSimpl(data_in, data_out)
+    subroutine Transport1TSimpl(data_in, data_out, interactionType)
 
     ! Simplified calcultaion of transport coeffs
 
@@ -46,6 +46,7 @@ module transport_1t_simpl
 
 
         type(transport_in),intent(in)   :: data_in ! macroparametrs
+        character(len=*), intent(in) :: interactionType ! particles interaction potential
         type(transport_out),intent(out) :: data_out ! set of transport coeffs
         
         integer i, j, delta
@@ -116,7 +117,7 @@ module transport_1t_simpl
         x = (rho/ntot)*Y/MASS_SPCS
 
         call SpHeat(T, y, cv)
-        call OmegaInt(T, omega_out)
+        call OmegaInt(T, omega_out, interactionType)
         call BracketInt(T, x, omega_out, bracket_out)
 
         ! Calculation of binary diffusion coefficients, for which only

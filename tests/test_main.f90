@@ -20,6 +20,9 @@ program test_main
     type(transport_in) :: transport
     type(transport_out) :: transport_coeff
 
+    character(len=*), parameter :: interaction = 'ESA-Bruno' ! 'VSS' 'Lennard-Jones', 'Born-Mayer', 'ESA-Bruno'
+
+
 
     n = 10000
 
@@ -57,7 +60,7 @@ program test_main
         write (6, '(A25,E13.6)') 'N mass fraction:   ',y(4)
         write (6, '(A25,E13.6)') 'O mass fraction:   ',y(5)
 
-        call Transport1TSimpl(transport, transport_coeff)
+        call Transport1TSimpl(transport, transport_coeff, interaction)
 
         write (6, *) 'TRANSPORT COEFFICIENTS:'
         write (6, *)
@@ -66,13 +69,12 @@ program test_main
         write (6, '(1x, A45, E13.5)') 'Thermal cond. coef. lambda, W/m/K             ', transport_coeff%ltot
         
         write (6, *)
-        write (6, *) 'DIFFUSION COEFFICIENTS D_ij, m^2/s'
+        write (6, *) 'EFFECTIVE DIFFUSION COEFFICIENTS D_ij, m^2/s'
         write (6, *)
 
 
-        do i=1,NUM_SP
-            write (6, '(1x, 5E15.6)') (transport_coeff%DIFF(i,j), j=1,NUM_SP)
-        end do
+        write (6, '(1x, 5E15.6)') (transport_coeff%effDIFF(i), i=1,NUM_SP)
+        
 
         write (6, *)
 

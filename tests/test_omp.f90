@@ -27,6 +27,8 @@ program test_omp
     ! type(bracket_int) :: bracket_test
     type(transport_out), dimension(:), allocatable :: transport_coeff
 
+    character(len=*), parameter :: interaction = 'ESA-Bruno' ! 'VSS' 'Lennard-Jones', 'Born-Mayer', 'ESA-Bruno'
+
 
     x(1)=0.77999
     x(2)=0.19999
@@ -71,7 +73,7 @@ program test_omp
         !call SpHeat(transport[k], cv)
         !call OmegaInt(transport%temp, omega_test)
         !call BracketInt(transport%temp, x, omega_test, bracket_test)
-        call Transport1TSimpl(transport(k), transport_coeff(k))
+        call Transport1TSimpl(transport(k), transport_coeff(k), interaction)
 
         write (6, *) 'Process num. ', OMP_GET_THREAD_NUM()
 
