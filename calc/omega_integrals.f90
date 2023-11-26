@@ -60,7 +60,7 @@ subroutine OmegaInt(T, omega_out, interactionType)
 			
 			aa(i,j) = omega22(i,j) / omega11(i,j) / 2.0
 		end do
-		end do
+	end do
 	
 	case ('Born-Mayer')
 

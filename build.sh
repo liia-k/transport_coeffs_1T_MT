@@ -27,6 +27,8 @@ gfortran -o test_omp -fopenmp test_omp.o ../solvers/qr.o ../data/constant_air5.o
 # 5
 gfortran -c testModels.f90 -I ../data -I ../solvers -I ../calc
 gfortran -o testModels testModels.o ../solvers/qr.o ../data/constant_air5.o ../data/defs_models.o ../calc/specific_heat_sp.o ../calc/omega_integrals.o ../calc/bracket_integrals.o ../calc/transport_1t_simpl.o -ffree-form -ffree-line-length-0 -fdefault-double-8  -cpp
-
+# 6
+gfortran -c testModelsTime.f90 -I ../data -I ../solvers -I ../calc
+gfortran -o testModelsTime testModelsTime.o ../solvers/qr.o ../data/constant_air5.o ../data/defs_models.o ../calc/specific_heat_sp.o ../calc/omega_integrals.o ../calc/bracket_integrals.o ../calc/transport_1t_simpl.o -ffree-form -ffree-line-length-0 -fdefault-double-8  -cpp
 
 #rm **/*.mod **/*.o

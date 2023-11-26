@@ -18,6 +18,7 @@ program testModels
     type(transport_out) :: transport_coeff
 
     real, dimension(4, size) :: shearVisc, thermCond
+    real, dimension(size) :: tempArray
 
     character(len=25), dimension(4) :: interaction 
                       
@@ -47,6 +48,7 @@ program testModels
         
         y = (ntot/rho)*x*MASS_SPCS
 
+        tempArray(j) = T
         transport%temp = T
         transport%mass_fractions = y
         transport%rho = rho
@@ -62,14 +64,13 @@ program testModels
     open(6, file='../res/shearVisc.txt', status='unknown')
 
     write (6, *)
-    write (6, '(1x, A40)') 'Shear viscosity coefficient:'
+    write (6, '(1x, A40)') 'Shear viscosity coefficients:'
     write (6, *)
-    write (6, '(4x, A15, A15, A15, A15)') interaction(:)
-    write (6, *)
+    write (6, '(1x, A6, 4(A14, 1X))') 'Temp.', interaction(:)
 
     do k = 1, size
 
-        write (6, '(4x, E13.6, E13.6, E13.6, E13.6)') shearVisc(:,k)
+        write (6, '(1x, F5.0, 4(E13.6, 1X))') tempArray(k), shearVisc(:,k)
 
     end do
 
@@ -80,12 +81,11 @@ program testModels
     write (6, *)
     write (6, '(1x, A40)') 'Thermal conductivity coefficient:'
     write (6, *)
-    write (6, '(4x, A15, A15, A15, A15)') interaction(:)
-    write (6, *)
+    write (6, '(1x, A6, 4(A14, 1X))') 'Temp.', interaction(:)
 
     do k = 1, size
 
-        write (6, '(4x, E13.6, E13.6, E13.6, E13.6)') thermCond(:,k)
+        write (6, '(1x, F5.0, 4(E13.6, 1X))') tempArray(k), thermCond(:,k)
 
     end do
 
