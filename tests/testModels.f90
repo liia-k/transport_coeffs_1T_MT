@@ -36,6 +36,12 @@ program testModels
 
     press = 100000
 
+    ! do i=1,NUM_SP
+	! 	do j=1,NUM_SP
+    !         write (*, *) gamma(3 - OMEGA_VSS(i,j))
+    !     end do
+    ! end do
+
     j = 0
     do k = start, end, step
 
@@ -91,5 +97,6 @@ program testModels
 
     close(6)
 
+    
 
 end program

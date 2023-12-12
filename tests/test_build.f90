@@ -24,10 +24,10 @@ program test_build
     character(len=*), parameter :: interaction = 'ESA-Bruno' ! 'VSS' 'Lennard-Jones', 'Born-Mayer', 'ESA-Bruno'
 
     x(1) = 0.77999 
-    x(5) = 0.19999 
+    x(2) = 0.19999 
     x(3) = 0.01999
     x(4) = 0.00086999 
-    x(2) = 0.00099 
+    x(5) = 0.00099 
    
 
     press = 100000
@@ -68,7 +68,7 @@ program test_build
         transport%mass_fractions = y
         transport%rho = rho
 
-        call Transport1TSimpl(transport, transport_coeff, interaction)
+        call Transport1TSimpl(transport, transport_coeff) ! default model used
 
         write (6, '(1x, F12.0, E13.6, E13.6, E13.6)') transport%temp, transport_coeff%visc, &
                                                       transport_coeff%ltot

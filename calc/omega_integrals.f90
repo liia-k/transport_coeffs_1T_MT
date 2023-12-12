@@ -23,7 +23,7 @@ subroutine OmegaInt(T, omega_out, interactionType)
 
 	real,intent(in)   :: T ! temperature
 	type(omega_int),intent(out) :: omega_out
-	character(len=*), intent(in) :: interactionType
+	character(len=*), intent(in), optional :: interactionType
   
 	integer i, j, k
 	real x11, eij, mij, sig_ij, sij, tx, term, term2, term3, term4, eij_eV, T_star, nu_star, r_star, x
@@ -106,7 +106,7 @@ subroutine OmegaInt(T, omega_out, interactionType)
 			
 			aa(i,j) = omega22(i,j)/omega11(i,j)/2.0
 		end do
-		end do
+	end do
 
 	case('ESA-Bruno')
 
@@ -177,7 +177,7 @@ subroutine OmegaInt(T, omega_out, interactionType)
 			
 			aa(i,j) = omega22(i,j)/omega11(i,j)/2.0
 		end do
-		end do
+	end do
 
 	case ('Lennard-Jones')
 
@@ -224,6 +224,77 @@ subroutine OmegaInt(T, omega_out, interactionType)
 		
 		aa(i,j) = omega22(i,j)/omega11(i,j)/2.0
 	  end do
+	end do
+
+case default ! ESA-Bruno
+
+	do i=1,NUM_SP
+		do j=1,NUM_SP
+			sig_ij = (SIGMA_LJ(i)+SIGMA_LJ(j))/2.
+			mij = MASS_SPCS(j)*(MASS_SPCS(i)*1E27)/(MASS_SPCS(i)*1E27 + MASS_SPCS(j)*1E27)
+			sij = PI * (sig_ij)**2 * sqrt((Kb/mij)*T/2./pi) ! of 1e-7 and higher order
+
+			x = log(kB_eV * T / (E_0_VSS(i,j) / 1.0e3)) ! the latter is done to convert meV to eV
+			! WRITE (*,*) 'x in ESa model ', x
+	
+			! All the omega-ints are of 1e-6 and higher order
+			
+			! omega11
+			do k=1,7
+				aj_ESA(k) = OMEGA11_CONST_ESA(k,1) + OMEGA11_CONST_ESA(k,2)*BETA_VSS(i,j) &
+							+ OMEGA11_CONST_ESA(k,3)*BETA_VSS(i,j)**2
+			end do
+			! WRITE (*,*) 'a_j polynomials ', (aj_ESA(k), k=1,7)
+
+			term = (x - aj_ESA(3))/aj_ESA(4)
+			term2 = (x - aj_ESA(6))/aj_ESA(7)
+			term3 = aj_ESA(1) + aj_ESA(2)*x
+			
+			omega11(i,j) = sij * exp( term3 * exp(term)/ (exp(term) + exp(-1.*term)) &
+						   + aj_ESA(5) * exp(term2)/ (exp(term2) + exp(-1.*term2)))
+			! WRITE (*,*) 'Omega11_ij = ', omega11(i,j)
+			! omega12
+			do k=1,7
+				aj_ESA(k) = OMEGA12_CONST_ESA(k,1) + OMEGA12_CONST_ESA(k,2)*BETA_VSS(i,j) &
+							+ OMEGA12_CONST_ESA(k,3)*BETA_VSS(i,j)**2
+			end do
+
+			term = (x - aj_ESA(3))/aj_ESA(4)
+			term2 = (x - aj_ESA(6))/aj_ESA(7)
+			term3 = aj_ESA(1) + aj_ESA(2)*x
+			omega12(i,j) = 3 * sij * exp( term3 * exp(term)/ (exp(term) + exp(-term)) &
+						   + aj_ESA(5) * exp(term2)/ (exp(term2) + exp(-term2)))
+			
+			! omega13
+			do k=1,7
+				aj_ESA(k) = OMEGA13_CONST_ESA(k,1) + OMEGA13_CONST_ESA(k,2)*BETA_VSS(i,j) &
+							+ OMEGA13_CONST_ESA(k,3)*BETA_VSS(i,j)**2
+			end do
+
+			term = (x - aj_ESA(3))/aj_ESA(4)
+			term2 = (x - aj_ESA(6))/aj_ESA(7)
+			term3 = aj_ESA(1) + aj_ESA(2)*x
+			omega13(i,j) = 12 * sij * exp( term3 * exp(term)/ (exp(term) + exp(-term)) &
+						   + aj_ESA(5) * exp(term2)/ (exp(term2) + exp(-term2)))
+
+			! omega22
+			do k=1,7
+				aj_ESA(k) = OMEGA22_CONST_ESA(k,1) + OMEGA22_CONST_ESA(k,2)*BETA_VSS(i,j) &
+							+ OMEGA22_CONST_ESA(k,3)*BETA_VSS(i,j)**2
+			end do
+
+			term = (x - aj_ESA(3))/aj_ESA(4)
+			term2 = (x - aj_ESA(6))/aj_ESA(7)
+			term3 = aj_ESA(1) + aj_ESA(2)*x
+			omega22(i,j) = 2 * sij * exp( term3 * exp(term)/ (exp(term) + exp(-term)) &
+						   + aj_ESA(5) * exp(term2)/ (exp(term2) + exp(-term2)))
+		
+			bb(i,j) = (5./3.*omega12(i,j) - 1./3.*omega13(i,j))/omega11(i,j)
+	
+			cc(i,j) = omega12(i,j)/omega11(i,j)/3.0
+			
+			aa(i,j) = omega22(i,j)/omega11(i,j)/2.0
+		end do
 	end do
 
 	end select

@@ -27,7 +27,7 @@ subroutine VibrEn(temp, en_out)
   ! Calculates vibr. energy for molecular species
   
   real, intent(in)   :: temp
-  integer, dimension(NUM_MOL, maxval(L_vibr)) :: en_out
+  integer, dimension(NUM_MOL, maxval(L_vibr) + 1) :: en_out
   ! type(dim), dimension(NUM_MOL), intent(out) :: en_out
 
   integer i, j
@@ -63,7 +63,7 @@ subroutine SpHeat(temp, mass_fr, c_out)
   integer i
   
   ! type(dim), dimension(NUM_MOL) :: en_vibr
-  integer, dimension(NUM_MOL, maxval(L_vibr)) :: en_vibr
+  integer, dimension(NUM_MOL, maxval(L_vibr) + 1) :: en_vibr
 
   real, dimension(NUM_MOL) :: zvibr ! vibrational partition functions for species
   
