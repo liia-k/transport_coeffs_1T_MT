@@ -30,13 +30,10 @@ program test_omp
     character(len=*), parameter :: interaction = 'ESA-Bruno' ! 'VSS' 'Lennard-Jones', 'Born-Mayer', 'ESA-Bruno'
 
 
-    x(1)=0.77999
-    x(2)=0.19999
-    x(3)=0.01999
-    x(4)=0.00086999
-    x(5)=0.00099
+    x = [0.77999, 0.19999, 0.01999, 0.00086999, 0.00099]
 
     n = 10000 ! iterations
+    press = 100000.0
 
     allocate(transport(n))
     allocate(transport_coeff(n))
@@ -47,13 +44,16 @@ program test_omp
     ! y(4) = 0.421982E-03   
     ! y(5) = 0.548507E-03
 
-    press = 100000
+    ! get the number of threads
+    !$omp parallel
+    num_threads = omp_get_num_threads()
+    !$omp end parallel
+
+    print *, "Number of threads: ", num_threads
 
     call cpu_time(t1)
 
-    !$OMP parallel
-
-    ! !$OMP do
+    !$omp parallel do private(t, rho, y) schedule(dynamic, 100)
 
     do k = 500, n
 
@@ -79,15 +79,15 @@ program test_omp
 
     end do
 
-    ! !$OMP end do
+    !$omp end parallel do
 
-    !$OMP end parallel
-
-    ! !$OMP critical
 
     call cpu_time(t2)
 
-    print *, t2 - t1
+    total_time = t2 - t1
+
+    print '(a,f10.3,a)', "Total execution time: ", total_time, " seconds"
+    print '(a,f10.3,a)', "Average time per iteration: ", total_time / (n-499), " seconds"
 
     open(6, file='../res/air5_1T_test_omp.txt', status='unknown')
 
@@ -135,7 +135,5 @@ program test_omp
     end do
 
     close(6)
-
-    ! !$OMP end critical
 
 end program

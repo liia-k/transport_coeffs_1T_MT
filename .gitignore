@@ -1,0 +1,4 @@
+# Ignore power shell and shell files
+*.ps1
+*.sh
+.vscode
