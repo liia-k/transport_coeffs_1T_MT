@@ -60,20 +60,52 @@ real, dimension(NUM_SP), parameter  :: EPS_LJ=(/97.5, 107.4, 119.0, 71.4, 80.0/)
 ! Koura, K. and Matsumoto, H., 1992. Variable soft sphere molecular model for air species. 
 ! Physics of Fluids A: Fluid Dynamics, 4(5), pp.1083-1085.
 
-real, dimension(NUM_SP,NUM_SP), parameter :: C_VSS = reshape((/ 216.1e-20, 192.0e-20, 203.8e-20, 240.3e-20, 167.1e-20, & 
+real, dimension(NUM_SP,NUM_SP), parameter :: C_VSS = reshape((/ &
+													216.1e-20, 192.0e-20, 203.8e-20, 240.3e-20, 167.1e-20, & 
 													192.0e-20, 155.6e-20, 173.1e-20, 139.9e-20, 114.7e-20, &
 													203.8e-20, 173.1e-20, 187.6e-20, 181.5e-20, 135.4e-20, &
 													240.3e-20, 139.9e-20, 181.5e-20, 306.8e-20, 163.6e-20, &
 													167.1e-20, 114.7e-20, 135.4e-20, 163.6e-20, 106.9e-20 /), &
 													shape(C_VSS), order=(/2,1/)) ! m^2
-real, dimension(NUM_SP,NUM_SP), parameter :: OMEGA_VSS = reshape((/ 0.235, 0.225, 0.230, 0.275, 0.239, & 
-														0.225, 0.201, 0.213, 0.221, 0.199, &
-														0.230, 0.213, 0.221, 0.244, 0.217, &
-														0.275, 0.221, 0.244, 0.328, 0.268, &
-														0.239, 0.199, 0.217, 0.268, 0.225 /), &
-														shape(OMEGA_VSS), order=(/2,1/)) ! dimensionless
+real, dimension(NUM_SP,NUM_SP), parameter :: OMEGA_VSS = reshape((/ &
+													0.235, 0.225, 0.230, 0.275, 0.239, & 
+													0.225, 0.201, 0.213, 0.221, 0.199, &
+													0.230, 0.213, 0.221, 0.244, 0.217, &
+													0.275, 0.221, 0.244, 0.328, 0.268, &
+													0.239, 0.199, 0.217, 0.268, 0.225 /), &
+													shape(OMEGA_VSS), order=(/2,1/)) ! dimensionless
 
+real, dimension(NUM_SP,NUM_SP), parameter :: C_VSS_D = reshape((/ &
+													241.4e-20, 199.2e-20, 219.1e-20, 215.4e-20, 150.1e-20, &
+													199.2e-20, 160.6e-20, 179.1e-20, 125.9e-20, 103.7e-20, &
+													219.1e-20, 179.1e-20, 198.1e-20, 163.1e-20, 122.0e-20, &
+													215.4e-20, 125.9e-20, 163.1e-20, 274.3e-20, 146.6e-20, &
+													150.1e-20, 103.7e-20, 122.0e-20, 146.6e-20,  96.2e-20 /), &
+													shape(C_VSS_D), order=(/2,1/)) ! m^2
 
+real, dimension(NUM_SP,NUM_SP), parameter :: C_VSS_ETA = reshape((/ &
+													142.5e-20, 128.6e-20, 135.5e-20, 165.4e-20, 114.6e-20, &
+													128.6e-20, 103.9e-20, 115.7e-20,  95.8e-20,  78.5e-20, &
+													135.5e-20, 115.7e-20, 125.0e-20, 124.6e-20,  92.7e-20, &
+													165.4e-20,  95.8e-20, 124.6e-20, 212.9e-20, 112.4e-20, &
+													114.6e-20,  78.5e-20,  92.7e-20, 112.4e-20,  73.3e-20 /), &
+													shape(C_VSS_ETA), order=(/2,1/)) ! m^2
+
+real, dimension(NUM_SP,NUM_SP), parameter :: OMEGA_VSS_D = reshape((/ &
+													0.274, 0.252, 0.263, 0.295, 0.254, &
+													0.252, 0.224, 0.238, 0.234, 0.211, &
+													0.263, 0.238, 0.250, 0.260, 0.230, &
+													0.295, 0.234, 0.260, 0.357, 0.286, &
+													0.254, 0.211, 0.230, 0.286, 0.239 /), &
+													shape(OMEGA_VSS_D), order=(/2,1/)) ! dimensionless
+
+real, dimension(NUM_SP,NUM_SP), parameter :: OMEGA_VSS_ETA = reshape((/ &
+													0.231, 0.222, 0.227, 0.276, 0.239, &
+													0.222, 0.198, 0.210, 0.221, 0.199, &
+													0.227, 0.210, 0.218, 0.244, 0.217, &
+													0.276, 0.221, 0.244, 0.335, 0.269, &
+													0.239, 0.199, 0.217, 0.269, 0.225 /), &
+													shape(OMEGA_VSS_ETA), order=(/2,1/)) ! dimensionless
 
 ! Born-Mayer potential coefficients:
 

@@ -2,7 +2,7 @@ program test_main
     
     use defs_models
     use constant_air5
-    use transport_1t_simpl
+    use transport_1t
     
     implicit none
 
@@ -31,7 +31,7 @@ program test_main
     call cpu_time(t1)
     print *, "Start time: ", t1
 
-    open(10, file='../res/air5_1T_test_main.txt', status='unknown')
+    open(10, file='../res2/air5_1T_test_main.txt', status='unknown')
 
     do k = 1, n
         

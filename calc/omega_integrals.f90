@@ -1,5 +1,5 @@
 ! In this module, Omega-integrals and their ratios AA, BB, CC are calculated 
-! using the Lennard-Jones potential for moderate temperatures 
+! using different potentials: VSS, Born-Mayer, ESA-Bruno, Lennard-Jones.
 
 module omega_integrals
 
@@ -26,7 +26,7 @@ subroutine OmegaInt(T, omega_out, interactionType)
 	character(len=*), intent(in), optional :: interactionType
   
 	integer i, j, k
-	real x11, eij, mij, sig_ij, sij, tx, term, term2, term3, term4, eij_eV, T_star, nu_star, r_star, x
+	real x11, eij, mij, sig_ij, sij, tx, term, term2_D, term2_eta, term2, term3, term4, eij_eV, T_star, nu_star, r_star, x
 	real, dimension(6) :: Ak_BM
 	real, dimension(7) :: aj_ESA
   
@@ -43,16 +43,17 @@ subroutine OmegaInt(T, omega_out, interactionType)
 		do j=1,NUM_SP
 			mij = MASS_SPCS(j)*(MASS_SPCS(i)*1E27)/(MASS_SPCS(i)*1E27 + MASS_SPCS(j)*1E27)
 			term = sqrt(Kb/mij/8./pi) 
-			term2 = C_VSS(i,j)*T**(0.5 - OMEGA_VSS(i,j))
+			term2_D = C_VSS_D(i,j)*T**(0.5 - OMEGA_VSS_D(i,j))
+			term2_eta = C_VSS_eta(i,j)*T**(0.5 - OMEGA_VSS_eta(i,j))
 			! All the omega-ints are of 1e-6 and higher order
 	
-			omega11(i,j) = term * term2 * gamma(3 - OMEGA_VSS(i,j))
+			omega11(i,j) = term * term2_D * gamma(3 - OMEGA_VSS_D(i,j))
 	
-			omega22(i,j) = term * term2 * gamma(4 - OMEGA_VSS(i,j))
+			omega22(i,j) = term * term2_eta * gamma(4 - OMEGA_VSS_eta(i,j))
 	
-			omega12(i,j) = term * term2 * (3 - OMEGA_VSS(i,j)) * gamma(3 - OMEGA_VSS(i,j))
+			omega12(i,j) = term * term2_D * (3 - OMEGA_VSS_D(i,j)) * gamma(3 - OMEGA_VSS_D(i,j))
 	
-			omega13(i,j) = term * term2 * (3 - OMEGA_VSS(i,j)) * (4 - OMEGA_VSS(i,j)) * gamma(3 - OMEGA_VSS(i,j))
+			omega13(i,j) = term * term2_D * (3 - OMEGA_VSS_D(i,j)) * (4 - OMEGA_VSS_D(i,j)) * gamma(3 - OMEGA_VSS_D(i,j))
 		
 			bb(i,j) = (5./3.*omega12(i,j) - 1./3.*omega13(i,j))/omega11(i,j)
 	

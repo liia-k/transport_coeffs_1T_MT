@@ -3,394 +3,457 @@
 
 module transport_1t
 
+    ! Use statements for required modules
     use defs_models
+    use constant_air5
+    use specific_heat_sp
+    use omega_integrals
+    use bracket_integrals
+    use qr_decomposition
+    use, intrinsic :: ieee_arithmetic 
     
     implicit none
+    ! Define constants
+    real, parameter :: SMALL_VALUE = 1e-5
 
     contains
 
-    subroutine Transport1T(data_in, data_out)
+    subroutine Transport1TGeneral(data_in, data_out, interactionType)
+        implicit none
+        type(transport_in), intent(in) :: data_in
+        character(len=*), intent(in), optional :: interactionType
+        type(transport_out), intent(out) :: data_out
 
-        use constant_air5
-        use specific_heat_sp
-        use omega_integrals
-        use bracket_integrals
-        use qr_decomposition
-
-        type(transport_in),intent(in)   :: data_in
-        type(transport_out),intent(out) :: data_out 
-        
-        integer i, j, delta
-        ! REAL CU, CUT
-
-        !total heat conductivity; translational heat conductivity;
-        !internal heat conductivity;
-        !shear viscosity; bulk viscosity
-
-        real ltot, ltr, lint, visc, bulk_visc!, lrot_n2, lrot_o2, lrot_no, lvibr_n2, lvibr_o2, lvibr_no, 
-
-        !thermal diffusion coefficients (THDIFF);
-
-        real, dimension(NUM_SP) :: THDIFF 
-
-        !Diffusion coeffcients matrix
-
-        real, dimension(NUM_SP,NUM_SP) :: DIFF
-
-        !Matrices for the linear transport systems defining
-        !heat conductivity and thermal diffusion (LTH);
-        !bulk viscosity (BVISC);
-        !diffusion (LDIFF);
-        !shear viscisity (HVISC).
-
-        real, dimension(2*NUM_SP,2*NUM_SP) :: LTH, Q_LTH, R_LTH, Inverse_LTH
-
-        real, dimension(NUM_SP+NUM_MOL,NUM_SP+NUM_MOL) :: BVISC, Q_BVISC, R_BVISC, Inverse_BVISC
-
-        real, dimension(NUM_SP,NUM_SP) ::  LDIFF, Q_LDIFF, R_LDIFF, Inverse_LDIFF, &
-                                           HVISC, Q_HVISC, R_HVISC, Inverse_HVISC, &
-                                           b1
-
-        !Vectors of right hand terms
-
-        real, dimension(2*NUM_SP,1) :: b
-
-        real, dimension(NUM_SP,1) :: b2
-
-        real, dimension(NUM_SP+NUM_MOL,1) :: b3
-
-
-        real, dimension(NUM_SP) :: x, y
-
-        real T, ntot, rho, M
-
+        ! Local variables
+        type(transport_in_additional) :: data_add
+        real :: ltot, visc, bulk_visc
+        real, dimension(NUM_SP) :: effDiff, thdiff
+        real, dimension(NUM_SP, NUM_SP) :: DIFF
         type(SpHeatVOut) :: cv
         type(omega_int) :: omega_out
         type(bracket_int) :: bracket_out
 
-        T = data_in%temp
-        rho = data_in%rho
+        ! Initial calculations
+        call initialize(data_in, data_add)
+
+        ! Calculation of specific heats and omega + bracket integrals
+        call SpHeat(data_in%temp, data_in%mass_fractions, cv)
+        if (present(interactionType)) then
+            call OmegaInt(data_in%temp, omega_out, interactionType)
+        else
+            call OmegaInt(data_in%temp, omega_out)
+        end if
+        call BracketInt(data_in%temp, data_add%num_fractions, omega_out, bracket_out)
+
+        ! Calculations of transport coefficients
+        call calculateThermalCondAndDiff(data_add, cv, bracket_out, ltot, thdiff)
+        call calculateDiffCoeffs(data_add, bracket_out, DIFF)
+        call calculateShearVisc(data_add, bracket_out, visc)
+        call calculateBulkVisc(data_add, cv, bracket_out, bulk_visc)
+
+        effDiff = 0
+        ! Output results
+        call outputResults(data_in, data_out, ltot, DIFF, visc, bulk_visc, effDiff)
+
+    end subroutine Transport1TGeneral
+
+    subroutine Transport1TSimpl(data_in, data_out, interactionType)
+        implicit none
+        type(transport_in), intent(in) :: data_in
+        character(len=*), intent(in), optional :: interactionType
+        type(transport_out), intent(out) :: data_out
+
+        ! Local variables
+        type(transport_in_additional) :: data_add
+        real :: ltot, visc, bulk_visc
+        real, dimension(NUM_SP) :: effDiff, thdiff
+        real, dimension(NUM_SP, NUM_SP) :: DIFF
+        type(SpHeatVOut) :: cv
+        type(omega_int) :: omega_out
+        type(bracket_int) :: bracket_out
+
+        ! Initial calculations
+        call initialize(data_in, data_add)
+
+        ! Calculation of specific heats and omega + bracket integrals
+        call SpHeat(data_in%temp, data_in%mass_fractions, cv)
+        if (present(interactionType)) then
+            call OmegaInt(data_in%temp, omega_out, interactionType)
+        else
+            call OmegaInt(data_in%temp, omega_out)
+        end if
+        call BracketInt(data_in%temp, data_add%num_fractions, omega_out, bracket_out)
+
+        ! Calculations of transport coefficients
+        call calculateThermalCond(data_add, cv, bracket_out, ltot)
+        call calculateEffDiffCoeffs(data_add, omega_out, effDiff)
+        call calculateDiffCoeffs(data_add, bracket_out, DIFF)
+        call calculateShearVisc(data_add, bracket_out, visc)
+
+        thdiff = 0
+        bulk_visc = 0
+
+        ! Output results
+        call outputResults(data_in, data_out, ltot, DIFF, visc, bulk_visc, effDiff)
+
+    end subroutine Transport1TSimpl
+
+    subroutine initialize(data_in, data_add)
+        implicit none
+        type(transport_in), intent(in) :: data_in
+        type(transport_in_additional), intent(out) :: data_add
+        real, dimension(NUM_SP) :: y, x
+        real :: ntot, M
+        integer :: i, max_index
+
         y = data_in%mass_fractions
 
-        ! Since the transport coefficient are barely affected if one of the mass fractions is of order 1e-6 and smaller,
-        ! the values of such mass fractions are set to be equal to the mentioned order:
-        do i=1,NUM_SP
-            if (abs(y(i)) < 1e-6) then
-                y(i) = 1e-6
+        ! Adjust small mass fractions
+        max_index = max(maxloc(y, dim=1), 0)
+        do i = 1, NUM_SP
+            if (abs(y(i)) < SMALL_VALUE) then
+                y(max_index) = y(max_index) + y(i) - SMALL_VALUE
+                y(i) = SMALL_VALUE
             end if
         end do
 
-        M = 1/dot_product(y,1/MOLAR)
-        ntot = sum(rho*y/MASS_SPCS)
-        x = (rho/ntot)*y/MASS_SPCS
+        M = 1 / dot_product(y, 1 / MOLAR)
+        ntot = sum(data_in%rho * y / MASS_SPCS)
+        x = (data_in%rho / ntot) * y / MASS_SPCS
 
-        call SpHeat(T, y, cv)
-        call OmegaInt(T, omega_out)
-        call BracketInt(T, x, omega_out, bracket_out)
+        ! Set additional macroparameters
+        data_add%mass_fractions = y
+        data_add%rho = data_in%rho
+        data_add%temp = data_in%temp
+        data_add%ntot = ntot
+        data_add%M = M
+        data_add%num_fractions = x
+    end subroutine initialize
 
-        ! Definition of matrix LTH for calculation of 
-        ! thermal conductivity and thermal diffuaion coefficients
-        ! The system has a form:
-        ! LTH times a = b, a is the vector of unknowns
-        
-        LTH(1:NUM_SP, 1:NUM_SP) = bracket_out%Lambda00
-        ! DO i=1,5
-        !     DO j=1,5
-        !         LTH(i,j)=bracket_out%Lambda00(i,j)
-        !     END DO
-        ! END DO
-        
-        LTH(1:NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_out%Lambda01
-        ! DO i=1,5
-        !     DO j=6,10
-        !         LTH(i,j)=bracket_out%Lambda01(i,j-5)
-        !     END DO
-        ! END DO
-        
-        LTH(NUM_SP+1 : 2*NUM_SP, 1:NUM_SP) = LTH(1:NUM_SP, NUM_SP+1:2*NUM_SP)
-        ! DO i=6,10
-        !     DO j=1,5
-        !         LTH(i,j)=LTH(j,i)
-        !     END DO
-        ! END DO
-        
-        LTH(NUM_SP+1 : 2*NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_out%Lambda11
-        ! DO i=6,10
-        !     DO j=6,10
-        !         LTH(i,j)=bracket_out%Lambda11(i-5,j-5)
-        !     END DO
-        ! END DO
-        
-        LTH(1, 1:NUM_SP) = y
-        ! DO j=1,5
-        !     LTH(1,j)=y(j)!x(j)*MASS_SPCS(j)*ntot/rho
-        ! END DO
-        
-        LTH(1, NUM_SP+1 : 2*NUM_SP) = 0
-        ! DO j=6,10
-        !     LTH(1,j)=0.
-        ! END DO
-        ! End of matrix LTH definition
+    subroutine outputResults(data_in, data_out, ltot, DIFF, visc, bulk_visc, effDiff)
+        implicit none
+        type(transport_in), intent(in) :: data_in
+        type(transport_out), intent(out) :: data_out
+        real, intent(in) :: ltot, visc, bulk_visc
+        real, dimension(NUM_SP, NUM_SP), intent(in) :: DIFF
+        real, dimension(NUM_SP), intent(in) :: effDiff
+        integer :: i, j
 
+        ! Output thermal conductivity
+        if (exception(ltot)) then
+            data_out%ltot = ltot
+        else
+            print *, "thermal conductivity is not calculated for the set:"
+            call macro_output(data_in)
+            data_out%ltot = 0
+        end if
 
-        ! Definition of matrix LDIFF for calculation of 
-        ! diffuaion coefficients
-        ! The system has a form:
-        ! LDIFF times D = B1, D a is the matrix of unknowns
-        
-        LDIFF = LTH(1:NUM_SP, 1:NUM_SP)
-        ! DO i=1,5
-        !     DO j=1,5
-        !     LDIFF(i,j)=LTH(i,j)
-        !     END DO
-        ! END DO
-        ! End of matrix LDIFF definition
-
-
-        ! Definition of matrix HVISC for calculation of 
-        ! shear viscocity coefficient
-        ! The system has a form:
-        ! HVISC times h = b2, h a is the vector of unknowns
-        
-        HVISC = bracket_out%H00
-        ! DO i=1,5
-        !     DO j=1,5
-        !     HVISC(i,j)=bracket_out%H00(i,j)
-        !     END DO
-        ! END DO
-        ! End of matrix HVISC definition
-            
-            
-        ! Definition of matrix BVISC for calculation of 
-        ! bulk viscosity coefficients
-        ! The system has a form:
-        ! BVISC times f = b3, f is the vector of unknowns
-
-        do i=1,NUM_SP
-            BVISC(i, 1:NUM_SP) = x*bracket_out%beta11(i, 1:NUM_SP)
-            ! DO j=1,5
-            !     BVISC(i,j) = x(j)*bracket_out%beta11(i,j)
-            ! END DO
-        end do
-        
-        do i=1,NUM_SP
-            BVISC(i, NUM_SP+1 : NUM_SP+NUM_MOL) = y(:NUM_MOL)*bracket_out%beta01(i, :NUM_MOL)
-            ! DO j=6,8
-            !     BVISC(i,j) = y(j-5)*bracket_out%beta01(i,j-5)
-            ! END DO
-        end do
-        
-        BVISC(NUM_SP+1 : NUM_SP+NUM_MOL, 1:NUM_SP) = transpose(BVISC(:NUM_SP, NUM_SP+1 : NUM_SP+NUM_MOL))
-        ! DO i=6,8
-        !     DO j=1,5
-        !         BVISC(i,j)=BVISC(j,i)!x(j)*beta11(j,i)
-        !     END DO
-        ! END DO
-        
-        BVISC(NUM_SP+1 : NUM_SP+NUM_MOL, NUM_SP+1 : NUM_SP+NUM_MOL) = 0
-        ! DO i=6,8
-        !     DO j=6,8
-        !         BVISC(i,j)=0
-        !     END DO
-        ! END DO
-        
-        do i=NUM_SP+1,NUM_SP+NUM_MOL
-            BVISC(i,i) = y(i-5)*bracket_out%beta0011(i-5)
-        end do
-        ! BVISC(6,6)=y(1)*bracket_out%beta0011(1)
-        ! BVISC(7,7)=y(2)*bracket_out%beta0011(2)
-        ! BVISC(8,8)=y(3)*bracket_out%beta0011(3)
-        
-        BVISC(1, 1:NUM_SP) = ((3./2.)*R/M)*x ! Kb*ntot/rho
-        ! DO j=1,5
-        !     BVISC(1,j)=x(j)*3./2.*Kb*ntot/rho ! R/M
-        ! END DO
-        
-        BVISC(1, NUM_SP+1 : NUM_SP+NUM_MOL) = y(1:NUM_MOL)*(kb/MASS_SPCS(1:NUM_MOL))
-
-        ! DO j=6,6
-        !     BVISC(1,j)=y(1)*kb/MASS_SPCS(1)
-        ! END DO
-        
-        ! DO j=7,7
-        !     BVISC(1,j)=y(2)*kb/MASS_SPCS(2)
-        ! END DO
-        
-        ! DO j=8,8
-        !     BVISC(1,j)=y(3)*kb/MASS_SPCS(3)
-        ! END DO
-        
-        ! End of matrix BVISC definition
-            
-            
-        ! Definition of vector b (right hand side of system for calculation of
-        ! thermal conductivity and thermal diffuaion coefficients)
-
-        b(1:NUM_SP,1) = 0
-        b(NUM_SP+1 : 2*NUM_SP, 1) = (4./5./Kb)*x
-        ! DO i=1,5
-        !     b(i,1)=0.
-        ! END DO
-        ! DO i=6,10
-        !     b(i,1)=4./5./kb*x(i-5)!15./2.*T/kb*x(i-5)
-        ! END DO
-        ! End of vector b definition
-            
-            
-        ! Definition of matrix b1 (right hand side of system for calculation of
-        ! diffuaion coefficients)
-
-
-        do i=1,NUM_SP
-            do j=1,NUM_SP
-            if (i==j) then 
-                delta = 1
-            else
-                delta = 0
-            end if
-            B1(i,j) = 8./25./Kb*(delta - y(i))!3*kb*T*(delta-y(i));
+        ! Output diffusion coefficients
+        do i = 1, NUM_SP
+            do j = 1, NUM_SP
+                if (exception(DIFF(i, j))) then
+                    data_out%DIFF(i, j) = DIFF(i, j)
+                else
+                    print *, "diffusion coeffs are not calculated for the set:"
+                    call macro_output(data_in)
+                    data_out%DIFF(i, j) = 0
+                end if
             end do
         end do
+
+        ! Output shear viscosity
+        if (exception(visc)) then
+            data_out%visc = visc
+        else
+            print *, "shear viscosity is not calculated for the set:"
+            call macro_output(data_in)
+            data_out%visc = 0
+        end if
+
+        ! Output bulk viscosity
+        if (exception(bulk_visc)) then
+            data_out%bulk_visc = bulk_visc
+        else
+            print *, "bulk viscosity is not calculated for the set:"
+            call macro_output(data_in)
+            data_out%bulk_visc = 0
+        end if
+
+        ! Output effective diffusion coefficients
+        do i = 1, NUM_SP
+            if (exception(effDiff(i))) then
+                data_out%effDiff(i) = effDiff(i)
+            else
+                print *, "effective diffusion coeffs are not calculated for the set:"
+                call macro_output(data_in)
+                data_out%effDiff(i) = 0
+            end if
+        end do
+
+    end subroutine outputResults
+
+    logical function exception(var)
+    ! has a true value if var in not NaN and Infinity
+        real, intent(in) :: var
+        exception = .not.(ieee_is_nan(var)) .and. (ieee_is_finite(var))
+    end function
+
+    subroutine macro_output(data_in)
+    ! macroparameters given values output
+        type(transport_in),intent(in)   :: data_in
+        print *, "temperature = ", data_in%temp
+        print *, "density = ", data_in%rho
+        print *, "mass fractions: ", data_in%mass_fractions
+    end subroutine
+
+
+    subroutine calculateThermalCondAndDiff(data_in, cv, bracket_ints, ltot, thdiff)
+        implicit none
+
+        type(transport_in_additional), intent(in) :: data_in
+        type(SpHeatVOut), intent(in) :: cv
+        type(bracket_int), intent(in) :: bracket_ints
+
+        real, intent(out) :: ltot
+        real, dimension(NUM_SP), intent(out) :: thdiff
+
+        ! Translational and internal heat conductivity
+        real :: ltr, lint
+
+       ! Matrices for the linear transport system defining heat conductivity and thermal diffusion (LTH)
+        real, dimension(2*NUM_SP, 2*NUM_SP) :: LTH, Q_LTH, R_LTH, Inverse_LTH
+
+        ! Vector of the RHS of the system
+        real, dimension(2*NUM_SP, 1) :: b
         
-        B1(1, 1:NUM_SP) = 0
-        ! DO j=1,NUM_SP
-        !     B1(1,j)=0
-        ! END DO
-        ! End of matrix b1 definition
-            
-        ! Definition of vector b2 (right hand side of system for calculation of
-        ! shear viscocity coefficient)
+        ! Define matrix LTH for calculation of thermal conductivity and thermal diffusion coefficients      
+        LTH(1:NUM_SP, 1:NUM_SP) = bracket_ints%Lambda00  
+        LTH(1:NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda01
+        LTH(NUM_SP+1 : 2*NUM_SP, 1:NUM_SP) = LTH(1 : NUM_SP, NUM_SP+1 : 2*NUM_SP)
+        LTH(NUM_SP+1 : 2*NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda11    
 
-        b2(1:NUM_SP, 1) = (2./Kb/T)*x
-        ! DO i=1,5
-        !     b2(i,1)=2./kb/T*x(i)
-        ! END DO
-        ! End of vector b2 definition
-            
-            
-        ! Definition of vector b3 (right hand side of system for calculation of
-        ! bulk viscosity coefficients)
+        LTH(1, 1 : NUM_SP) = data_in%mass_fractions    
+        LTH(1, NUM_SP+1 : 2*NUM_SP) = 0
+
+       ! Define vector b (right-hand side of the system for calculation of thermal conductivity and thermal diffusion coefficients)
+        b(: NUM_SP, 1) = 0
+        b(NUM_SP+1 : 2*NUM_SP, 1) = (4./5./Kb) * data_in%num_fractions
         
-        ! cu=kb*ntot/rho*(3./2.+x(1)+x(2)*(1+c_v_o2)+x(3)*(1+c_v_co))
-        ! cut=kb*ntot/rho*(x(1)+x(2)*(1+c_v_o2)+x(3)*(1+c_v_co))
-        
-        !cu = R/M*(3./2. + SUM(x(:NUM_MOL))) ! kb*ntot/rho
-        !cut = R/M*SUM(x(:NUM_MOL)) ! kb*ntot/rho
+        ! Linear system solution using QR decomposition 
+        call QRDecomposition(LTH, Q_LTH, R_LTH, 2*NUM_SP)
+        call InvertQR(Q_LTH, R_LTH, Inverse_LTH, 2*NUM_SP)
+        b = matmul(Inverse_LTH, b)
 
-        b3(1:NUM_SP, 1) = -x*cv%cv_int_sp/cv%cv_tot
-        ! DO i=1,5
-        !     b3(i,1)=-x(i)*cv%cv_int_sp(i)/cv%cv_tot
-        !     !b3(i,1)=-x(i)*cut/cu
-        ! END DO
+        ! Calculate thermal diffusion coefficients (thdiff)
+        thdiff = -(1./2./data_in%ntot) * b(1:NUM_SP, 1)
 
-        b3(NUM_SP+1 : NUM_SP+NUM_MOL, 1) = y(:NUM_MOL)*cv%cv_int_sp(:NUM_MOL)/cv%cv_tot
-        ! DO i=6,8
-        !     b3(i,1)=y(i-5)*cv%cv_int_sp(i-5)/cv%cv_tot
-        ! END DO
-        
-        !b3(6,1)=x(1)*ntot/rho*kb/cu
-        
-        !b3(7,1)=x(2)*ntot/rho*kb/cu !*(1+c_v_O2)
-        
-        !b3(8,1)=x(3)*ntot/rho*kb/cu !*(1+c_v_co)
-        
-        b3(1,1)=0
+        ! Calculate thermal conductivity coefficient associated with translational energy (ltr)
+        ltr = (5./4.) * Kb * sum(data_in%num_fractions * b(NUM_SP+1:2*NUM_SP, 1))
 
-        ! write (*, *) 'RHS of system for bulk visc coeffs'
-        ! write (*, *) (b3(i,1), i=1,NUM_SP + NUM_MOL)
-        
-        ! End of vector b3 definition
-        
+        ! Calculate thermal conductivity coefficients associated with internal energies (lint)
+        lint = (3./16.) * data_in%temp * sum(data_in%num_fractions(:NUM_MOL) * cv%cv_int_sp(:NUM_MOL) &
+                * ((Kb) * (MASS_SPCS(:NUM_MOL)*1e30) / (bracket_ints%lambda_int(:NUM_MOL)*1e30)))
 
-        ! Linear system solution using the Gauss method
-        ! The solutions a, d, h, f are written to b, b1, b2, b3, respectively 
-        
-        call QRDecomposition(LTH,Q_LTH,R_LTH,2*NUM_SP)
-        call QRDecomposition(LDIFF,Q_LDIFF,R_LDIFF,NUM_SP)
-        call QRDecomposition(HVISC,Q_HVISC,R_HVISC,NUM_SP)
-        ! call QRDecomposition(BVISC,Q_BVISC,R_BVISC,NUM_SP+NUM_MOL)
-
-        call InvertQR(Q_LTH,R_LTH,Inverse_LTH,2*NUM_SP)
-        call InvertQR(Q_LDIFF,R_LDIFF,Inverse_LDIFF,NUM_SP)
-        call InvertQR(Q_HVISC,R_HVISC,Inverse_HVISC,NUM_SP)
-        ! call InvertQR(Q_BVISC,R_BVISC,Inverse_BVISC,NUM_SP+NUM_MOL)
-
-        b = matmul(Inverse_LTH,b)
-        B1 = matmul(Inverse_LDIFF,B1)
-        b2 = matmul(Inverse_HVISC,b2)
-        ! b3 = matmul(Inverse_BVISC,b3)
-        ! print *, 'bulk visc coeffs ', LTH
-        ! call gaussj(LTH,10,10,b,1,1)
-        ! call gaussj(Ldiff,5,5,b1,5,5)
-        ! call gaussj(HVISC,5,5,b2,1,1)
-        call gaussj(BVISC,8,8,b3,1,1)
-
-
-        ! Thermal diffusion coefficients THDIF(i)
-
-        thdiff = -(1./2./ntot)*b(:NUM_SP,1)
-        ! DO i=1,5
-        !     thdiff(i)=-1./2./ntot*b(i,1)
-        ! END DO
-
-
-        ! Thermal conductivity coefficient associated to translational
-        ! energy, LTR 
-
-        ltr = (5./4.)*kb*sum(x*b(NUM_SP+1 : 2*NUM_SP,1))
-        ! DO i=6,10
-        !     LTR=LTR+5./4.*kb*x(i-5)*b(i,1)
-        ! END DO
-
-
-        ! Thermal conductivity coefficients associated to internal
-        ! energies 
-        
-        lint = (3./16.)*T*sum(x(:NUM_MOL)*cv%cv_int_sp(:NUM_MOL)*((Kb)*(MASS_SPCS(:NUM_MOL)*1e30) &
-                /(bracket_out%lambda_int(:NUM_MOL)*1e30)))
-
-        ! DO i = 1,3
-        !     lint = lint + 3./16.*kb*T*x(i)/bracket_out%lambda_int(i)*cv%cv_int_sp(i)*MASS_SPCS(i) ! division by zero, bracket_out%lambda_int(i)
-        !     WRITE (*,*) 'bracket_out%lambda_int(i) = ', bracket_out%lambda_int(i)
-        ! END DO
-
-        ! Total thermal conductivity coefficient at the translational
-        ! temperature gradient
-
+        ! Total thermal conductivity coefficient at the translational temperature gradient
         ltot = ltr + lint
 
+    end subroutine calculateThermalCondAndDiff
 
-        ! Diffusion coefficients	DIFF(i,j)
+    subroutine calculateThermalCond(data_in, cv, bracket_ints, ltot)
+        implicit none
 
-        diff = (1./2./ntot)*b1
-        ! DO i=1,5
-        !     DO j=1,5
-        !         diff(i,j)=1./2./ntot*b1(i,j)
-        !     END DO
-        ! END DO
+        type(transport_in_additional), intent(in) :: data_in
+        type(SpHeatVOut), intent(in) :: cv
+        type(bracket_int), intent(in) :: bracket_ints
+
+        real, intent(out) :: ltot
+
+        ! Translational and internal heat conductivity
+        real :: ltr, lint
+
+       ! Matrices for the linear transport system defining heat conductivity and thermal diffusion (LTH)
+        real, dimension(NUM_SP, NUM_SP) :: LTH, Q_LTH, R_LTH, Inverse_LTH
+
+        ! Vector of the RHS of the system
+        real, dimension(NUM_SP, 1) :: b
+        
+        ! Define matrix LTH for calculation of thermal conductivity coefficients      
+        LTH(:NUM_SP, :NUM_SP) = bracket_ints%Lambda11  
+
+       ! Define vector b (right-hand side of the system for calculation of thermal conductivity coefficients)
+        b(: NUM_SP, 1) = (4./5./Kb) * data_in%num_fractions
+        
+        ! Linear system solution using QR decomposition 
+        call QRDecomposition(LTH, Q_LTH, R_LTH, NUM_SP)
+        call InvertQR(Q_LTH, R_LTH, Inverse_LTH, NUM_SP)
+        b = matmul(Inverse_LTH, b)
+
+        ! Calculate thermal conductivity coefficient associated with translational energy (ltr)
+        ltr = (5./4.) * Kb * sum(data_in%num_fractions * b(: NUM_SP, 1))
 
 
-        ! Shear viscosity coefficient VISC
+        ! Calculate thermal conductivity coefficients associated with internal energies (lint)
+        lint = (3./16.) * data_in%temp * sum(data_in%num_fractions(:NUM_MOL) * cv%cv_int_sp(:NUM_MOL) &
+                * ((Kb) * (MASS_SPCS(:NUM_MOL)*1e30) / (bracket_ints%lambda_int(:NUM_MOL)*1e30)))
 
-        visc = (Kb*T/2.)*sum(x*b2(:NUM_SP,1))
-        ! DO i=1,5
-        !     visc=visc+kb*t/2.*b2(i,1)*x(i)
-        ! END DO
+        ! Total thermal conductivity coefficient at the translational temperature gradient
+        ltot = ltr + lint
 
-        ! Bulk viscosity coefficient BULK_VISC
+    end subroutine calculateThermalCond
 
-        bulk_visc = -Kb*T*sum(x*b3(:NUM_SP,1))
-        ! DO i=1,5
-        !     bulk_visc=bulk_visc-kb*t*b3(i,1)*x(i)
-        ! END DO
+    subroutine calculateDiffCoeffs(data_in, bracket_ints, DIFF)
+        implicit none
 
-        data_out%visc = visc
-        data_out%bulk_visc = bulk_visc
-        data_out%ltot = ltot
-        data_out%thdiff = thdiff
-        data_out%diff = diff
+        type(transport_in_additional), intent(in) :: data_in
+        type(bracket_int), intent(in) :: bracket_ints
+        real, dimension(NUM_SP, NUM_SP), intent(out) :: DIFF
+
+        integer i, j, delta
+
+        ! Matrices for the linear transport systems defining diffusion (LDIFF)
+        real, dimension(NUM_SP, NUM_SP) :: LDIFF, Q_LDIFF, R_LDIFF, Inverse_LDIFF
+
+        ! Vectors of the RHS of systems
+        real, dimension(NUM_SP, NUM_SP) :: B1
+
+        ! Define matrix LDIFF for calculation of diffusion coefficients
+        LDIFF = bracket_ints%Lambda11
+
+        ! Define matrix B1 (right-hand side of the system for calculation of diffusion coefficients)
+        do i = 1, NUM_SP
+            do j = 1, NUM_SP
+                if (i == j) then
+                    delta = 1
+                else
+                    delta = 0
+                end if
+                B1(i, j) = 8./25./Kb * (delta - data_in%mass_fractions(i))
+            end do
+        end do
+
+        B1(1, 1:NUM_SP) = 0
+
+        ! Linear system solution using QR decomposition
+        call QRDecomposition(LDIFF, Q_LDIFF, R_LDIFF, NUM_SP)
+        call InvertQR(Q_LDIFF, R_LDIFF, Inverse_LDIFF, NUM_SP)
+        B1 = matmul(Inverse_LDIFF, B1)
+
+        ! Calculate diffusion coefficients, DIFF(i, j)
+        DIFF = (1./2./data_in%ntot) * B1
+
+    end subroutine calculateDiffCoeffs
+
+    subroutine calculateEffDiffCoeffs(data_in, omega_ints, effDiff)
+        implicit none
+
+        type(transport_in_additional), intent(in) :: data_in
+        type(omega_int), intent(in) :: omega_ints
+        real, dimension(NUM_SP), intent(out) :: effDiff
+
+        integer :: i, j
+        real :: mij
+        real, dimension(NUM_SP, NUM_SP) :: binDiff
+
+        ! Calculate binary diffusion coefficients
+        do i = 1, NUM_SP
+            do j = 1, NUM_SP
+                mij = MASS_SPCS(j) * (MASS_SPCS(i) * 1E27) / (MASS_SPCS(i) * 1E27 + MASS_SPCS(j) * 1E27)
+                binDiff(i, j) = 3.0 * Kb * data_in%temp / 16.0 / (data_in%ntot * mij) &
+                                / omega_ints%OMEGA11(i, j)
+            end do
+        end do
+
+        ! Calculate effective diffusion coefficients
+        do i = 1, NUM_SP
+            effDiff(i) = (1.0 - data_in%num_fractions(i)) &
+                         / sum(data_in%num_fractions(1:NUM_MOL) / binDiff(i, 1:NUM_MOL))
+        end do
+
+    end subroutine calculateEffDiffCoeffs
+
+    subroutine calculateShearVisc(data_in, bracket_ints, visc)
+        implicit none
+
+        type(transport_in_additional), intent(in) :: data_in
+        type(bracket_int), intent(in) :: bracket_ints
+        real, intent(out) :: visc
+
+        ! Matrices for the linear transport systems defining shear viscosity (HVISC)
+        real, dimension(NUM_SP, NUM_SP) :: HVISC, Q_HVISC, R_HVISC, Inverse_HVISC
+
+        ! Vectors of the RHS of systems
+        real, dimension(NUM_SP, 1) :: b2
+
+        ! Define matrix HVISC for calculation of shear viscosity coefficient
+        HVISC = bracket_ints%H00
+
+        ! Define vector b2 (right-hand side of the system for calculation of shear viscosity coefficient)
+        b2(1:NUM_SP, 1) = (2.0 / Kb /  data_in%temp) * data_in%num_fractions
+
+        ! Linear system solution using QR decomposition
+        call QRDecomposition(HVISC, Q_HVISC, R_HVISC, NUM_SP)
+        call InvertQR(Q_HVISC, R_HVISC, Inverse_HVISC, NUM_SP)
+        b2 = matmul(Inverse_HVISC, b2)
+
+        ! Calculate shear viscosity coefficient, visc
+        visc = (Kb *  data_in%temp / 2.0) * sum(data_in%num_fractions * b2(1:NUM_SP, 1))
+
+    end subroutine calculateShearVisc
+
+    subroutine calculateBulkVisc(data_in, cv, bracket_ints, bulk_visc)
+        implicit none
+
+        type(transport_in_additional), intent(in) :: data_in
+        type(SpHeatVOut), intent(in) :: cv
+        type(bracket_int), intent(in) :: bracket_ints
+        real, intent(out) :: bulk_visc
+
+        integer :: i
+
+        ! Matrices for the linear transport systems defining bulk viscosity (BVISC)
+        real, dimension(NUM_SP+NUM_MOL, NUM_SP+NUM_MOL) :: BVISC, Q_BVISC, R_BVISC, Inverse_BVISC
+
+        ! Vectors of the RHS of systems
+        real, dimension(NUM_SP+NUM_MOL, 1) :: b3
+
+        ! Define matrix BVISC for calculation of bulk viscosity coefficients
+        do i = 1, NUM_SP
+            BVISC(i, 1:NUM_SP) = data_in%num_fractions * bracket_ints%beta11(i, 1:NUM_SP)
+        end do
+        
+        do i = 1, NUM_SP
+            BVISC(i, NUM_SP+1:NUM_SP+NUM_MOL) = data_in%mass_fractions(:NUM_MOL) * bracket_ints%beta01(i, :NUM_MOL)
+        end do
     
-    end subroutine Transport1T
+        BVISC(NUM_SP+1 : NUM_SP+NUM_MOL, 1:NUM_SP) = transpose(BVISC(1:NUM_SP, NUM_SP+1:NUM_SP+NUM_MOL))  
+        BVISC(NUM_SP+1 : NUM_SP+NUM_MOL, NUM_SP+1 : NUM_SP+NUM_MOL) = 0
+        
+        do i = NUM_SP+1, NUM_SP+NUM_MOL
+            BVISC(i, i) = data_in%mass_fractions(i-5) * bracket_ints%beta0011(i-5)
+        end do
+        
+        BVISC(1, 1:NUM_SP) = ((3.0 / 2.0) * R / data_in%M) * data_in%num_fractions ! Kb*ntot/rho    
+        BVISC(1, NUM_SP+1:NUM_SP+NUM_MOL) = data_in%mass_fractions(1:NUM_MOL) * (Kb / MASS_SPCS(1:NUM_MOL))
+        
+        ! Define vector b3 (right-hand side of the system for calculation of bulk viscosity coefficients)
+        b3(1:NUM_SP, 1) = -data_in%num_fractions * cv%cv_int_sp / cv%cv_tot
+        b3(NUM_SP+1:NUM_SP+NUM_MOL, 1) = data_in%mass_fractions(:NUM_MOL) * cv%cv_int_sp(:NUM_MOL) &
+                                        / cv%cv_tot
+
+        b3(1, 1) = 0.0
+
     
+        ! Linear system solution using QR decomposition
+        call QRDecomposition(BVISC, Q_BVISC, R_BVISC, NUM_SP+NUM_MOL)
+        call InvertQR(Q_BVISC, R_BVISC, Inverse_BVISC, NUM_SP+NUM_MOL)
+        b3 = matmul(Inverse_BVISC, b3)
+        
+        ! call gaussj(BVISC,8,8,b3,1,1)
+
+        ! Calculate bulk viscosity coefficient, bulk_visc
+        bulk_visc = -Kb * data_in%temp * sum(data_in%num_fractions * b3(1:NUM_SP, 1))
+
+    end subroutine calculateBulkVisc
+
 
 end module transport_1t

@@ -5,7 +5,7 @@ program test_free_stream
     ! use specific_heat_sp
     ! use omega_integrals
     ! use bracket_integrals
-    use transport_1t_simpl
+    use transport_1t
     
     
     implicit none
@@ -53,7 +53,7 @@ program test_free_stream
         !CALL Bracket(transport%temp, x, omega_test, bracket_test)
         call Transport1TSimpl(transport, transport_coeff, interaction)
 
-        open(6, file='../res/air5_1T_test_free-stream.txt', status='unknown')
+        open(6, file='../res2/air5_1T_test_free-stream.txt', status='unknown')
 
         write (6, *) 'INPUT DATA:'
 

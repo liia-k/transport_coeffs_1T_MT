@@ -7,7 +7,7 @@ program test_omp
     ! use specific_heat_sp
     ! use omega_integrals
     ! use bracket_integrals
-    use transport_1t_simpl
+    use transport_1t
 
     use omp_lib ! export OMP_NUM_THREADS=5
     
@@ -91,7 +91,7 @@ program test_omp
     print '(a,f10.3,a)', "Total execution time: ", total_time, " seconds"
     print '(a,f10.3,a)', "Average time per iteration: ", total_time / (n-499), " seconds"
 
-    open(6, file='../res/air5_1T_test_omp.txt', status='unknown')
+    open(6, file='../res2/air5_1T_test_omp.txt', status='unknown')
 
     do k = 500, n
 

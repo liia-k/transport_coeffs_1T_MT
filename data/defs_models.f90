@@ -13,6 +13,18 @@ type transport_in
     real mass_fractions(1:NUM_SP) ! vector of mass fractions
 end type
 
+type transport_in_additional
+
+! structure of macroparameters required for transport coeffs. calculation:
+
+    real rho  ! density
+    real ntot ! total number density
+    real temp ! temperature
+    real M ! gas molar mass
+    real mass_fractions(1:NUM_SP) ! vector of mass fractions
+    real num_fractions(1:NUM_SP) ! vector of number fractions
+end type
+
 !Transport coefficients: 
 
 type transport_out
