@@ -87,10 +87,11 @@ module transport_1t
         ! Calculations of transport coefficients
         call calculateThermalCond(data_add, cv, bracket_out, ltot)
         call calculateEffDiffCoeffs(data_add, omega_out, effDiff)
-        call calculateDiffCoeffs(data_add, bracket_out, DIFF)
+        ! call calculateDiffCoeffs(data_add, bracket_out, DIFF)
         call calculateShearVisc(data_add, bracket_out, visc)
 
         thdiff = 0
+        DIFF = 0
         bulk_visc = 0
 
         ! Output results
