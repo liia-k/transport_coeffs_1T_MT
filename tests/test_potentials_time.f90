@@ -15,8 +15,8 @@ program test_potentials_time
     implicit none
 
     ! Variables
-    real :: M, ntot, press, T, rho
-    real, dimension(NUM_SP) :: y, x
+    real(8) :: M, ntot, press, T, rho
+    real(8), dimension(NUM_SP) :: y, x
     integer :: i, j, k
     integer, parameter :: begin = 300, end = 9000, step = 1
     type(transport_in) :: transport

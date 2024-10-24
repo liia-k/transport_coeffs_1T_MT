@@ -12,8 +12,8 @@ program test_free_stream
     implicit none
 
     ! Variables
-    real :: M, ntot, press, T, rho
-    real, dimension(NUM_SP) :: y, x
+    real(8) :: M, ntot, press, T, rho
+    real(8), dimension(NUM_SP) :: y, x
     integer :: i, j, k, n
     type(transport_in) :: transport
     type(transport_out) :: transport_coeff

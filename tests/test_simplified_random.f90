@@ -10,8 +10,8 @@ program test_simplified_random
     implicit none
 
     ! Variables
-    real :: M, ntot, press, T, rho
-    real, dimension(NUM_SP) :: y
+    real(8) :: M, ntot, press, T, rho
+    real(8), dimension(NUM_SP) :: y
     integer :: i, k, n
     real :: t1, t2, total_time
     type(transport_in) :: transport

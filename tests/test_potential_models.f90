@@ -14,8 +14,8 @@ program test_potential_models
     implicit none
 
     ! Variables
-    real :: M, ntot, press, T, rho
-    real, dimension(NUM_SP) :: y, x
+    real(8) :: M, ntot, press, T, rho
+    real(8), dimension(NUM_SP) :: y, x
     integer :: i, j, k
     integer, parameter :: start = 500, end = 9000, step = 100
     integer, parameter :: size = (end - start) / step + 1
@@ -24,8 +24,8 @@ program test_potential_models
     type(bracket_int) :: bracket_out
     type(omega_int) :: omega_in
     type(SpHeatVOut) :: cv_in
-    real, dimension(4, size) :: shearVisc, thermCond
-    real, dimension(size) :: tempArray
+    real(8), dimension(4, size) :: shearVisc, thermCond
+    real(8), dimension(size) :: tempArray
     character(len=25), dimension(4) :: interaction 
 
     ! Initialize interaction models
@@ -102,6 +102,7 @@ program test_potential_models
     call OmegaInt(T, omega_in, interaction(1))
     call SpHeat(T, y, cv_in)
     call BracketInt(T, ntot, x, omega_in, cv_in, bracket_out)
+    ! call BracketInt(T, x, omega_in, bracket_out)
 
     open(6, file='../res/air5-1T-bracket-integrals.txt', status='unknown')
     write (6, *)

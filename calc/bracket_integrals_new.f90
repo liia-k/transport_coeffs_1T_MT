@@ -23,9 +23,9 @@ contains
 
 	use omega_integrals
 
-	real, intent(in) :: T ! temperature
-	real, intent(in) :: ntot ! number density
-	real, dimension(NUM_SP), intent(in) :: x ! molar fractions
+	real(8), intent(in) :: T ! temperature
+	real(8), intent(in) :: ntot ! number density
+	real(8), dimension(NUM_SP), intent(in) :: x ! molar fractions
 	type(omega_int), intent(in) :: omega_in
 	type(SpHeatVOut), intent(in) :: cv_in
 	type(bracket_int), intent(out)   :: bracket_out
@@ -48,7 +48,7 @@ contains
 
 	real(8), dimension(NUM_SP) :: lambda_int
 
-	real, dimension(NUM_SP,NUM_SP) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
+	real(8), dimension(NUM_SP,NUM_SP) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
 										AA, BB, CC
 
 

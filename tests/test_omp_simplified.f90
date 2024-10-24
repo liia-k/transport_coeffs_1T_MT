@@ -16,9 +16,9 @@ program test_omp_simplified
     implicit none
 
     ! Variables
-    real :: M, ntot, press, T, rho
+    real(8) :: M, ntot, press, T, rho
     real :: t1, t2, total_time
-    real, dimension(5) :: y, x
+    real(8), dimension(5) :: y, x
     integer :: i, k, n, num_threads
     type(transport_in), dimension(:), allocatable :: transport
     type(transport_out), dimension(:), allocatable :: transport_coeff

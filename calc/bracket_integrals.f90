@@ -9,11 +9,11 @@ implicit none
 ! Bracket integrals 
 
 type bracket_int
-	real, dimension(NUM_SP,NUM_SP) :: LAMBDA0000, LAMBDA0100, LAMBDA1100						
-	real, dimension(NUM_SP,NUM_SP) :: H00, BETA1100
-	real, dimension(NUM_SP,NUM_MOL) :: BETA0110
-	real, dimension(NUM_MOL) :: beta0011
-	real, dimension(NUM_SP) :: lambda_int
+	real(8), dimension(NUM_SP,NUM_SP) :: LAMBDA0000, LAMBDA0100, LAMBDA1100						
+	real(8), dimension(NUM_SP,NUM_SP) :: H00, BETA1100
+	real(8), dimension(NUM_SP,NUM_MOL) :: BETA0110
+	real(8), dimension(NUM_MOL) :: beta0011
+	real(8), dimension(NUM_SP) :: lambda_int
 end type
 
 contains
@@ -22,26 +22,26 @@ contains
 
 	use omega_integrals
 
-	real,intent(in) :: T ! temperature
-	real, dimension(NUM_SP), intent(in) :: x ! molar fractions
+	real(8),intent(in) :: T ! temperature
+	real(8), dimension(NUM_SP), intent(in) :: x ! molar fractions
 	type(omega_int), intent(in)      :: omega_in
 	type(bracket_int), intent(out)   :: bracket_out
 	
 
 	integer i, j, k
-	real mij
-	real, dimension(NUM_SP) :: PHI
+	real(8) mij
+	real(8), dimension(NUM_SP) :: PHI
 
-	real, dimension(NUM_SP,NUM_SP) :: LAMBDA, LAMBDA0000, LAMBDA0100, LAMBDA1100						
-	real, dimension(NUM_SP,NUM_SP) :: ETA, H00, BETA1100
-	real, dimension(NUM_SP,NUM_MOL) :: BETA0110
-	real, dimension(NUM_MOL) :: beta0011
+	real(8), dimension(NUM_SP,NUM_SP) :: LAMBDA, LAMBDA0000, LAMBDA0100, LAMBDA1100						
+	real(8), dimension(NUM_SP,NUM_SP) :: ETA, H00, BETA1100
+	real(8), dimension(NUM_SP,NUM_MOL) :: BETA0110
+	real(8), dimension(NUM_MOL) :: beta0011
 
 	!internal heat conductivity coefficients (lambda_int)
 
-	real, dimension(NUM_SP) :: lambda_int
+	real(8), dimension(NUM_SP) :: lambda_int
 
-	real, dimension(NUM_SP,NUM_SP) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
+	real(8), dimension(NUM_SP,NUM_SP) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
 										AA, BB, CC
 
 

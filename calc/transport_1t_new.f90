@@ -14,7 +14,7 @@ module transport_1t_new
     
     implicit none
     ! Define constants
-    real, parameter :: SMALL_VALUE = 1e-5
+    real(8), parameter :: SMALL_VALUE = 1e-5
 
     contains
 
@@ -26,9 +26,9 @@ module transport_1t_new
 
         ! Local variables
         type(transport_in_additional) :: data_add
-        real :: ltot, visc, bulk_visc
-        real, dimension(NUM_SP) :: effDiff, thdiff
-        real, dimension(NUM_SP, NUM_SP) :: DIFF
+        real(8) :: ltot, visc, bulk_visc
+        real(8), dimension(NUM_SP) :: effDiff, thdiff
+        real(8), dimension(NUM_SP, NUM_SP) :: DIFF
         type(SpHeatVOut) :: cv
         type(omega_int) :: omega_out
         type(bracket_int) :: bracket_out
@@ -65,9 +65,9 @@ module transport_1t_new
 
         ! Local variables
         type(transport_in_additional) :: data_add
-        real :: ltot, visc, bulk_visc
-        real, dimension(NUM_SP) :: effDiff, thdiff
-        real, dimension(NUM_SP, NUM_SP) :: DIFF
+        real(8) :: ltot, visc, bulk_visc
+        real(8), dimension(NUM_SP) :: effDiff, thdiff
+        real(8), dimension(NUM_SP, NUM_SP) :: DIFF
         type(SpHeatVOut) :: cv
         type(omega_int) :: omega_out
         type(bracket_int) :: bracket_out
@@ -103,8 +103,8 @@ module transport_1t_new
         implicit none
         type(transport_in), intent(in) :: data_in
         type(transport_in_additional), intent(out) :: data_add
-        real, dimension(NUM_SP) :: y, x
-        real :: ntot, M
+        real(8), dimension(NUM_SP) :: y, x
+        real(8) :: ntot, M
         integer :: i, max_index
 
         y = data_in%mass_fractions
@@ -135,9 +135,9 @@ module transport_1t_new
         implicit none
         type(transport_in), intent(in) :: data_in
         type(transport_out), intent(out) :: data_out
-        real, intent(in) :: ltot, visc, bulk_visc
-        real, dimension(NUM_SP, NUM_SP), intent(in) :: DIFF
-        real, dimension(NUM_SP), intent(in) :: effDiff
+        real(8), intent(in) :: ltot, visc, bulk_visc
+        real(8), dimension(NUM_SP, NUM_SP), intent(in) :: DIFF
+        real(8), dimension(NUM_SP), intent(in) :: effDiff
         integer :: i, j
 
         ! Output thermal conductivity
@@ -195,7 +195,7 @@ module transport_1t_new
 
     logical function exception(var)
     ! has a true value if var in not NaN and Infinity
-        real, intent(in) :: var
+        real(8), intent(in) :: var
         exception = .not.(ieee_is_nan(var)) .and. (ieee_is_finite(var))
     end function
 
@@ -214,24 +214,24 @@ module transport_1t_new
         type(SpHeatVOut), intent(in) :: cv
         type(bracket_int), intent(in) :: bracket_ints
 
-        real, intent(out) :: ltot
-        real, dimension(NUM_SP), intent(out) :: thdiff
+        real(8), intent(out) :: ltot
+        real(8), dimension(NUM_SP), intent(out) :: thdiff
 
         ! Translational and internal heat conductivity
-        real :: ltr, lint
+        real(8) :: ltr, lint
 
        ! Matrices for the linear transport system defining heat conductivity and thermal diffusion (LTH)
-        real, dimension(2 * NUM_SP, 2 * NUM_SP) :: LTH, Q_LTH, R_LTH, Inverse_LTH
+        real(8), dimension(2 * NUM_SP, 2 * NUM_SP) :: LTH, Q_LTH, R_LTH, Inverse_LTH
 
         ! Vector of the RHS of the system
-        real, dimension(2 * NUM_SP, 1) :: b
+        real(8), dimension(2 * NUM_SP, 1) :: b
         
         ! Define matrix LTH for calculation of thermal conductivity and thermal diffusion coefficients
         ! All the matrix coefficients re multiplied by 1e40 to avoid underflow      
-        LTH(1 : NUM_SP, 1 : NUM_SP) = bracket_ints%Lambda0000 ! * 1e40
-        LTH(1 : NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda0100 ! * 1e40 ! = Lambda1000
-        LTH(NUM_SP+1 : 2*NUM_SP, 1 : NUM_SP) = bracket_ints%Lambda0100 ! * 1e40 ! = Lambda1000
-        LTH(NUM_SP+1 : 2*NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda1100 ! * 1e40
+        LTH(1 : NUM_SP, 1 : NUM_SP) = bracket_ints%Lambda0000 * 1e40_8
+        LTH(1 : NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda0100 * 1e40_8 ! = Lambda1000
+        LTH(NUM_SP+1 : 2*NUM_SP, 1 : NUM_SP) = bracket_ints%Lambda0100 * 1e40_8 ! = Lambda1000
+        LTH(NUM_SP+1 : 2*NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda1100 * 1e40_8
 
         LTH(1, 1 : NUM_SP) = data_in%mass_fractions    
         LTH(1, NUM_SP+1 : 2*NUM_SP) = 0
@@ -239,7 +239,7 @@ module transport_1t_new
        ! Define vector b (right-hand side of the system for calculation of thermal conductivity and thermal diffusion coefficients)
        ! All the vector coefficients re multiplied by 1e20 to avoid underflow
         b(1 : NUM_SP, 1) = 0
-        b(NUM_SP+1 : 2*NUM_SP, 1) = (15. / 2. * Kb * data_in%temp) * data_in%num_fractions ! * 1e20
+        b(NUM_SP+1 : 2*NUM_SP, 1) = (15. / 2. * Kb * data_in%temp) * data_in%num_fractions * 1e20
         
         ! Linear system solution using QR decomposition 
         call QRDecomposition(LTH, Q_LTH, R_LTH, 2*NUM_SP)
@@ -248,11 +248,11 @@ module transport_1t_new
 
         ! Calculate thermal diffusion coefficients (thdiff)
         ! Multiply by 1e20 to avoid underflow
-        thdiff = -(1. / 2. / data_in%ntot) * b(1 : NUM_SP, 1) ! * 1e20
+        thdiff = -(1. / 2. / data_in%ntot) * b(1 : NUM_SP, 1) * 1e20
 
         ! Calculate thermal conductivity coefficient associated with translational energy (ltr)
         ! Multiply by 1e20 to avoid underflow
-        ltr = (5. / 4.) * Kb * sum(data_in%num_fractions * b(NUM_SP+1 : 2*NUM_SP, 1)) ! * 1e20
+        ltr = (5. / 4.) * Kb * sum(data_in%num_fractions * b(NUM_SP+1 : 2*NUM_SP, 1)) * 1e20
 
         ! Calculate thermal conductivity coefficients associated with internal energies (lint)
         lint = (3. / 16.) * data_in%temp * sum(data_in%num_fractions(:NUM_MOL) * cv%cv_int_sp(:NUM_MOL) &
@@ -270,16 +270,16 @@ module transport_1t_new
         type(SpHeatVOut), intent(in) :: cv
         type(bracket_int), intent(in) :: bracket_ints
 
-        real, intent(out) :: ltot
+        real(8), intent(out) :: ltot
 
         ! Translational and internal heat conductivity
-        real :: ltr, lint
+        real(8) :: ltr, lint
 
        ! Matrices for the linear transport system defining heat conductivity and thermal diffusion (LTH)
-        real, dimension(NUM_SP, NUM_SP) :: LTH, Q_LTH, R_LTH, Inverse_LTH
+        real(8), dimension(NUM_SP, NUM_SP) :: LTH, Q_LTH, R_LTH, Inverse_LTH
 
         ! Vector of the RHS of the system
-        real, dimension(NUM_SP, 1) :: b
+        real(8), dimension(NUM_SP, 1) :: b
         
         ! Define matrix LTH for calculation of thermal conductivity coefficients      
         LTH(:NUM_SP, :NUM_SP) = bracket_ints%Lambda1100  
@@ -309,15 +309,15 @@ module transport_1t_new
 
         type(transport_in_additional), intent(in) :: data_in
         type(bracket_int), intent(in) :: bracket_ints
-        real, dimension(NUM_SP, NUM_SP), intent(out) :: DIFF
+        real(8), dimension(NUM_SP, NUM_SP), intent(out) :: DIFF
 
         integer i, j, delta
 
         ! Matrices for the linear transport systems defining diffusion (LDIFF)
-        real, dimension(NUM_SP, NUM_SP) :: LDIFF, Q_LDIFF, R_LDIFF, Inverse_LDIFF
+        real(8), dimension(NUM_SP, NUM_SP) :: LDIFF, Q_LDIFF, R_LDIFF, Inverse_LDIFF
 
         ! Vectors of the RHS of systems
-        real, dimension(NUM_SP, NUM_SP) :: B1
+        real(8), dimension(NUM_SP, NUM_SP) :: B1
 
         ! Define matrix LDIFF for calculation of diffusion coefficients
         LDIFF = bracket_ints%Lambda0000
@@ -352,11 +352,11 @@ module transport_1t_new
 
         type(transport_in_additional), intent(in) :: data_in
         type(omega_int), intent(in) :: omega_ints
-        real, dimension(NUM_SP), intent(out) :: effDiff
+        real(8), dimension(NUM_SP), intent(out) :: effDiff
 
         integer :: i, j
-        real :: mij
-        real, dimension(NUM_SP, NUM_SP) :: binDiff
+        real(8) :: mij
+        real(8), dimension(NUM_SP, NUM_SP) :: binDiff
 
         ! Calculate binary diffusion coefficients
         do i = 1, NUM_SP
@@ -380,13 +380,13 @@ module transport_1t_new
 
         type(transport_in_additional), intent(in) :: data_in
         type(bracket_int), intent(in) :: bracket_ints
-        real, intent(out) :: visc
+        real(8), intent(out) :: visc
 
         ! Matrices for the linear transport systems defining shear viscosity (HVISC)
-        real, dimension(NUM_SP, NUM_SP) :: HVISC, Q_HVISC, R_HVISC, Inverse_HVISC
+        real(8), dimension(NUM_SP, NUM_SP) :: HVISC, Q_HVISC, R_HVISC, Inverse_HVISC
 
         ! Vectors of the RHS of systems
-        real, dimension(NUM_SP, 1) :: b2
+        real(8), dimension(NUM_SP, 1) :: b2
 
         ! Define matrix HVISC for calculation of shear viscosity coefficient
         HVISC = bracket_ints%H00
@@ -410,15 +410,15 @@ module transport_1t_new
         type(transport_in_additional), intent(in) :: data_in
         type(SpHeatVOut), intent(in) :: cv
         type(bracket_int), intent(in) :: bracket_ints
-        real, intent(out) :: bulk_visc
+        real(8), intent(out) :: bulk_visc
 
         integer :: i
 
         ! Matrices for the linear transport systems defining bulk viscosity (BVISC)
-        real, dimension(NUM_SP+NUM_MOL, NUM_SP+NUM_MOL) :: BVISC, Q_BVISC, R_BVISC, Inverse_BVISC
+        real(8), dimension(NUM_SP+NUM_MOL, NUM_SP+NUM_MOL) :: BVISC, Q_BVISC, R_BVISC, Inverse_BVISC
 
         ! Vectors of the RHS of systems
-        real, dimension(NUM_SP+NUM_MOL, 1) :: b3
+        real(8), dimension(NUM_SP+NUM_MOL, 1) :: b3
 
         ! Define matrix BVISC for calculation of bulk viscosity coefficients
         do i = 1, NUM_SP

@@ -1,6 +1,6 @@
 
-  !   real   rQmatrix(MaxNumbDegrees,MaxNumbDegrees),  rRmatrix(MaxNumbDegrees,MaxNumbDegrees)
-  !   real   rInvMatrix(MaxNumbDegrees,MaxNumbDegrees), rMa(MaxNumbDegrees,MaxNumbDegrees)
+  !   real(8)   rQmatrix(MaxNumbDegrees,MaxNumbDegrees),  rRmatrix(MaxNumbDegrees,MaxNumbDegrees)
+  !   real(8)   rInvMatrix(MaxNumbDegrees,MaxNumbDegrees), rMa(MaxNumbDegrees,MaxNumbDegrees)
 
   !   ! perform the QR decomposition of the matrix Ma
   !   CALL QRDecomposition(rMA, rQmatrix, rRmatrix, MaxNumbDegrees)
@@ -16,16 +16,16 @@ module qr_decomposition
 
   contains
 
-  real  function l2norm(x,n)
+  real(8)  function l2norm(x,n)
    implicit none 
    integer, intent(in) :: n
-   real, intent(in) ::  x(n)
+   real(8), intent(in) ::  x(n)
    l2norm = sqrt(dot_product(x,x))
   end function
  
  !\brief
-  real  function l2norm_vec3(x)
-   real, intent(in) ::  x(1:3)    
+  real(8)  function l2norm_vec3(x)
+   real(8), intent(in) ::  x(1:3)    
    l2norm_vec3 = sqrt(dot_product(x,x))   
  end function
    
@@ -35,7 +35,7 @@ module qr_decomposition
 !!>\brief invert square matrix
 !Subroutine InvertMaxtrix(N,A,InvA,deg_num)
 ! integer,intent(in) :: N,deg_num
-! real,dimension(1:n,1:n) :: A,InvA,R,Q
+! real(8),dimension(1:n,1:n) :: A,InvA,R,Q
 ! 
 ! ! perform the QR decomposition of the matrix a
 !  CALL QRDecomposition(A, Q, R, deg_num)
@@ -49,10 +49,10 @@ module qr_decomposition
   !! \param[out] v resulting vector
 subroutine house(x,v,n)
     integer, intent(in) :: n
-    real,intent(in)  ::  x(n)
-    real,intent(out) ::  v(n)
+    real(8),intent(in)  ::  x(n)
+    real(8),intent(out) ::  v(n)
     v = x
-    v(1) = x(1) + sign(1.0,x(1))*l2norm(x,n)    
+    v(1) = x(1) + sign(real(1.0, kind=8),x(1))*l2norm(x,n)    
 End subroutine
 
 
@@ -62,9 +62,9 @@ End subroutine
   !! \param[out] P resulting matrix
   subroutine ComputeHouseMatrix(P,v,n)
     integer, intent(in) :: n
-    real, intent(in) ::  v(n)
-    real,intent(out) ::  P(n,n)
-    real vnorm
+    real(8), intent(in) ::  v(n)
+    real(8),intent(out) ::  P(n,n)
+    real(8) vnorm
     integer i,j
     P = 0.0
     do i=1,n
@@ -86,9 +86,9 @@ End subroutine
  !! \param[in]  N dimension
   Subroutine  InvertQR(Q,R,InvertedQR,N)
     integer, intent(in) :: n
-    real, intent(in) ::  Q(N,N),R(N,N)
-    real, intent(out) :: InvertedQR(N,N)
-    real  InvR(N,N),QT(N,N)
+    real(8), intent(in) ::  Q(N,N),R(N,N)
+    real(8), intent(out) :: InvertedQR(N,N)
+    real(8)  InvR(N,N),QT(N,N)
  
     ! invert R
     CALL InvertRmaxtrix(R,InvR,N)
@@ -106,11 +106,11 @@ End subroutine
  !! \param[in]  N dimension
   subroutine  QRDecomposition_slow(A,Q,R,N)
     integer, intent(in) :: N
-    real , intent(in) :: A(N,N)
-    real , intent(out) ::  Q(N,N),R(N,N)
-    real  Identity(N,N),V(N),P(N,N)
+    real(8) , intent(in) :: A(N,N)
+    real(8) , intent(out) ::  Q(N,N),R(N,N)
+    real(8)  Identity(N,N),V(N),P(N,N)
     integer i,j,l,pdim
-    real, allocatable :: v1(:),x(:)
+    real(8), allocatable :: v1(:),x(:)
  
     Identity = 0.D0
     do i=1,n
@@ -148,9 +148,9 @@ End subroutine
  !>\brief
   subroutine  QRDecomposition(A,Q,R,N) ! _fast
     integer, intent(in) :: N
-    real, intent(in) :: A(N,N)
-    real, intent(out) ::  Q(N,N),R(N,N)
-    real   V(N),P(N,N),v1(1:N),x(1:N)
+    real(8), intent(in) :: A(N,N)
+    real(8), intent(out) ::  Q(N,N),R(N,N)
+    real(8)   V(N),P(N,N),v1(1:N),x(1:N)
     integer i,j,l,pdim,m
  
     Q = 0.D0
@@ -198,10 +198,10 @@ End subroutine
  !! \param[in] N  dimension of the matrix
   Subroutine InvertRmaxtrix(R,InvR,N)
   integer,intent(in) :: N
-  real , intent(in) :: R(N,N)
-  real , intent(out):: InvR(N,N)
+  real(8) , intent(in) :: R(N,N)
+  real(8) , intent(out):: InvR(N,N)
   integer i,j,k
- !  implicit real  (t)
+ !  implicit real(8)  (t)
  
   InvR = 0.d0
 

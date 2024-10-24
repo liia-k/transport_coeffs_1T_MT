@@ -10,7 +10,7 @@ implicit none
 ! Omega-integrals and their ratios
 
 type omega_int
-	real, dimension(NUM_SP,NUM_SP) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
+	real(8), dimension(NUM_SP,NUM_SP) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
 									  AA, BB, CC
 end type
 
@@ -21,18 +21,18 @@ subroutine OmegaInt(T, omega_out, interactionType)
 
 	! Calculation of OMEGA-integrals at given temperature
 
-	real,intent(in)   :: T ! temperature
+	real(8),intent(in)   :: T ! temperature
 	type(omega_int),intent(out) :: omega_out
 	character(len=*), intent(in), optional :: interactionType
   
 	integer i, j, k
-	real x11, eij, mij, sig_ij, sij, tx, term, term2_D, term2_eta, term2, term3, term4, eij_eV, T_star, nu_star, r_star, x
-	real, dimension(6) :: Ak_BM
-	real, dimension(7) :: aj_ESA
+	real(8) x11, eij, mij, sig_ij, sij, tx, term, term2_D, term2_eta, term2, term3, term4, eij_eV, T_star, nu_star, r_star, x
+	real(8), dimension(6) :: Ak_BM
+	real(8), dimension(7) :: aj_ESA
   
 	!Omega-integrals and their ratios
   
-	real, dimension(NUM_SP,NUM_SP) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
+	real(8), dimension(NUM_SP,NUM_SP) :: OMEGA11, OMEGA22, OMEGA12, OMEGA13, &
 									  AA, BB, CC
 	
 	select case (interactionType)

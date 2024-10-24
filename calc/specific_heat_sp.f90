@@ -12,12 +12,12 @@ type SpHeatVOut
 
 ! Structure containig required specific heats
 
-  real cv_int_tot, cv_tot ! total internal sp. heat and total sp. heat (at constant volume)
-  real, dimension(NUM_SP) :: cv_int_sp, cv_vibr_sp ! vectors of internal (vibrational+rotational) and vibrational sp. heat for each species
+  real(8) cv_int_tot, cv_tot ! total internal sp. heat and total sp. heat (at constant volume)
+  real(8), dimension(NUM_SP) :: cv_int_sp, cv_vibr_sp ! vectors of internal (vibrational+rotational) and vibrational sp. heat for each species
 end type
 
 ! type, private :: dim
-!   real, allocatable :: vibr_en_sp(:) ! vector of vibational energy for molecular species
+!   real(8), allocatable :: vibr_en_sp(:) ! vector of vibational energy for molecular species
 ! end type
 
 contains
@@ -26,13 +26,13 @@ subroutine VibrEn(temp, en_out)
 
   ! Calculates vibr. energy for molecular species
   
-  real, intent(in)   :: temp
+  real(8), intent(in)   :: temp
   integer, dimension(NUM_MOL, maxval(L_vibr) + 1) :: en_out
   ! type(dim), dimension(NUM_MOL), intent(out) :: en_out
 
   integer i, j
 
-  real T
+  real(8) T
   
 
   ! do i=1,NUM_MOL
@@ -56,8 +56,8 @@ subroutine SpHeat(temp, mass_fr, c_out)
 
   ! Calculation of specific heats
 
-  real,intent(in)   :: temp ! temperature
-  real, dimension(num_sp), intent(in) :: mass_fr ! mass fractions
+  real(8),intent(in)   :: temp ! temperature
+  real(8), dimension(num_sp), intent(in) :: mass_fr ! mass fractions
   type(SpHeatVOut),intent(out) :: c_out ! above structure for sp. heats
 
   integer i
@@ -65,13 +65,13 @@ subroutine SpHeat(temp, mass_fr, c_out)
   ! type(dim), dimension(NUM_MOL) :: en_vibr
   integer, dimension(NUM_MOL, maxval(L_vibr) + 1) :: en_vibr
 
-  real, dimension(NUM_MOL) :: zvibr ! vibrational partition functions for species
+  real(8), dimension(NUM_MOL) :: zvibr ! vibrational partition functions for species
   
-  real cv_int_tot, cv_tot, s,s0
+  real(8) cv_int_tot, cv_tot, s,s0
   
-  real, dimension(NUM_SP) :: cv_int_sp, cv_vibr_sp, y
+  real(8), dimension(NUM_SP) :: cv_int_sp, cv_vibr_sp, y
   
-  real T, M
+  real(8) T, M
   
   T = temp
   y = mass_fr
