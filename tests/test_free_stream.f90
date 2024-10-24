@@ -6,7 +6,7 @@ program test_free_stream
     ! use specific_heat_sp
     ! use omega_integrals
     ! use bracket_integrals
-    use transport_1t
+    use transport_1t_new
     
     
     implicit none

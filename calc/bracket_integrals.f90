@@ -9,14 +9,10 @@ implicit none
 ! Bracket integrals 
 
 type bracket_int
-	real, dimension(NUM_SP,NUM_SP) :: LAMBDA, LAMBDA00, LAMBDA01, LAMBDA11						
-	
-	real, dimension(NUM_SP,NUM_SP) :: ETA, H00, BETA11
-	
-	real, dimension(NUM_SP,NUM_MOL) :: BETA01
-	
+	real, dimension(NUM_SP,NUM_SP) :: LAMBDA0000, LAMBDA0100, LAMBDA1100						
+	real, dimension(NUM_SP,NUM_SP) :: H00, BETA1100
+	real, dimension(NUM_SP,NUM_MOL) :: BETA0110
 	real, dimension(NUM_MOL) :: beta0011
-			
 	real, dimension(NUM_SP) :: lambda_int
 end type
 
@@ -36,9 +32,9 @@ contains
 	real mij
 	real, dimension(NUM_SP) :: PHI
 
-	real, dimension(NUM_SP,NUM_SP) :: LAMBDA, LAMBDA00, LAMBDA01, LAMBDA11						
-	real, dimension(NUM_SP,NUM_SP) :: ETA, H00, BETA11
-	real, dimension(NUM_SP,NUM_MOL) :: BETA01
+	real, dimension(NUM_SP,NUM_SP) :: LAMBDA, LAMBDA0000, LAMBDA0100, LAMBDA1100						
+	real, dimension(NUM_SP,NUM_SP) :: ETA, H00, BETA1100
+	real, dimension(NUM_SP,NUM_MOL) :: BETA0110
 	real, dimension(NUM_MOL) :: beta0011
 
 	!internal heat conductivity coefficients (lambda_int)
@@ -69,7 +65,7 @@ contains
 		end do
 	end do
 	
-	phi(1:NUM_MOL) = Kb/CONST_v*(1. + (PI**(3./2.)/2.)*sqrt(EPS_LJ(1:NUM_MOL)/T) &
+	phi(1:NUM_MOL) = Kb/Z_INF*(1. + (PI**(3./2.)/2.)*sqrt(EPS_LJ(1:NUM_MOL)/T) &
 						+ (PI*PI/4.+2.)*EPS_LJ(1:NUM_MOL)/T + (PI*EPS_LJ(1:NUM_MOL)/T)**(3./2.)) ! of 1e-22 order
 
 	! PHI(1) = Kb/23.73*(1. + (PI**(3./2.)/2.)*SQRT(EPS_LJ(1)/T) + (PI*PI/4.+2.)*EPS_LJ(1)/T &
@@ -84,19 +80,19 @@ contains
 		do j=1,NUM_SP
 		mij = MASS_SPCS(j)*(MASS_SPCS(i)*1E26)/(MASS_SPCS(i)*1E26 + MASS_SPCS(j)*1E26)
 		if(i==j) then
-			lambda00(i,j) = 0
-			lambda01(i,j) = 0
-			lambda11(i,j) = (x(i))**2/lambda(i,i)
+			lambda0000(i,j) = 0
+			lambda0100(i,j) = 0
+			lambda1100(i,j) = (x(i))**2/lambda(i,i)
 			h00(i,j) = (x(i))**2/eta(i,i)
-			beta11(i,j) = 4.*T*phi(i)*x(i)**2/eta(i,i)/PI
+			beta1100(i,j) = 4.*T*phi(i)*x(i)**2/eta(i,i)/PI
 			do k=1,NUM_SP 
 				if(k.NE.i) then 
-				lambda00(i,j) = lambda00(i,j) + x(i)*x(k)/lambda(i,k)/2./aa(i,k)
-				lambda01(i,j) = lambda01(i,j) - x(i)*x(k) &
+				lambda0000(i,j) = lambda0000(i,j) + x(i)*x(k)/lambda(i,k)/2./aa(i,k)
+				lambda0100(i,j) = lambda0100(i,j) - x(i)*x(k) &
 								/lambda(i,k)/4./aa(i,k)*(MASS_SPCS(k)*1e27)/(MASS_SPCS(i)*1e27 + MASS_SPCS(k)*1e27) &
 								*(6.*cc(i,k)-5.)
 
-				lambda11(i,j) = lambda11(i,j) + x(i)*x(k)/lambda(i,k)/2./aa(i,k) &
+				lambda1100(i,j) = lambda1100(i,j) + x(i)*x(k)/lambda(i,k)/2./aa(i,k) &
 								*((15./2.)*(MASS_SPCS(i)*1e27)**2 + (25./4.)*(MASS_SPCS(k)*1e27)**2 &
 								- 3.*(MASS_SPCS(k)*1e27)**2*bb(i,k) + 4.*(MASS_SPCS(i)*1e27)*(MASS_SPCS(k)*1e27)*aa(i,k)) &
 								/(MASS_SPCS(i)*1e27 + MASS_SPCS(k)*1e27)**2
@@ -105,7 +101,7 @@ contains
 							/(MASS_SPCS(i)*1e27 + MASS_SPCS(k)*1e27)**2 & 
 							*(5./3./aa(i,k) + (MASS_SPCS(k)*1e27)/(MASS_SPCS(i)*1e27))
 
-				beta11(i,j) = beta11(i,j) + (x(i)*x(k)/eta(i,k))*(MASS_SPCS(k)*1e27) &
+				beta1100(i,j) = beta1100(i,j) + (x(i)*x(k)/eta(i,k))*(MASS_SPCS(k)*1e27) &
 								*(5.*Kb*T*(MASS_SPCS(i)*1e27)/aa(i,k) + 4.*(phi(i)+phi(k))*T*(MASS_SPCS(k)*1e27)/PI) &
 								/(MASS_SPCS(i)*1e27 + MASS_SPCS(k)*1e27)**2
 				
@@ -113,16 +109,16 @@ contains
 			end do
 			
 		else
-			lambda00(i,j) = -x(i)*x(j)/lambda(i,j)/2./aa(i,j)
-			lambda01(i,j) = x(i)*x(j)*(6.*cc(i,j) - 5.)/4./aa(i,j)/lambda(i,j) &
+			lambda0000(i,j) = -x(i)*x(j)/lambda(i,j)/2./aa(i,j)
+			lambda0100(i,j) = x(i)*x(j)*(6.*cc(i,j) - 5.)/4./aa(i,j)/lambda(i,j) &
 							*(MASS_SPCS(i)*1e27)/(MASS_SPCS(i)*1e27 + MASS_SPCS(j)*1e27)
 
-			lambda11(i,j) = -x(i)*x(j)*(55./4. - 3.*bb(i,j) - 4.*aa(i,j))/lambda(i,j)/2./aa(i,j) &
+			lambda1100(i,j) = -x(i)*x(j)*(55./4. - 3.*bb(i,j) - 4.*aa(i,j))/lambda(i,j)/2./aa(i,j) &
 							*mij/(MASS_SPCS(i) + MASS_SPCS(j))
 			h00(i,j) = -2.*x(i)*x(j)*(5./3./aa(i,j) - 1.)/eta(i,j) &
 						*(mij*1e27)/(MASS_SPCS(i)*1e27 + MASS_SPCS(j)*1e27)
 			
-			beta11(i,j) = x(i)*x(j)*(-5.*Kb*T/aa(i,j) + 4.*T*(phi(i)+phi(j))/PI)/eta(i,j) &
+			beta1100(i,j) = x(i)*x(j)*(-5.*Kb*T/aa(i,j) + 4.*T*(phi(i)+phi(j))/PI)/eta(i,j) &
 							*(MASS_SPCS(i)*1e27)*(MASS_SPCS(j)*1e27)/(MASS_SPCS(i)*1e27 + MASS_SPCS(j)*1e27)**2
 
 		end if
@@ -135,16 +131,16 @@ contains
 	do i=1,NUM_SP
 		do j=1,NUM_MOL
 		if(i==j) then
-			beta01(i,j) = -4.*T*x(i)**2*phi(i)/eta(i,i)/PI
+			beta0110(i,j) = -4.*T*x(i)**2*phi(i)/eta(i,i)/PI
 			do k=1,NUM_SP 
 				if(k.NE.i) then 
-				beta01(i,j) = beta01(i,j) - 4.*T*x(i)*x(k)*phi(i)/eta(i,k)/PI &
+				beta0110(i,j) = beta0110(i,j) - 4.*T*x(i)*x(k)*phi(i)/eta(i,k)/PI &
 								*(MASS_SPCS(k)*1e27)/(MASS_SPCS(i)*1e27 + MASS_SPCS(k)*1e27)
 				end if
 			end do
 
 		else
-			beta01(i,j) = -4.*T*x(i)*x(j)*phi(j)/eta(i,j)/PI &
+			beta0110(i,j) = -4.*T*x(i)*x(j)*phi(j)/eta(i,j)/PI &
 							*(MASS_SPCS(j)*1e27)/(MASS_SPCS(i)*1e27 + MASS_SPCS(j)*1e27)
 		
 		end if
@@ -154,14 +150,12 @@ contains
 		end do
 	end do
 
-	bracket_out%LAMBDA = LAMBDA
-	bracket_out%LAMBDA00 = LAMBDA00
-	bracket_out%LAMBDA01 = LAMBDA01
-	bracket_out%LAMBDA11 = LAMBDA11
-	bracket_out%ETA = ETA
+	bracket_out%LAMBDA0000 = LAMBDA0000
+	bracket_out%LAMBDA0100 = LAMBDA0100
+	bracket_out%LAMBDA1100 = LAMBDA1100
 	bracket_out%H00 = H00
-	bracket_out%BETA11 = BETA11
-	bracket_out%BETA01 = BETA01
+	bracket_out%BETA1100 = BETA1100
+	bracket_out%BETA0110 = BETA0110
 	bracket_out%BETA0011 = BETA0011
 	bracket_out%LAMBDA_INT = LAMBDA_INT
 

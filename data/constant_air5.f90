@@ -14,9 +14,6 @@ integer, parameter :: NUM_SP=5, NUM_MOL=3
 
 integer, dimension(NUM_MOL), parameter  :: L_vibr = (/67, 56, 52/) ! L_N2=67, L_O2=56, L_NO=52
 
-! Constants for calculation of bracket int PHI:
-real, dimension(NUM_MOL), parameter :: CONST_v = (/23.73, 20.72, 9.16/)
-
 ! Common constants definition: Boltzmann constant kB (J/K), kB_eV (eV/K); 
 ! atomic mass unit amu (kg); pi; Planck constant hp (J*s); Avogadro number
 ! navog (mol); dimension factor ww for energy calculation m^{-1} --> J; gas constant R (J/K/mol)
@@ -193,6 +190,10 @@ real, dimension(NUM_SP,NUM_SP), parameter :: BETA_VSS = reshape((/ 8.07, 8.11, 8
 
 real, dimension(NUM_SP), parameter  :: H_FORM=(/0., 0., 1.507112761911427e-19,&
 										  		7.818078240456827e-19, 4.098045681049634e-19/) 
-	
+
+! Molecular components Parker's formula z_inf coefficients
+
+real, dimension(NUM_MOL), parameter :: Z_INF = (/20.38982, 20.84783, 24.0/)
+
 end module 	constant_air5
 

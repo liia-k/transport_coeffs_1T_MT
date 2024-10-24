@@ -6,7 +6,10 @@ program test_potential_models
     ! Different interaction potentials are used: Lennard-Jones, Born-Mayer, VSS, ESA-Bruno.
     use constant_air5
     use defs_models
-    use transport_1t
+    use specific_heat_sp
+    use omega_integrals
+    use bracket_integrals_new
+    use transport_1t_new
     
     implicit none
 
@@ -18,6 +21,9 @@ program test_potential_models
     integer, parameter :: size = (end - start) / step + 1
     type(transport_in) :: transport
     type(transport_out) :: transport_coeff
+    type(bracket_int) :: bracket_out
+    type(omega_int) :: omega_in
+    type(SpHeatVOut) :: cv_in
     real, dimension(4, size) :: shearVisc, thermCond
     real, dimension(size) :: tempArray
     character(len=25), dimension(4) :: interaction 
@@ -82,4 +88,75 @@ program test_potential_models
     end do
     close(6)
 
+
+    T = 1000 ! K
+    ntot = press / T / Kb
+    rho = sum(MASS_SPCS * ntot * x)
+    y = (ntot / rho) * x * MASS_SPCS
+    
+    tempArray(j) = T
+    transport%temp = T
+    transport%mass_fractions = y
+    transport%rho = rho
+
+    call OmegaInt(T, omega_in, interaction(1))
+    call SpHeat(T, y, cv_in)
+    call BracketInt(T, ntot, x, omega_in, cv_in, bracket_out)
+
+    open(6, file='../res/air5-1T-bracket-integrals.txt', status='unknown')
+    write (6, *)
+    write (6, '(1x, A40)') 'Bracket integrals Lambda1100 at T = 1000 K:'
+    write (6, *)
+
+    do i = 1, NUM_SP
+        write (6, '(1x, 5E15.6)') (bracket_out%lambda1100(i, j), j = 1, NUM_SP)
+    end do
+
+    write (6, *)
+    write (6, '(1x, A40)') 'Bracket integrals Lambda0000 at T = 1000 K:'
+    write (6, *)
+
+    do i = 1, NUM_SP
+        write (6, '(1x, 5E15.6)') (bracket_out%lambda0000(i, j), j = 1, NUM_SP)
+    end do
+
+    write (6, *)
+    write (6, '(1x, A40)') 'Bracket integrals Lambda0100 at T = 1000 K:'
+    write (6, *)
+
+    do i = 1, NUM_SP
+        write (6, '(1x, 5E15.6)') (bracket_out%lambda0100(i, j), j = 1, NUM_SP)
+    end do
+
+    write (6, *)
+    write (6, '(1x, A40)') 'Bracket integrals H00 at T = 1000 K:'
+    write (6, *)
+
+    do i = 1, NUM_SP
+        write (6, '(1x, 5E15.6)') (bracket_out%h00(i, j), j = 1, NUM_SP)
+    end do
+
+    write (6, *)
+    write (6, '(1x, A40)') 'Bracket integrals Beta1100 at T = 1000 K:'
+    write (6, *)
+
+    do i = 1, NUM_SP
+        write (6, '(1x, 5E15.6)') (bracket_out%beta1100(i, j), j = 1, NUM_SP)
+    end do
+
+    write (6, *)
+    write (6, '(1x, A40)') 'Bracket integrals Beta0110 at T = 1000 K:'
+    write (6, *)
+
+    do i = 1, NUM_SP
+        write (6, '(1x, 5E15.6)') (bracket_out%beta0110(i, j), j = 1, NUM_MOL)
+    end do
+
+    write (6, *)
+    write (6, '(1x, A40)') 'Bracket integrals Beta0011 at T = 1000 K:'
+    write (6, *)
+
+    write (6, '(1x, 5E15.6)') (bracket_out%beta0011(i), i = 1, NUM_MOL)
+
+    close(6)
 end program test_potential_models
