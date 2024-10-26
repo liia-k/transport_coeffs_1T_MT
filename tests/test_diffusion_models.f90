@@ -1,32 +1,30 @@
-program test_simplified_random
+program test_diffusion_models
 
-    ! This program calculates transport coefficients for a random mixture of air.
+    ! This program calculates transport coefficients for a specific mixture of air.
     ! Simplified model is applied: only shear viscosity, thermal conductivity 
     ! and effective diffusion coefficients are calculated
-    use defs_models
     use constant_air5
+    use defs_models
+    ! use specific_heat_sp
+    ! use omega_integrals
+    ! use bracket_integrals
     use transport_1t
     
     implicit none
 
     ! Variables
     real :: M, ntot, press, T, rho
-    real, dimension(NUM_SP) :: y
-    integer :: i, k, n
-    real :: t1, t2, total_time
+    real, dimension(NUM_SP) :: y, x
+    integer :: i, j, k, n
     type(transport_in) :: transport
     type(transport_out) :: transport_coeff
     character(len=*), parameter :: interaction = 'ESA-Bruno' ! 'VSS', 'Lennard-Jones', 'Born-Mayer', 'ESA-Bruno'
 
-! Number of iterations
-    n = 10000
-
-    ! Start timing
-    call cpu_time(t1)
-    print *, "Start time: ", t1
+    ! Number of iterations
+    n = 1000
 
     ! Open file for results
-    open(10, file='../res/air5-1T-random-simplified.txt', status='unknown')
+    open(10, file='../res/air5-1T-diffusion-models.txt', status='unknown')
 
     write (6, *)
     write (6, *) 'Potential model: ', interaction
@@ -55,7 +53,7 @@ program test_simplified_random
         transport%rho = rho
 
         ! Write input data to file
-        write (10, *) 'INPUT DATA:'
+        write (10, *) 'Input data:'
         write (10, *)
         write (10, '(A25,E13.6)') 'Pressure, Pa:      ', press
         write (10, '(A25,E13.6)') 'Temperature, K:    ', T
@@ -66,28 +64,23 @@ program test_simplified_random
         write (10, '(A25,E13.6)') 'O mass fraction:   ', y(5)
 
         ! Calculate transport coefficients
-        call Transport1TSimpl(transport, transport_coeff, interaction)
+        call Transport1TGeneral(transport, transport_coeff, interaction)
 
-        ! Write transport coefficients to file
-        write (10, *) 'TRANSPORT COEFFICIENTS:'
+        write (10, *) 'Diffusion coefficients D_ij, m^2/s'
         write (10, *)
-        write (10, '(1x, A45, E13.5)') 'Shear viscosity coefficient, Pa*S             ', transport_coeff%visc
-        write (10, '(1x, A45, E13.5)') 'Thermal cond. coef. lambda, W/m/K             ', transport_coeff%ltot
+        do i = 1, NUM_SP
+            write (10, '(1x, 5E15.6)') (transport_coeff%DIFF(i, j), j = 1, NUM_SP)
+        end do
         write (10, *)
-        write (10, *) 'EFFECTIVE DIFFUSION COEFFICIENTS D_ij, m^2/s'
+
+        call Transport1TSimpl(transport, transport_coeff, interaction)
+        
+        write (10, *) 'Effective diffusion coefficients, m^2/s'
         write (10, *)
-        write (10, '(1x, 5E15.6)') (transport_coeff%effDiff(i), i = 1, NUM_SP)
+        write (10, '(1x, 5E15.6)') (transport_coeff%effDiff(i), i = 1, NUM_SP)   
         write (10, *)
     end do
 
     close(10)
-    
-    ! End timing
-    call cpu_time(t2)
-    write(6, *) "End time: ", t2
 
-    total_time = t2 - t1
-    write(6, '(a,f10.3,a)') "Total execution time: ", total_time, " seconds"
-    ! print '(a,f10.3,a)', "Average time per iteration: ", total_time / n, " seconds"
-
-end program test_simplified_random
+end program test_diffusion_models

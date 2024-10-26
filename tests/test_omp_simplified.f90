@@ -69,22 +69,25 @@ program test_omp_simplified
     print '(a,f10.3,a)', "Average time per iteration: ", total_time / (n - 499), " seconds"
 
     ! Open file for results
-    open(6, file='../res/air5-1T-res-omp.txt', status='unknown')
+    open(6, file='../res/air5-1T-res-omp-simplified.txt', status='unknown')
 
-
+    write (6, *)
+    write (6, *) 'Potential model: ', interaction
+    write (6, *)
+    
     ! Write results to file
     do k = 500, n
         T = k * 1.0
 
         write (6, *) 'INPUT DATA:'
         write (6, *)
-        write (6, *) 'Temperature, K         ', T
-        write (6, *) 'Pressure, Pa           ', press
-        write (6, *) 'N2 molar fraction      ', x(1)
-        write (6, *) 'O2 molar fraction      ', x(2)
-        write (6, *) 'NO molar fraction      ', x(3)
-        write (6, *) 'N molar fraction       ', x(4)
-        write (6, *) 'O molar fraction       ', x(5)
+        write (6, '(A25,E13.6)') 'Temperature, K         ', T
+        write (6, '(A25,E13.6)') 'Pressure, Pa           ', press
+        write (6, '(A25,E13.6)') 'N2 molar fraction      ', x(1)
+        write (6, '(A25,E13.6)') 'O2 molar fraction      ', x(2)
+        write (6, '(A25,E13.6)') 'NO molar fraction      ', x(3)
+        write (6, '(A25,E13.6)') 'N molar fraction       ', x(4)
+        write (6, '(A25,E13.6)') 'O molar fraction       ', x(5)
         write (6, *)
         write (6, *) 'TRANSPORT COEFFICIENTS:'
         write (6, *)

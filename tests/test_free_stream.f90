@@ -6,7 +6,7 @@ program test_free_stream
     ! use specific_heat_sp
     ! use omega_integrals
     ! use bracket_integrals
-    use transport_1t_new
+    use transport_1t
     
     
     implicit none
@@ -50,14 +50,14 @@ program test_free_stream
         ! Write input data to file
         write (6, *) 'INPUT DATA:'
         write (6, *)
-        write (6, *) 'Temperature, K         ', transport%temp
-        write (6, *) 'Molar mass, kg         ', M
-        write (6, *) 'Density, kg/m^3        ', transport%rho
-        write (6, *) 'N2 mass fraction       ', transport%mass_fractions(1)
-        write (6, *) 'O2 mass fraction       ', transport%mass_fractions(2)
-        write (6, *) 'NO mass fraction       ', transport%mass_fractions(3)
-        write (6, *) 'N mass fraction        ', transport%mass_fractions(4)
-        write (6, *) 'O mass fraction        ', transport%mass_fractions(5)
+        write (6, '(A25,E13.6)') 'Temperature, K         ', transport%temp
+        write (6, '(A25,E13.6)') 'Molar mass, kg         ', M
+        write (6, '(A25,E13.6)') 'Density, kg/m^3        ', transport%rho
+        write (6, '(A25,E13.6)') 'N2 mass fraction       ', transport%mass_fractions(1)
+        write (6, '(A25,E13.6)') 'O2 mass fraction       ', transport%mass_fractions(2)
+        write (6, '(A25,E13.6)') 'NO mass fraction       ', transport%mass_fractions(3)
+        write (6, '(A25,E13.6)') 'N mass fraction        ', transport%mass_fractions(4)
+        write (6, '(A25,E13.6)') 'O mass fraction        ', transport%mass_fractions(5)
         write (6, *)
         write (6, *) 'TRANSPORT COEFFICIENTS:'
         write (6, *)

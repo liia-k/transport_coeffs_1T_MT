@@ -8,8 +8,8 @@ program test_potential_models
     use defs_models
     use specific_heat_sp
     use omega_integrals
-    use bracket_integrals_new
-    use transport_1t_new
+    use bracket_integrals
+    use transport_1t
     
     implicit none
 

@@ -43,7 +43,7 @@ module transport_1t
         else
             call OmegaInt(data_in%temp, omega_out)
         end if
-        call BracketInt(data_in%temp, data_add%num_fractions, omega_out, bracket_out)
+        call BracketInt(data_in%temp, data_add%ntot , data_add%num_fractions, omega_out, cv, bracket_out)
 
         ! Calculations of transport coefficients
         call calculateThermalCondAndDiff(data_add, cv, bracket_out, ltot, thdiff)
@@ -82,7 +82,7 @@ module transport_1t
         else
             call OmegaInt(data_in%temp, omega_out)
         end if
-        call BracketInt(data_in%temp, data_add%num_fractions, omega_out, bracket_out)
+        call BracketInt(data_in%temp, data_add%ntot, data_add%num_fractions, omega_out, cv, bracket_out)
 
         ! Calculations of transport coefficients
         call calculateThermalCond(data_add, cv, bracket_out, ltot)
@@ -207,7 +207,6 @@ module transport_1t
         print *, "mass fractions: ", data_in%mass_fractions
     end subroutine
 
-
     subroutine calculateThermalCondAndDiff(data_in, cv, bracket_ints, ltot, thdiff)
         implicit none
 
@@ -222,23 +221,25 @@ module transport_1t
         real :: ltr, lint
 
        ! Matrices for the linear transport system defining heat conductivity and thermal diffusion (LTH)
-        real, dimension(2*NUM_SP, 2*NUM_SP) :: LTH, Q_LTH, R_LTH, Inverse_LTH
+        real, dimension(2 * NUM_SP, 2 * NUM_SP) :: LTH, Q_LTH, R_LTH, Inverse_LTH
 
         ! Vector of the RHS of the system
-        real, dimension(2*NUM_SP, 1) :: b
+        real, dimension(2 * NUM_SP, 1) :: b
         
-        ! Define matrix LTH for calculation of thermal conductivity and thermal diffusion coefficients      
-        LTH(1 : NUM_SP, 1 : NUM_SP) = bracket_ints%Lambda0000  
-        LTH(1 : NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda0100
-        LTH(NUM_SP+1 : 2*NUM_SP, 1 : NUM_SP) = LTH(1 : NUM_SP, NUM_SP+1 : 2*NUM_SP)
-        LTH(NUM_SP+1 : 2*NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda1100    
+        ! Define matrix LTH for calculation of thermal conductivity and thermal diffusion coefficients
+        ! All the matrix coefficients re multiplied by 1e40 to avoid underflow      
+        LTH(1 : NUM_SP, 1 : NUM_SP) = bracket_ints%Lambda0000 ! * 1e40
+        LTH(1 : NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda0100 ! * 1e40 ! = Lambda1000
+        LTH(NUM_SP+1 : 2*NUM_SP, 1 : NUM_SP) = bracket_ints%Lambda0100 ! * 1e40 ! = Lambda1000
+        LTH(NUM_SP+1 : 2*NUM_SP, NUM_SP+1 : 2*NUM_SP) = bracket_ints%Lambda1100 ! * 1e40
 
         LTH(1, 1 : NUM_SP) = data_in%mass_fractions    
         LTH(1, NUM_SP+1 : 2*NUM_SP) = 0
 
        ! Define vector b (right-hand side of the system for calculation of thermal conductivity and thermal diffusion coefficients)
+       ! All the vector coefficients re multiplied by 1e20 to avoid underflow
         b(1 : NUM_SP, 1) = 0
-        b(NUM_SP+1 : 2*NUM_SP, 1) = (4./5./Kb) * data_in%num_fractions
+        b(NUM_SP+1 : 2*NUM_SP, 1) = (15. / 2. * Kb * data_in%temp) * data_in%num_fractions ! * 1e20
         
         ! Linear system solution using QR decomposition 
         call QRDecomposition(LTH, Q_LTH, R_LTH, 2*NUM_SP)
@@ -246,20 +247,21 @@ module transport_1t
         b = matmul(Inverse_LTH, b)
 
         ! Calculate thermal diffusion coefficients (thdiff)
-        thdiff = -(1./2./data_in%ntot) * b(1:NUM_SP, 1)
+        ! Multiply by 1e20 to avoid underflow
+        thdiff = -(1. / 2. / data_in%ntot) * b(1 : NUM_SP, 1) ! * 1e20
 
         ! Calculate thermal conductivity coefficient associated with translational energy (ltr)
-        ltr = (5./4.) * Kb * sum(data_in%num_fractions * b(NUM_SP+1:2*NUM_SP, 1))
+        ! Multiply by 1e20 to avoid underflow
+        ltr = (5. / 4.) * Kb * sum(data_in%num_fractions * b(NUM_SP+1 : 2*NUM_SP, 1)) ! * 1e20
 
         ! Calculate thermal conductivity coefficients associated with internal energies (lint)
-        lint = (3./16.) * data_in%temp * sum(data_in%num_fractions(:NUM_MOL) * cv%cv_int_sp(:NUM_MOL) &
-                * ((Kb) * (MASS_SPCS(:NUM_MOL)*1e30) / (bracket_ints%lambda_int(:NUM_MOL)*1e30)))
+        lint = (3. / 16.) * data_in%temp * sum(data_in%num_fractions(:NUM_MOL) * cv%cv_int_sp(:NUM_MOL) &
+                * ((Kb) * (MASS_SPCS(:NUM_MOL)*1e27) / (bracket_ints%lambda_int(:NUM_MOL)*1e27)))
 
         ! Total thermal conductivity coefficient at the translational temperature gradient
         ltot = ltr + lint
 
     end subroutine calculateThermalCondAndDiff
-
 
     subroutine calculateThermalCond(data_in, cv, bracket_ints, ltot)
         implicit none
@@ -283,7 +285,7 @@ module transport_1t
         LTH(:NUM_SP, :NUM_SP) = bracket_ints%Lambda1100  
 
        ! Define vector b (right-hand side of the system for calculation of thermal conductivity coefficients)
-        b(: NUM_SP, 1) = (4./5./Kb) * data_in%num_fractions
+        b(: NUM_SP, 1) = (15. / 2. * Kb * data_in%temp) * data_in%num_fractions
         
         ! Linear system solution using QR decomposition 
         call QRDecomposition(LTH, Q_LTH, R_LTH, NUM_SP)
@@ -291,12 +293,11 @@ module transport_1t
         b = matmul(Inverse_LTH, b)
 
         ! Calculate thermal conductivity coefficient associated with translational energy (ltr)
-        ltr = (5./4.) * Kb * sum(data_in%num_fractions * b(: NUM_SP, 1))
-
+        ltr = (5. / 4.) * Kb * sum(data_in%num_fractions * b(1 : NUM_SP, 1))
 
         ! Calculate thermal conductivity coefficients associated with internal energies (lint)
-        lint = (3./16.) * data_in%temp * sum(data_in%num_fractions(:NUM_MOL) * cv%cv_int_sp(:NUM_MOL) &
-                * ((Kb) * (MASS_SPCS(:NUM_MOL)*1e30) / (bracket_ints%lambda_int(:NUM_MOL)*1e30)))
+        lint = (3. / 16.) * data_in%temp * sum(data_in%num_fractions(:NUM_MOL) * cv%cv_int_sp(:NUM_MOL) &
+                * ((Kb) * (MASS_SPCS(:NUM_MOL)*1e27) / (bracket_ints%lambda_int(:NUM_MOL)*1e27)))
 
         ! Total thermal conductivity coefficient at the translational temperature gradient
         ltot = ltr + lint
@@ -319,7 +320,8 @@ module transport_1t
         real, dimension(NUM_SP, NUM_SP) :: B1
 
         ! Define matrix LDIFF for calculation of diffusion coefficients
-        LDIFF = bracket_ints%Lambda1100
+        LDIFF = bracket_ints%Lambda0000
+        LDIFF(1, 1 : NUM_SP) = data_in%mass_fractions
 
         ! Define matrix B1 (right-hand side of the system for calculation of diffusion coefficients)
         do i = 1, NUM_SP
@@ -329,7 +331,7 @@ module transport_1t
                 else
                     delta = 0
                 end if
-                B1(i, j) = 8./25./Kb * (delta - data_in%mass_fractions(i))
+                B1(i, j) = 3.0 * Kb * data_in%temp * (delta - data_in%mass_fractions(i))
             end do
         end do
 
@@ -341,7 +343,7 @@ module transport_1t
         B1 = matmul(Inverse_LDIFF, B1)
 
         ! Calculate diffusion coefficients, DIFF(i, j)
-        DIFF = (1./2./data_in%ntot) * B1
+        DIFF = (1. / 2. / data_in%ntot) * B1
 
     end subroutine calculateDiffCoeffs
 
@@ -398,7 +400,7 @@ module transport_1t
         b2 = matmul(Inverse_HVISC, b2)
 
         ! Calculate shear viscosity coefficient, visc
-        visc = (Kb *  data_in%temp / 2.0) * sum(data_in%num_fractions * b2(1:NUM_SP, 1))
+        visc = (Kb *  data_in%temp / 2.0) * sum(data_in%num_fractions * b2(1 : NUM_SP, 1))
 
     end subroutine calculateShearVisc
 
@@ -420,27 +422,28 @@ module transport_1t
 
         ! Define matrix BVISC for calculation of bulk viscosity coefficients
         do i = 1, NUM_SP
-            BVISC(i, 1:NUM_SP) = data_in%num_fractions * bracket_ints%beta1100(i, 1:NUM_SP)
+            BVISC(i, 1:NUM_SP) = data_in%num_fractions * bracket_ints%beta1100(i, 1 : NUM_SP)
         end do
         
         do i = 1, NUM_SP
-            BVISC(i, NUM_SP+1:NUM_SP+NUM_MOL) = data_in%mass_fractions(:NUM_MOL) * bracket_ints%beta0110(i, :NUM_MOL)
+            BVISC(i, NUM_SP+1 : NUM_SP+NUM_MOL) = bracket_ints%beta0110(i, 1 : NUM_MOL)
         end do
-    
-        BVISC(NUM_SP+1 : NUM_SP+NUM_MOL, 1:NUM_SP) = transpose(BVISC(1:NUM_SP, NUM_SP+1:NUM_SP+NUM_MOL))  
+        ! BVISC(1 : NUM_SP, NUM_SP+1 : NUM_SP+NUM_MOL) = bracket_ints%beta0110 ! = beta1001
+        
+        BVISC(NUM_SP+1 : NUM_SP+NUM_MOL, 1 : NUM_SP) = transpose(BVISC(1 : NUM_SP, NUM_SP+1 : NUM_SP+NUM_MOL))  
         BVISC(NUM_SP+1 : NUM_SP+NUM_MOL, NUM_SP+1 : NUM_SP+NUM_MOL) = 0
         
         do i = NUM_SP+1, NUM_SP+NUM_MOL
-            BVISC(i, i) = data_in%mass_fractions(i-5) * bracket_ints%beta0011(i-5)
+            BVISC(i, i) = bracket_ints%beta0011(i-5)
         end do
         
-        BVISC(1, 1:NUM_SP) = ((3.0 / 2.0) * R / data_in%M) * data_in%num_fractions ! Kb*ntot/rho    
-        BVISC(1, NUM_SP+1:NUM_SP+NUM_MOL) = data_in%mass_fractions(1:NUM_MOL) * (Kb / MASS_SPCS(1:NUM_MOL))
+        BVISC(1, 1 : NUM_SP) = ((3.0 / 2.0) * R / data_in%M) * data_in%num_fractions ! Kb*ntot/rho    
+        BVISC(1, NUM_SP+1 : NUM_SP+NUM_MOL) = data_in%mass_fractions(1 : NUM_MOL) * cv%cv_int_sp(1 : NUM_MOL)
         
         ! Define vector b3 (right-hand side of the system for calculation of bulk viscosity coefficients)
-        b3(1:NUM_SP, 1) = -data_in%num_fractions * cv%cv_int_sp / cv%cv_tot
-        b3(NUM_SP+1:NUM_SP+NUM_MOL, 1) = data_in%mass_fractions(:NUM_MOL) * cv%cv_int_sp(:NUM_MOL) &
-                                        / cv%cv_tot
+        b3(1 : NUM_SP, 1) = -data_in%num_fractions * cv%cv_int_tot / cv%cv_tot
+        b3(NUM_SP+1 : NUM_SP+NUM_MOL, 1) = data_in%mass_fractions(1 : NUM_MOL) * cv%cv_int_sp(1 : NUM_MOL) &
+                                           / cv%cv_tot
 
         b3(1, 1) = 0.0
 
@@ -450,10 +453,10 @@ module transport_1t
         call InvertQR(Q_BVISC, R_BVISC, Inverse_BVISC, NUM_SP+NUM_MOL)
         b3 = matmul(Inverse_BVISC, b3)
         
-        ! call gaussj(BVISC,8,8,b3,1,1)
+        ! call gaussj(BVISC, 8, 8, b3, 1, 1)
 
         ! Calculate bulk viscosity coefficient, bulk_visc
-        bulk_visc = -Kb * data_in%temp * sum(data_in%num_fractions * b3(1:NUM_SP, 1))
+        bulk_visc = -Kb * data_in%temp * sum(data_in%num_fractions * b3(1 : NUM_SP, 1))
 
     end subroutine calculateBulkVisc
 
